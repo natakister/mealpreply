@@ -1,0 +1,1101 @@
+{
+  "id": "universal",
+  "name": "MealPreply — Universal Quiz",
+  "meta": {
+    "description": "Universal branching quiz serving 4 audience segments via conditions + dynamic text",
+    "targetAudience": "Busy parents, health-conscious millennials, busy professionals, budget-conscious consumers",
+    "segments": ["busy_parent", "health_focus", "busy_pro", "budget"],
+    "totalScreens": 33,
+    "visiblePerSegment": "22-24"
+  },
+  "defaults": {
+    "cta": "Next →"
+  },
+  "computedVars": {
+    "_doc_flags": "Segment boolean flags — used in screen conditions",
+    "isBusyParent": { "expr": "lifeStage === 'busy_parent'" },
+    "isHealthFocus": { "expr": "lifeStage === 'health_focus'" },
+    "isBusyPro": { "expr": "lifeStage === 'busy_pro'" },
+    "isBudget": { "expr": "lifeStage === 'budget'" },
+
+    "_doc_people": "People count — segment-aware to handle different input screens",
+    "totalPeople": { "expr": "lifeStage === 'busy_parent' ? ((adults || 2) + (kids || 2)) : (peopleFed || 1)" },
+    "hasKids": { "expr": "lifeStage === 'busy_parent' && (kids || 0) > 0" },
+    "weeklyMeals": { "expr": "totalPeople * 21" },
+
+    "_doc_health": "Health-focus specific — only displayed in health_focus dynamic text",
+    "weeklyWorkouts": { "expr": "workoutDays || 0" },
+
+    "_doc_budget": "Budget specific — derived from shopping pattern, only displayed in budget dynamic text",
+    "weeklyBudget": {
+      "switch": "shoppingPattern",
+      "cases": { "daily": 90, "big_weekly": 120, "random": 100, "meal_kits": 150 },
+      "default": 100
+    },
+    "monthlyGrocery": { "expr": "Math.round(weeklyBudget * 4.3)" },
+
+    "_doc_time": "Time/frequency — from current-frequency screen (all segments answer this)",
+    "hoursPerWeek": {
+      "switch": "currentFrequency",
+      "cases": { "always": 14, "often": 10, "sometimes": 6, "rarely": 3 },
+      "default": 6
+    },
+    "hoursPerYear": { "expr": "hoursPerWeek * 52" },
+    "daysPerYear": { "expr": "Math.round(hoursPerYear / 24)" },
+
+    "_doc_decisions": "Decision fatigue metrics",
+    "decisionsPerDay": { "expr": "totalPeople > 2 ? 12 : totalPeople > 1 ? 8 : 5" },
+    "decisionsPerYear": { "expr": "decisionsPerDay * 365" },
+
+    "_doc_waste": "Food waste — from midweek-pattern (all segments answer this)",
+    "wastedFoodPerMonth": {
+      "switch": "midweekPattern",
+      "cases": { "food_spoils": 180, "improvise": 120, "exhausted": 100 },
+      "default": 80
+    },
+    "wastedFoodPerYear": { "expr": "wastedFoodPerMonth * 12" },
+
+    "_doc_pro": "Busy-pro specific — takeout spend derived from midweek pattern",
+    "weeklyTakeoutSpend": {
+      "switch": "midweekPattern",
+      "cases": { "exhausted": 85, "improvise": 60, "food_spoils": 45 },
+      "default": 25
+    },
+    "yearlyTakeoutSpend": { "expr": "weeklyTakeoutSpend * 52" },
+
+    "_doc_health_prep": "Health-focus prep time — from current-frequency",
+    "prepHoursPerWeek": {
+      "switch": "currentFrequency",
+      "cases": { "always": 5, "often": 4, "sometimes": 2, "rarely": 1 },
+      "default": 3
+    },
+    "prepDaysPerYear": { "expr": "Math.round(prepHoursPerWeek * 52 / 24)" },
+
+    "_doc_budget_waste": "Budget waste calculations — from waste-source + shopping-pattern",
+    "wastePercent": {
+      "switch": "wasteSource",
+      "cases": { "over_buying": 35, "fridge_spoils": 30, "forgot_leftovers": 25, "pantry_expires": 20 },
+      "default": 25
+    },
+    "monthlyWasteAmount": { "expr": "Math.round(monthlyGrocery * wastePercent / 100)" },
+    "yearlyWasteAmount": { "expr": "monthlyWasteAmount * 12" },
+
+    "_doc_solution": "Solution stats — displayed in solution-preview for all segments",
+    "weeklyTimeSaved": { "expr": "Math.round(hoursPerWeek * 0.6)" },
+    "monthlySavings": { "expr": "Math.round(wastedFoodPerMonth * 0.7)" },
+
+    "peopleWord": { "expr": "totalPeople === 1 ? 'person' : 'people'" },
+
+    "_doc_counts": "Aggregates for progress-summary and diet-mapped bridge",
+    "dietaryCount": { "expr": "(dietary || []).filter(d => d !== 'none').length" },
+    "allergiesCount": { "expr": "(allergies || []).filter(a => a !== 'none').length" },
+    "equipmentCount": { "expr": "(kitchenEquipment || []).length" },
+
+    "_doc_labels": "Human-readable labels for progress-summary display",
+    "mainGoalLabel": {
+      "switch": "mainGoal",
+      "cases": {
+        "mental_load": "Reduce mental load",
+        "healthy_eating": "Eat healthier",
+        "food_waste": "Reduce waste",
+        "time_saving": "Save time"
+      },
+      "default": "Personalized"
+    },
+    "lifeStageLabel": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Family meals",
+        "health_focus": "Clean eating",
+        "busy_pro": "Quick & easy",
+        "budget": "Budget-smart"
+      },
+      "default": "Personalized"
+    },
+
+    "_doc_analyzing": "F-007: Segment-specific analyzing checklist for perceived effort",
+    "analyzingItem1": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Analyzing your {totalPeople}-person family profile",
+        "health_focus": "Mapping your {weeklyWorkouts}x/week training schedule",
+        "busy_pro": "Profiling your energy patterns and schedule",
+        "budget": "Scanning your shopping and waste patterns"
+      },
+      "default": "Profile analyzed"
+    },
+    "analyzingItem2": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Cross-checking {dietaryCount} dietary need(s) + {allergiesCount} exclusion(s)",
+        "health_focus": "Calibrating macros for your nutrition focus",
+        "busy_pro": "Matching meal complexity to your energy level",
+        "budget": "Calculating your real cost-per-meal baseline"
+      },
+      "default": "Dietary needs mapped"
+    },
+    "analyzingItem3": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Planning {weeklyMeals} meals with kid-friendly ingredients",
+        "health_focus": "Building {weeklyMeals} macro-balanced meals",
+        "busy_pro": "Selecting {weeklyMeals} low-effort, high-reward meals",
+        "budget": "Optimizing {weeklyMeals} meals for minimum waste"
+      },
+      "default": "Matching {weeklyMeals} weekly meals..."
+    },
+    "analyzingItem4": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Generating your family meal system...",
+        "health_focus": "Generating your nutrition plan...",
+        "busy_pro": "Generating your zero-effort meal system...",
+        "budget": "Generating your budget-smart meal plan..."
+      },
+      "default": "Generating your meal plan..."
+    },
+
+    "_doc_testimonial": "F-005: Segment-specific testimonials for email capture",
+    "testimonialText": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "I stopped asking 'what should we eat?' — 20 minutes on Sunday and my family's whole week is done. The kids actually eat it.",
+        "health_focus": "I finally broke the meal prep boredom cycle. Different flavors every day, macros on point, and I haven't skipped a week in 3 months.",
+        "busy_pro": "I come home, open the fridge, and dinner is ready in 5 minutes. No decisions, no energy wasted. It changed my evenings completely.",
+        "budget": "We cut our grocery waste to nearly zero. I can see exactly where every euro goes — we're saving over €150/month now."
+      },
+      "default": "I stopped stressing about food. 20 minutes on Sunday and the whole week is sorted — I actually look forward to meals now."
+    },
+    "testimonialAuthor": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Sarah, 34 — mom of two",
+        "health_focus": "Marcus, 28 — fitness enthusiast",
+        "busy_pro": "Lisa, 31 — project manager",
+        "budget": "Tom & Anna, 29 — young couple"
+      },
+      "default": "Alex, 32"
+    },
+
+    "_doc_valuedemo": "F-002: Segment-specific value-demo content",
+    "valueDemoTitle": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Your Family's\nWeek 1 Preview",
+        "health_focus": "Your Performance\nMeal Plan Preview",
+        "busy_pro": "Your Zero-Effort\nWeek 1 Preview",
+        "budget": "Your Budget-Smart\nWeek 1 Preview"
+      },
+      "default": "Your Week 1\nPlan Preview"
+    },
+    "valueDemoCost": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "€87 for {totalPeople} people",
+        "health_focus": "Macros calculated per meal",
+        "busy_pro": "Under 5 min per meal",
+        "budget": "Under €4 per serving"
+      },
+      "default": "€87 for the week"
+    },
+    "recipe1Name": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "One-Pan Chicken & Veggie Bake",
+        "health_focus": "Greek Chicken Power Bowl",
+        "busy_pro": "Mediterranean Chicken Bowl",
+        "budget": "Black Bean & Sweet Potato Chili"
+      },
+      "default": "Mediterranean Chicken Bowls"
+    },
+    "recipe1Time": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "kid-approved",
+        "health_focus": "42g protein",
+        "busy_pro": "grab & eat",
+        "budget": "€1.20/serving"
+      },
+      "default": "5 min assembly"
+    },
+    "recipe2Name": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Creamy Pasta with Hidden Veggies",
+        "health_focus": "Salmon & Quinoa Power Plate",
+        "busy_pro": "Teriyaki Salmon + Rice",
+        "budget": "Chicken Fried Rice"
+      },
+      "default": "Honey Garlic Shrimp Wraps"
+    },
+    "recipe2Time": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "5 min assembly",
+        "health_focus": "38g protein",
+        "busy_pro": "microwave 2 min",
+        "budget": "€1.50/serving"
+      },
+      "default": "5 min assembly"
+    },
+    "recipe3Name": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Taco Tuesday Bowl",
+        "health_focus": "Turkey Meatball Stir-Fry",
+        "busy_pro": "Thai Peanut Noodle Bowl",
+        "budget": "Lentil Bolognese Pasta"
+      },
+      "default": "Teriyaki Beef & Veggie Bowls"
+    },
+    "recipe3Time": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "family favorite",
+        "health_focus": "35g protein",
+        "busy_pro": "just combine",
+        "budget": "€0.90/serving"
+      },
+      "default": "5 min assembly"
+    },
+
+    "_doc_paywall": "F-001: Segment-specific paywall comparison (highest conversion impact)",
+    "paywallWithout1": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "{decisionsPerDay}+ food decisions draining you every day",
+        "health_focus": "Same 4 meals on repeat until you quit",
+        "busy_pro": "€{weeklyTakeoutSpend}/week on takeout you didn't plan",
+        "budget": "€{monthlyWasteAmount}/month thrown away on spoiled food"
+      },
+      "default": "Daily stress about what to eat"
+    },
+    "paywallWithout2": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Kids rejecting meals you spent an hour making",
+        "health_focus": "Falling off track by Thursday — every single week",
+        "busy_pro": "\"What's for dinner?\" every night after a draining day",
+        "budget": "Shopping without a list — buying what you don't need"
+      },
+      "default": "Food going bad before you use it"
+    },
+    "paywallWithout3": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "~€{wastedFoodPerMonth}/month on food nobody ate",
+        "health_focus": "{prepHoursPerWeek}+ hours/week on prep that still bores you",
+        "busy_pro": "Fridge full of ingredients you're too tired to cook",
+        "budget": "No visibility into where food money actually goes"
+      },
+      "default": "~€{wastedFoodPerMonth}/month wasted on food"
+    },
+    "paywallWithout4": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Weekends consumed by planning, shopping, prepping",
+        "health_focus": "Macros all over the place without obsessive tracking",
+        "busy_pro": "Spending energy you don't have on food decisions",
+        "budget": "Leftovers forgotten until you throw them out"
+      },
+      "default": "Falling back on takeout when tired"
+    },
+    "paywallWith1": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Zero decisions — open the app, see today's meals",
+        "health_focus": "New flavors every day from the same base prep",
+        "busy_pro": "Open fridge, grab container, eat — zero thinking",
+        "budget": "Every ingredient planned and used — €0 waste"
+      },
+      "default": "Zero decisions — just open and assemble"
+    },
+    "paywallWith2": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Family-tested recipes everyone actually eats",
+        "health_focus": "Variety that keeps you on track all week",
+        "busy_pro": "Save €{monthlySavings}/month on unplanned food",
+        "budget": "One precise list, two shopping trips, nothing excess"
+      },
+      "default": "Fresh ingredients, zero waste"
+    },
+    "paywallWith3": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Save ~€{monthlySavings}/month — buy only what gets eaten",
+        "health_focus": "Macros auto-calculated — no counting, no spreadsheets",
+        "busy_pro": "5-minute assembly meals even on your worst days",
+        "budget": "Save ~€{monthlySavings}/month on groceries"
+      },
+      "default": "Save ~€{monthlySavings}/month on groceries"
+    },
+    "paywallWith4": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "20-minute prep covers your entire week",
+        "health_focus": "One focused prep session — done for the week",
+        "busy_pro": "Your entire week decided in advance — zero brainpower",
+        "budget": "Leftovers built into tomorrow's meals — nothing wasted"
+      },
+      "default": "5-minute meals, energy to spare"
+    }
+  },
+
+  "screens": [
+
+    {
+      "_doc": "WELCOME — universal landing. F-008: trustText changed from features to benefit.",
+      "id": "welcome",
+      "type": "welcome",
+      "phase": "engagement",
+      "title": "Plan once. Prep twice.\nEat all week.",
+      "subtitle": "A personalized meal system —\nbuilt in under 2 minutes.",
+      "heroImage": "/welcome-hero.png",
+      "bullets": [
+        { "text": "Portions calculated for exactly how many you feed", "color": "violett" },
+        { "text": "Breakfasts, lunches, and dinners — all covered", "color": "orange" },
+        { "text": "Filtered for your diet, allergies & preferences", "color": "pink" }
+      ],
+      "socialProof": {
+        "title": "Smart Routine",
+        "text": "Based on a professional\nmeal-prep method"
+      },
+      "cta": "Build My System →",
+      "trustText": "Your first week planned in under 2 minutes"
+    },
+
+    {
+      "_doc": "MAIN GOAL — universal commitment device. F-004: CTA 'Next' → identity-affirming.",
+      "id": "main-goal",
+      "type": "single_choice",
+      "phase": "engagement",
+      "field": "mainGoal",
+      "title": "What's your ==#1 goal==\nwith food?",
+      "subtitle": "Pick the one that resonates most — we'll build your plan around it.",
+      "cta": "That's my goal →",
+      "options": [
+        { "id": "mental_load", "text": "End the daily \"what should I eat?\" stress" },
+        { "id": "healthy_eating", "text": "Actually eat healthy — consistently" },
+        { "id": "food_waste", "text": "Stop wasting food and money" },
+        { "id": "time_saving", "text": "Spend way less time on food" }
+      ]
+    },
+
+    {
+      "_doc": "SEGMENTATION — the branching point. Framed as aspiration, not category.",
+      "id": "life-stage",
+      "type": "single_choice",
+      "phase": "engagement",
+      "field": "lifeStage",
+      "title": "What best describes\n==your situation==?",
+      "subtitle": "This shapes everything we build for you.",
+      "cta": "Personalize my quiz →",
+      "options": [
+        { "id": "busy_parent", "text": "I'm a parent — feeding the family is a daily puzzle" },
+        { "id": "health_focus", "text": "I want to eat well, but I keep falling off track" },
+        { "id": "busy_pro", "text": "After work, I have zero energy to cook" },
+        { "id": "budget", "text": "I'm wasting too much food and money" }
+      ]
+    },
+
+    {
+      "_doc": "SEGMENT BRIDGE — first personalized hit. Research-based stats per segment.",
+      "id": "segment-bridge",
+      "type": "interstitial",
+      "variant": "bridge",
+      "phase": "engagement",
+      "title": "You're not alone.",
+      "dynamicText": {
+        "key": "lifeStage",
+        "cases": {
+          "busy_parent": "The average parent makes 12+ food decisions daily.\nThat's over 4,000 a year — no wonder you're drained.",
+          "health_focus": "87% of people who start meal prepping quit within 2 months.\nThe problem isn't motivation — it's monotony.",
+          "busy_pro": "After 35,000+ micro-decisions at work, \"what's for dinner?\" breaks the camel's back.\nIt's decision fatigue, not laziness.",
+          "budget": "The average household throws away 30% of groceries.\nThat's like tossing €1 out of every €3 you spend."
+        },
+        "default": "Most people struggle with the same thing. Let's change that."
+      },
+      "infoCards": [
+        {
+          "label": "The Math",
+          "color": "orange",
+          "body": "Average family: 4.5 hours/week on food planning + cooking.\nThat's 10 full days a year you'll never get back."
+        },
+        {
+          "label": "The Good News",
+          "color": "green",
+          "body": "With a prep system, most families cut that time in half — and eat better."
+        }
+      ],
+      "cta": "Let's fix this →"
+    },
+
+
+
+    {
+      "_doc": "BRANCH: BUSY PARENT — Family size counters. IKEA effect. F-004: CTA upgraded.",
+      "id": "family-size",
+      "type": "number_input",
+      "phase": "context",
+      "condition": { "field": "isBusyParent", "operator": "===", "value": true, "computed": true },
+      "title": "Who are we feeding?",
+      "subtitle": "We'll calculate exact portions —\nno waste, no leftovers.",
+      "cta": "Lock in my family →",
+      "fields": [
+        { "id": "adults", "label": "Adults", "min": 1, "max": 10, "default": 2 },
+        { "id": "kids", "label": "Kids", "min": 0, "max": 10, "default": 2 }
+      ]
+    },
+
+    {
+      "_doc": "BRANCH: BUSY PARENT — Kids feeding challenge. Conditional: only if hasKids.",
+      "id": "kids-challenge",
+      "type": "single_choice",
+      "phase": "context",
+      "field": "kidsChallenge",
+      "condition": { "field": "hasKids", "operator": "===", "value": true, "computed": true },
+      "title": "What's the biggest challenge\nwith ==feeding your kids==?",
+      "subtitle": "We'll add smart swaps and kid-tested options.",
+      "cta": "We'll handle it →",
+      "options": [
+        { "id": "picky", "text": "They reject most new foods" },
+        { "id": "veggies", "text": "Won't eat vegetables" },
+        { "id": "different_meals", "text": "Want different meals than adults" },
+        { "id": "school_lunches", "text": "School lunches are chaos" },
+        { "id": "no_challenge", "text": "They eat most things" }
+      ]
+    },
+
+    {
+      "_doc": "BRANCH: BUSY PARENT — What drains them most. F-004: CTA upgraded.",
+      "id": "parent-meal-stress",
+      "type": "single_choice",
+      "phase": "context",
+      "field": "parentStress",
+      "condition": { "field": "isBusyParent", "operator": "===", "value": true, "computed": true },
+      "title": "What ==drains you most==\nabout family meals?",
+      "subtitle": "We'll target this first in your plan.",
+      "cta": "Target this first →",
+      "options": [
+        { "id": "deciding", "text": "Deciding what to make — every single day" },
+        { "id": "cooking_time", "text": "The actual cooking takes too long" },
+        { "id": "variety", "text": "Running out of ideas — we eat the same things" },
+        { "id": "school_mornings", "text": "Morning rush — lunches, snacks, breakfasts" }
+      ]
+    },
+
+
+
+    {
+      "_doc": "BRANCH: HEALTH FOCUS — Workout frequency + household size. F-004: CTA upgraded.",
+      "id": "health-profile",
+      "type": "number_input",
+      "phase": "context",
+      "condition": { "field": "isHealthFocus", "operator": "===", "value": true, "computed": true },
+      "title": "Tell us about\n==your routine==.",
+      "subtitle": "We'll match your meal plan to your lifestyle.",
+      "cta": "Lock in my profile →",
+      "fields": [
+        { "id": "peopleFed", "label": "People I cook for", "min": 1, "max": 6, "default": 1 },
+        { "id": "workoutDays", "label": "Workouts per week", "min": 0, "max": 7, "default": 4 }
+      ]
+    },
+
+    {
+      "_doc": "BRANCH: HEALTH FOCUS — Nutrition focus.",
+      "id": "fitness-goal",
+      "type": "single_choice",
+      "phase": "context",
+      "field": "fitnessGoal",
+      "condition": { "field": "isHealthFocus", "operator": "===", "value": true, "computed": true },
+      "title": "What's your ==nutrition focus==\nright now?",
+      "subtitle": "Your recipes and macros will be tuned to this.",
+      "cta": "Lock in my focus →",
+      "options": [
+        { "id": "cut", "text": "Cutting — lose fat, keep muscle" },
+        { "id": "build", "text": "Building — gain muscle, high protein" },
+        { "id": "maintain", "text": "Maintaining — stay where I am" },
+        { "id": "wellness", "text": "General wellness — just eat cleaner" }
+      ]
+    },
+
+    {
+      "_doc": "BRANCH: HEALTH FOCUS — Why current approach fails. F-004: CTA upgraded.",
+      "id": "prep-burnout",
+      "type": "single_choice",
+      "phase": "context",
+      "field": "prepBurnout",
+      "condition": { "field": "isHealthFocus", "operator": "===", "value": true, "computed": true },
+      "title": "Why does your meal prep\n==stop working==?",
+      "subtitle": "Be honest — we've heard it all.",
+      "cta": "I'm ready to fix it →",
+      "options": [
+        { "id": "boredom", "text": "Same meals every week — I just can't anymore" },
+        { "id": "time_sink", "text": "Sunday prep takes 3+ hours — not sustainable" },
+        { "id": "tracking", "text": "Counting macros is exhausting" },
+        { "id": "expense", "text": "Healthy ingredients and meal kits cost too much" }
+      ]
+    },
+
+
+
+    {
+      "_doc": "BRANCH: BUSY PRO — Simple household counter. F-004: CTA upgraded.",
+      "id": "pro-household",
+      "type": "number_input",
+      "phase": "context",
+      "condition": { "field": "isBusyPro", "operator": "===", "value": true, "computed": true },
+      "title": "How many people\ndo you ==cook for==?",
+      "subtitle": "We'll size your portions and shopping list.",
+      "cta": "Set my portions →",
+      "fields": [
+        { "id": "peopleFed", "label": "People", "min": 1, "max": 6, "default": 1 }
+      ]
+    },
+
+    {
+      "_doc": "BRANCH: BUSY PRO — After-work energy level. F-004: CTA upgraded.",
+      "id": "work-energy",
+      "type": "single_choice",
+      "phase": "context",
+      "field": "workEnergy",
+      "condition": { "field": "isBusyPro", "operator": "===", "value": true, "computed": true },
+      "title": "After work, your\n==energy level== is usually...",
+      "subtitle": "No judgment — this determines your meal complexity.",
+      "cta": "Match my energy →",
+      "options": [
+        { "id": "fine", "text": "I have some energy — could do 15-20 min" },
+        { "id": "tired", "text": "Pretty tired — 10 minutes max" },
+        { "id": "zero", "text": "Completely drained — microwave or nothing" },
+        { "id": "varies", "text": "Depends on the day — unpredictable" }
+      ]
+    },
+
+    {
+      "_doc": "BRANCH: BUSY PRO — Relationship with cooking. F-004: CTA upgraded.",
+      "id": "cooking-relationship",
+      "type": "single_choice",
+      "phase": "context",
+      "field": "cookingRelation",
+      "condition": { "field": "isBusyPro", "operator": "===", "value": true, "computed": true },
+      "title": "How do you feel\nabout ==cooking==?",
+      "subtitle": "We'll match the effort level to your reality.",
+      "cta": "Got it — keep going →",
+      "options": [
+        { "id": "enjoy_no_time", "text": "I'd enjoy it if I had the time" },
+        { "id": "tolerate", "text": "It's fine — I just want it done fast" },
+        { "id": "avoid", "text": "I avoid it — ordering is easier" },
+        { "id": "want_to_learn", "text": "I want to get better but don't know where to start" }
+      ]
+    },
+
+
+
+    {
+      "_doc": "BRANCH: BUDGET — Household size counter. F-004: CTA upgraded.",
+      "id": "budget-household",
+      "type": "number_input",
+      "phase": "context",
+      "condition": { "field": "isBudget", "operator": "===", "value": true, "computed": true },
+      "title": "How many mouths\nto ==feed==?",
+      "subtitle": "We'll calculate cost per meal and portion sizes.",
+      "cta": "Set my household →",
+      "fields": [
+        { "id": "peopleFed", "label": "People to feed", "min": 1, "max": 10, "default": 1 }
+      ]
+    },
+
+    {
+      "_doc": "BRANCH: BUDGET — Where food waste happens. F-004: CTA upgraded.",
+      "id": "waste-source",
+      "type": "single_choice",
+      "phase": "context",
+      "field": "wasteSource",
+      "condition": { "field": "isBudget", "operator": "===", "value": true, "computed": true },
+      "title": "Where does food\n==go to waste== in your kitchen?",
+      "subtitle": "This is the #1 lever for saving money on food.",
+      "cta": "Find the leak →",
+      "options": [
+        { "id": "fridge_spoils", "text": "Fresh stuff spoils before I use it" },
+        { "id": "over_buying", "text": "I buy too much — fridge overflows" },
+        { "id": "forgot_leftovers", "text": "Leftovers sit there until I toss them" },
+        { "id": "pantry_expires", "text": "Pantry items expire — forgot they existed" }
+      ]
+    },
+
+    {
+      "_doc": "BRANCH: BUDGET — Shopping pattern. F-004: CTA upgraded.",
+      "id": "shopping-pattern",
+      "type": "single_choice",
+      "phase": "context",
+      "field": "shoppingPattern",
+      "condition": { "field": "isBudget", "operator": "===", "value": true, "computed": true },
+      "title": "How do you\n==shop for food==?",
+      "subtitle": "Your shopping pattern affects waste more than you'd think.",
+      "cta": "Map my habits →",
+      "options": [
+        { "id": "daily", "text": "Almost daily — I buy what I feel like" },
+        { "id": "big_weekly", "text": "Big weekly shop — but half goes bad" },
+        { "id": "random", "text": "No pattern — grab stuff when I remember" },
+        { "id": "meal_kits", "text": "Tried meal kits — too expensive" }
+      ]
+    },
+
+
+
+    {
+      "_doc": "SHARED CONTEXT: Dietary lifestyles — universal. F-004: CTA upgraded.",
+      "id": "dietary",
+      "type": "multi_choice",
+      "phase": "context",
+      "field": "dietary",
+      "title": "Any dietary lifestyles\nto consider?",
+      "subtitle": "Select all that apply — yours or anyone you cook for.",
+      "cta": "Lock in my diet →",
+      "exclusiveOptions": ["none"],
+      "options": [
+        { "id": "none", "text": "No specific diet" },
+        { "id": "vegetarian", "text": "Vegetarian" },
+        { "id": "vegan", "text": "Vegan" },
+        { "id": "pescatarian", "text": "Pescatarian" },
+        { "id": "keto", "text": "Keto / Low-Carb" },
+        { "id": "paleo", "text": "Paleo" },
+        { "id": "mediterranean", "text": "Mediterranean" },
+        { "id": "halal", "text": "Halal" },
+        { "id": "kosher", "text": "Kosher" }
+      ]
+    },
+
+    {
+      "_doc": "SHARED CONTEXT: Food exclusions with custom input. F-004: CTA upgraded.",
+      "id": "allergies",
+      "type": "multi_choice_custom",
+      "phase": "context",
+      "field": "allergies",
+      "customField": "customAllergies",
+      "title": "Any foods to\ncompletely ==exclude==?",
+      "subtitle": "Allergies, intolerances, or foods you hate.\nThese will NEVER appear.",
+      "cta": "Nothing gets through →",
+      "exclusiveOptions": ["none"],
+      "customPlaceholder": "Other allergies (comma-separated)",
+      "options": [
+        { "id": "none", "text": "No exclusions" },
+        { "id": "gluten", "text": "Gluten / Wheat" },
+        { "id": "dairy", "text": "Dairy / Lactose" },
+        { "id": "nuts", "text": "Tree Nuts" },
+        { "id": "peanuts", "text": "Peanuts" },
+        { "id": "eggs", "text": "Eggs" },
+        { "id": "shellfish", "text": "Shellfish" },
+        { "id": "soy", "text": "Soy" }
+      ]
+    },
+
+    {
+      "_doc": "F-006: MICRO-BRIDGE after dietary+exclusions. Breaks 4-screen input fatigue. Validates what was captured.",
+      "id": "diet-mapped",
+      "type": "interstitial",
+      "variant": "bridge",
+      "phase": "context",
+      "title": "Dietary profile ==locked in==.",
+      "dynamicText": {
+        "key": "lifeStage",
+        "cases": {
+          "busy_parent": "{dietaryCount} dietary filter(s) and {allergiesCount} exclusion(s) mapped for your family. Every recipe will respect these — no exceptions.",
+          "health_focus": "{dietaryCount} dietary filter(s) and {allergiesCount} exclusion(s) saved. Only meals that match your nutritional standards.",
+          "busy_pro": "{dietaryCount} dietary filter(s) and {allergiesCount} exclusion(s) — saved. You'll never see a recipe that breaks your rules.",
+          "budget": "{dietaryCount} dietary filter(s) and {allergiesCount} exclusion(s) mapped. We'll only suggest ingredients that fit your diet AND your budget."
+        },
+        "default": "{dietaryCount} dietary filter(s) and {allergiesCount} exclusion(s) mapped. Every recipe will respect these."
+      },
+      "cta": "Two more questions →"
+    },
+
+    {
+      "_doc": "SHARED CONTEXT: Kitchen equipment. F-004: CTA upgraded.",
+      "id": "equipment",
+      "type": "multi_choice",
+      "phase": "context",
+      "field": "kitchenEquipment",
+      "title": "What equipment\ndo you have?",
+      "subtitle": "We'll only suggest recipes you can actually make.",
+      "cta": "Match my kitchen →",
+      "options": [
+        { "id": "basic", "text": "Basics (stovetop & oven)" },
+        { "id": "instant_pot", "text": "Instant Pot / Pressure Cooker" },
+        { "id": "slow_cooker", "text": "Slow Cooker / Crockpot" },
+        { "id": "air_fryer", "text": "Air Fryer" },
+        { "id": "blender", "text": "Blender / Food Processor" },
+        { "id": "sheet_pans", "text": "Sheet Pans" },
+        { "id": "grill", "text": "Grill / BBQ" }
+      ]
+    },
+
+    {
+      "_doc": "SHARED CONTEXT: Meal complexity preference. F-004: CTA upgraded.",
+      "id": "meal-complexity",
+      "type": "single_choice",
+      "phase": "context",
+      "field": "mealComplexity",
+      "title": "What types of meals\n==work for you==?",
+      "subtitle": "This helps us match recipe difficulty.",
+      "cta": "Set my level →",
+      "options": [
+        { "id": "assembly", "text": "Assembly meals (5 min) — just combine" },
+        { "id": "simple", "text": "Simple cooking (15-30 min)" },
+        { "id": "complex", "text": "Full cooking (45+ min) — I enjoy it" }
+      ]
+    },
+
+
+
+    {
+      "_doc": "TRANSITION: Progress summary — mirror of answers. IKEA effect.",
+      "id": "progress-summary",
+      "type": "interstitial",
+      "variant": "progress",
+      "phase": "transition",
+      "title": "Here's what we know.",
+      "summaryRows": [
+        { "label": "Focus", "value": "{lifeStageLabel}" },
+        { "label": "Cooking for", "value": "{totalPeople} {peopleWord}" },
+        { "label": "Main goal", "value": "{mainGoalLabel}" },
+        { "label": "Dietary needs", "value": "{dietaryCount} restriction(s)" },
+        { "label": "Equipment", "value": "{equipmentCount} item(s)" }
+      ],
+      "progressMessage": "Almost there — just a few more questions!",
+      "cta": "Almost there — let's finish →"
+    },
+
+
+
+    {
+      "_doc": "REALITY BRIDGE — emotional gear shift.",
+      "id": "reality-bridge",
+      "type": "interstitial",
+      "variant": "bridge",
+      "phase": "reality",
+      "title": "Now let's find\nwhat's ==not working==.",
+      "dynamicText": {
+        "key": "lifeStage",
+        "cases": {
+          "busy_parent": "You've told us about your family and what you need.\nNow let's look at what actually happens in your kitchen — so we can fix it.",
+          "health_focus": "You know what you want nutritionally.\nLet's see where your current routine breaks down — so we build something that lasts.",
+          "busy_pro": "You've told us about your energy and schedule.\nNow let's find the exact point where your food plans fall apart.",
+          "budget": "You've shared where waste happens.\nLet's look at the patterns — so we can plug the leaks."
+        },
+        "default": "To build a system that works, we need to understand what's not working now."
+      },
+      "cta": "Diagnose my situation →"
+    },
+
+    {
+      "_doc": "REALITY: Home-cooked meal frequency. F-004: CTA upgraded.",
+      "id": "current-frequency",
+      "type": "single_choice",
+      "phase": "reality",
+      "field": "currentFrequency",
+      "title": "How many ==home-cooked meals==\ndo you make per week?",
+      "subtitle": "No judgment — we meet you where you are.",
+      "cta": "That's me →",
+      "options": [
+        { "id": "rarely", "text": "0–3 meals — mostly takeout or frozen" },
+        { "id": "sometimes", "text": "4–7 meals — inconsistent" },
+        { "id": "often", "text": "8–14 meals — regular but exhausting" },
+        { "id": "always", "text": "15+ meals — cooking takes over life" }
+      ]
+    },
+
+    {
+      "_doc": "REALITY: Midweek pattern — the #1 predictor.",
+      "id": "midweek-pattern",
+      "type": "single_choice",
+      "phase": "reality",
+      "field": "midweekPattern",
+      "title": "What usually happens\nby ==Wednesday==?",
+      "subtitle": "This is the #1 predictor of meal plan success.",
+      "cta": "Find my pattern →",
+      "options": [
+        { "id": "on_track", "text": "Still on track" },
+        { "id": "improvise", "text": "Start improvising" },
+        { "id": "food_spoils", "text": "Something has gone bad" },
+        { "id": "exhausted", "text": "Too tired — I order food" },
+        { "id": "never_tried", "text": "Never stuck with a plan" }
+      ]
+    },
+
+
+
+    {
+      "_doc": "PRIORITY — dynamic options from prior answers. The ultimate commitment device. F-004: CTA upgraded.",
+      "id": "priority",
+      "type": "single_choice_dynamic",
+      "phase": "diagnosis",
+      "field": "priority",
+      "title": "If we solve ==ONE thing==\nthis week, what should it be?",
+      "subtitle": "Your plan will be built around this.",
+      "cta": "Build around this →",
+      "optionSources": [
+        {
+          "key": "mainGoal",
+          "options": {
+            "mental_load": { "id": "decisions", "text": "Take all daily food decisions off my plate" },
+            "healthy_eating": { "id": "healthy", "text": "Finally eat nutritious meals — consistently" },
+            "food_waste": { "id": "no_waste", "text": "Stop throwing away food that spoiled" },
+            "time_saving": { "id": "save_time", "text": "Cut cooking time in half" }
+          }
+        },
+        {
+          "key": "midweekPattern",
+          "options": {
+            "food_spoils": { "id": "freshness", "text": "A system where nothing goes bad" },
+            "exhausted": { "id": "easy_meals", "text": "5-minute meals on tired days" },
+            "improvise": { "id": "flexibility", "text": "A flexible plan that survives real life" }
+          }
+        },
+        {
+          "key": "kidsChallenge",
+          "options": {
+            "picky": { "id": "picky_eaters", "text": "Get my kids to actually eat" },
+            "school_lunches": { "id": "school_lunches", "text": "Easy packable school lunches" }
+          }
+        },
+        {
+          "key": "prepBurnout",
+          "options": {
+            "boredom": { "id": "variety", "text": "Meals I actually look forward to eating" },
+            "tracking": { "id": "no_tracking", "text": "Hit my targets without obsessive tracking" }
+          }
+        },
+        {
+          "key": "workEnergy",
+          "options": {
+            "zero": { "id": "zero_effort", "text": "Meals that require zero brainpower" }
+          }
+        },
+        {
+          "key": "wasteSource",
+          "options": {
+            "over_buying": { "id": "smart_shopping", "text": "A shopping list with zero excess" },
+            "fridge_spoils": { "id": "freshness", "text": "A freshness cycle so nothing spoils" }
+          }
+        }
+      ],
+      "defaultOptions": [
+        { "id": "decisions", "text": "Take all daily food decisions off my plate" },
+        { "id": "save_time", "text": "Spend less time on food" },
+        { "id": "no_waste", "text": "Stop wasting food and money" },
+        { "id": "flexibility", "text": "A plan that adapts to real life" }
+      ]
+    },
+
+    {
+      "_doc": "F-007: ANALYZING — segment-specific checklist for perceived computational effort.",
+      "id": "analyzing",
+      "type": "analyzing",
+      "phase": "diagnosis",
+      "title": "Building your\npersonalized plan...",
+      "checklist": [
+        "{analyzingItem1}",
+        "{analyzingItem2}",
+        "{analyzingItem3}",
+        "{analyzingItem4}"
+      ],
+      "itemDelay": 1500
+    },
+
+    {
+      "_doc": "INSIGHT MIRROR — the PEAK MOMENT. 3 colored cards with heavy dynamic text per segment.",
+      "id": "insight-mirror",
+      "type": "info",
+      "variant": "insight",
+      "phase": "insight",
+      "title": "Here's what\nwe discovered:",
+      "cards": [
+        {
+          "label": "The Real Cost",
+          "color": "orange",
+          "dynamicText": {
+            "key": "lifeStage",
+            "cases": {
+              "busy_parent": "You're making {decisionsPerYear}+ food decisions per year. That's {daysPerYear} full days of mental energy — just on \"what should we eat?\"",
+              "health_focus": "You're spending {prepHoursPerWeek}+ hours per week on meal prep. That's {prepDaysPerYear} full days a year — and it still falls apart by Thursday.",
+              "busy_pro": "You're spending €{weeklyTakeoutSpend}/week on unplanned food. That's €{yearlyTakeoutSpend} a year — more than most vacations.",
+              "budget": "You're wasting ~€{monthlyWasteAmount}/month on food that spoils. That's €{yearlyWasteAmount} a year — literally money in the bin."
+            },
+            "default": "Your current food routine costs more than you realize — in time, money, and energy."
+          }
+        },
+        {
+          "label": "The Pattern",
+          "color": "pink",
+          "condition": { "field": "midweekPattern", "operator": "!==", "value": "on_track" },
+          "dynamicText": {
+            "key": "midweekPattern",
+            "cases": {
+              "improvise": "You start strong, but by Wednesday you're winging it — which brings back all the stress you were trying to avoid.",
+              "food_spoils": "Your plans derail when food spoils. This isn't about planning better — it's about a 4-day freshness cycle instead of 7.",
+              "exhausted": "By midweek, you're too exhausted to follow through. That's not a discipline problem — it's a system problem.",
+              "never_tried": "You haven't found a system realistic enough to try. Most plans assume time and energy you don't have."
+            },
+            "default": "Your current approach hits a wall by midweek."
+          }
+        },
+        {
+          "label": "Your Priority",
+          "color": "violett",
+          "dynamicText": {
+            "key": "priority",
+            "cases": {
+              "decisions": "Your entire week is planned. Just open and assemble. No thinking required.",
+              "healthy": "Nutritious meals that actually taste good. No willpower needed.",
+              "no_waste": "4-day freshness cycle. Two prep sessions mean nothing sits long enough to spoil.",
+              "save_time": "5-minute assembly. Components are ready. You just combine and serve.",
+              "freshness": "A 4-day cycle means nothing sits long enough to spoil. Shop twice, waste nothing.",
+              "easy_meals": "Pre-prepped components. Zero decisions. Just grab, combine, eat.",
+              "picky_eaters": "Same base ingredients, different presentations. Everyone eats, nobody complains.",
+              "school_lunches": "Every meal packs perfectly. No reheating needed. Mornings become easy.",
+              "flexibility": "Swap meals, adjust portions, life happens — the system adapts with you.",
+              "variety": "Different flavors every day from the same base prep. Never boring.",
+              "no_tracking": "Macros built into every meal. No counting, no spreadsheets.",
+              "zero_effort": "Open fridge, grab container, eat. That's the whole process.",
+              "smart_shopping": "One precise list, two shopping trips, zero waste."
+            },
+            "default": "We'll build your plan around what matters most to you."
+          }
+        }
+      ],
+      "cta": "Show me the solution →",
+      "socialProofBadge": {"title": "TRUSTED METHOD", "text": "12,000+ families"}
+    },
+
+    {
+      "_doc": "SOLUTION PREVIEW — relief after the peak. Dynamic title + benefit per segment.",
+      "id": "solution-preview",
+      "type": "info",
+      "variant": "solution",
+      "phase": "solution",
+      "dynamicTitle": {
+        "key": "lifeStage",
+        "cases": {
+          "busy_parent": "Zero daily food decisions.\nHere's how:",
+          "health_focus": "Clean eating on autopilot.\nHere's how:",
+          "busy_pro": "Dinner solved in 5 minutes.\nHere's how:",
+          "budget": "Every euro works harder.\nHere's how:"
+        },
+        "default": "Your personalized system.\nHere's how it works:"
+      },
+      "steps": ["Plan Once", "Prep Twice", "Eat All Week"],
+      "dynamicBenefit": {
+        "key": "lifeStage",
+        "cases": {
+          "busy_parent": "Your entire week planned around your family's real needs. Just open and assemble — no thinking, no stress, no fights at the table.",
+          "health_focus": "Macros built in, variety guaranteed. One focused prep session gives you a full week of meals you'll actually want to eat.",
+          "busy_pro": "Come home, open the fridge, eat in 5 minutes. The system runs itself — you just show up.",
+          "budget": "Every ingredient used, every euro tracked. Two prep sessions, one precise shopping list, zero waste."
+        },
+        "default": "A system built around your real needs."
+      },
+      "stats": [
+        { "value": "{weeklyTimeSaved}h", "label": "saved per week", "color": "violett" },
+        { "value": "€{monthlySavings}", "label": "saved per month", "color": "green" }
+      ],
+      "cta": "See my 7-day plan →"
+    },
+
+    {
+      "_doc": "F-002: VALUE DEMO — segment-specific recipes, cost framing, title. Reciprocity moment.",
+      "id": "value-demo",
+      "type": "info",
+      "variant": "value_demo",
+      "phase": "conversion",
+      "title": "{valueDemoTitle}",
+      "costBadge": "{valueDemoCost}",
+      "recipes": [
+        { "name": "{recipe1Name}", "time": "{recipe1Time}" },
+        { "name": "{recipe2Name}", "time": "{recipe2Time}" },
+        { "name": "{recipe3Name}", "time": "{recipe3Time}" }
+      ],
+      "blurredItems": [
+        "+18 more recipes",
+        "+Full prep guides",
+        "+Organized shopping list"
+      ],
+      "cta": "Get my full plan →",
+      "socialProofBadge": {"title": "MEAL PREP PRO", "text": "4.8★ · 12K users"}
+    },
+
+    {
+      "_doc": "F-005: EMAIL CAPTURE — segment-specific testimonials. Each audience hears from someone like them.",
+      "id": "email-capture",
+      "type": "capture",
+      "variant": "email",
+      "phase": "conversion",
+      "field": "email",
+      "title": "Your personalized\nplan is ready.",
+      "subtitle": "Enter your email to receive it — free.",
+      "placeholder": "your@email.com",
+      "privacyText": "Your data is never shared or sold.",
+      "testimonials": [
+        {"text": "{testimonialText}", "author": "{testimonialAuthor}"},
+        {"text": "Finally stopped ordering takeout every night. The shopping list alone saved me 2 hours.", "author": "— Mike, busy professional"}
+      ],
+      "socialProofBadge": {"title": "TRUSTED BY", "text": "12,000+ users"},
+      "trustText": "No spam. Unsubscribe anytime.",
+      "cta": "Send my plan →"
+    },
+
+    {
+      "_doc": "F-001: PAYWALL — segment-specific comparison. Each audience sees THEIR pain (WITHOUT) and THEIR solution (WITH). Peak-End Rule: this is the END.",
+      "id": "paywall",
+      "type": "capture",
+      "variant": "paywall",
+      "phase": "monetization",
+      "title": "Your life with vs.\nwithout the system",
+      "comparison": {
+        "without": [
+          "{paywallWithout1}",
+          "{paywallWithout2}",
+          "{paywallWithout3}",
+          "{paywallWithout4}"
+        ],
+        "with": [
+          "{paywallWith1}",
+          "{paywallWith2}",
+          "{paywallWith3}",
+          "{paywallWith4}"
+        ]
+      },
+      "pricing": {
+        "trial": "14-day free trial",
+        "price": "then €9.99/month",
+        "guarantee": "Cancel anytime • 30-day money-back"
+      },
+      "socialProof": "4.8 from 12,847 reviews",
+      "cta": "Start my free trial →"
+    },
+
+    {
+      "_doc": "F-009: WAITLIST — Fake door after paywall. User clicked buy but spots are filled.",
+      "id": "waitlist",
+      "type": "capture",
+      "variant": "waitlist",
+      "phase": "monetization",
+      "title": "You're on the list!",
+      "subtitle": "We're launching in small batches\nto ensure the best experience.",
+      "dynamicText": {
+        "key": "lifeStage",
+        "cases": {
+          "busy_parent": "Current family plan spots are reserved, but we're opening more next week. We'll notify you at {email} the moment one opens up.",
+          "health_focus": "Current performance plan spots are full, but we're adding more next week. We'll notify you at {email} when it's your turn.",
+          "busy_pro": "Current pro plan spots are booked, but we're releasing more next week. We'll notify you at {email} as soon as they open.",
+          "budget": "Current budget plan spots are taken, but we're onboarding more next week. We'll notify you at {email} when there's space."
+        },
+        "default": "Current spots are full, but we're onboarding new users next week. We'll notify you at {email}."
+      },
+      "warmMessage": "You're among the first to discover us — that means a lot. We're growing carefully to keep things personal.",
+      "cta": "Got it →"
+    }
+
+  ]
+}

@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Platform";
+  src: url("/Platform-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-title: "Platform", sans-serif;
+  --color-bright: #FBFBFB;
+  --color-beige: #F6F4ED;
+  --color-dark: #1E1E1E;
+  --color-grey: #9CA3AF;
+  --color-border: #E5E7EB;
+  --color-violett: #4D49D6;
+  --color-green: #5DBE4A;
+  --color-orange: #F48309;
+  --color-pink: #EF98D9;
+
+  --font-sans: "DM Sans", sans-serif;
+
+  --text-title: 40px;
+  --text-lg: 24px;
+  --text-cta: 18px;
+  --text-body: 16px;
+  --text-small: 13px;
+  --text-micro: 10px;
+}
+
+@keyframes btn-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 0 40px 16px rgba(255, 255, 255, 0.6);
+  }
+}
+
+.animate-btn-pulse {
+  animation: btn-pulse 2.5s ease-in-out infinite;
+}
+
+/* Entrance animation: fade-in + slide-up */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: fade-up 0.4s ease-out both;
+}
+
+.delay-1 { animation-delay: 60ms; }
+.delay-2 { animation-delay: 120ms; }
+.delay-3 { animation-delay: 180ms; }
+.delay-4 { animation-delay: 240ms; }
+.delay-5 { animation-delay: 300ms; }
+
+/* Option select bounce */
+@keyframes option-bounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.animate-select {
+  animation: option-bounce 0.3s ease-out;
+}
+
+/* Text highlight (marker effect) */
+.highlight {
+  background: linear-gradient(to top, rgba(77, 73, 214, 0.3) 40%, transparent 40%);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bright);
+  color: var(--color-dark);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}

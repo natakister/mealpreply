@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MealPreply Quiz — Product Map</title>
+<style>
+  :root {
+    --purple: #4D49D6;
+    --dark: #1E1E1E;
+    --beige: #F6F4ED;
+    --bright: #FBFBFB;
+    --green: #5DBE4A;
+    --orange: #F48309;
+    --pink: #EF98D9;
+    --border: #E5E5E5;
+    --seg-parent: #4D49D6;
+    --seg-health: #5DBE4A;
+    --seg-pro: #F48309;
+    --seg-budget: #EF98D9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--beige);
+    color: var(--dark);
+    line-height: 1.5;
+    padding: 0 0 80px;
+  }
+
+  /* ── Header ── */
+  .header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--dark); color: var(--bright);
+    padding: 14px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.15);
+  }
+  .header-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .header h1 { font-size: 17px; font-weight: 700; letter-spacing: -.3px; }
+  .header .stats { font-size: 12px; color: #aaa; }
+  .header .stats span { color: var(--bright); font-weight: 600; }
+  .header-actions { display: flex; align-items: center; gap: 10px; }
+  .toggle-all-btn {
+    padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    cursor: pointer; border: 1.5px solid #666; background: transparent; color: #aaa;
+    transition: all .15s; white-space: nowrap;
+  }
+  .toggle-all-btn:hover { border-color: #fff; color: #fff; }
+  .segment-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+  .seg-tab {
+    padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    cursor: pointer; border: 2px solid transparent; transition: all .15s;
+    opacity: .5; color: #fff;
+  }
+  .seg-tab:hover { opacity: .75; }
+  .seg-tab.active { opacity: 1; border-color: #fff; }
+  .seg-tab[data-s="busy_parent"] { background: var(--seg-parent); }
+  .seg-tab[data-s="health_focus"] { background: var(--seg-health); color: var(--dark); }
+  .seg-tab[data-s="busy_pro"] { background: var(--seg-pro); }
+  .seg-tab[data-s="budget"] { background: var(--seg-budget); color: var(--dark); }
+
+  .main { max-width: 920px; margin: 0 auto; padding: 24px 16px; }
+
+  /* ── Flow Arrow ── */
+  .flow-arrow {
+    text-align: center; color: #bbb; font-size: 20px; padding: 6px 0; line-height: 1;
+  }
+
+  /* ── Block ── */
+  .block { margin-bottom: 8px; }
+  .block-header {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 18px;
+    background: var(--dark); color: var(--bright);
+    border-radius: 12px 12px 0 0;
+    cursor: pointer; user-select: none;
+  }
+  .block-header:hover { background: #2a2a2a; }
+  .block.collapsed .block-header { border-radius: 12px; }
+  .block-badge {
+    flex-shrink: 0; padding: 3px 10px; border-radius: 6px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+    background: var(--purple); color: #fff;
+  }
+  .block-info { flex: 1; }
+  .block-name { font-weight: 700; font-size: 15px; }
+  .block-purpose { font-size: 12px; color: #aaa; margin-top: 2px; }
+  .block-meta { font-size: 11px; color: #666; flex-shrink: 0; }
+  .block-toggle { font-size: 16px; transition: transform .2s; flex-shrink: 0; margin-top: 2px; }
+  .block.collapsed .block-toggle { transform: rotate(-90deg); }
+  .block-body {
+    background: #f0ede6; border-radius: 0 0 12px 12px;
+    padding: 14px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .block.collapsed .block-body { display: none; }
+
+  /* ── Connector ── */
+  .connector { margin: 0 40px 8px; }
+  @media (max-width: 640px) { .connector { margin: 0 16px 8px; } }
+  .conn-header {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 12px 16px;
+    background: #fff; color: var(--dark);
+    border: 2px dashed #d4d0f0;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer; user-select: none;
+  }
+  .conn-header:hover { background: #faf9ff; }
+  .connector.collapsed .conn-header { border-radius: 10px; }
+  .conn-badge {
+    flex-shrink: 0; padding: 3px 10px; border-radius: 6px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+    background: #E8E4FF; color: var(--purple);
+  }
+  .conn-info { flex: 1; }
+  .conn-name { font-weight: 700; font-size: 14px; color: var(--purple); }
+  .conn-purpose { font-size: 12px; color: #888; margin-top: 2px; }
+  .conn-toggle { font-size: 14px; transition: transform .2s; color: #999; flex-shrink: 0; }
+  .connector.collapsed .conn-toggle { transform: rotate(-90deg); }
+  .conn-body {
+    background: #fdfcff; border: 2px dashed #d4d0f0; border-top: none;
+    border-radius: 0 0 10px 10px; padding: 12px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .connector.collapsed .conn-body { display: none; }
+
+  /* ── Screen Card ── */
+  .screen-card {
+    background: #fff; border-radius: 10px; border: 1px solid var(--border);
+    overflow: hidden; transition: box-shadow .15s;
+  }
+  .screen-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+  .screen-card.hidden { display: none; }
+  .screen-card.branch { border-left: 4px solid var(--seg-parent); }
+  .screen-card.branch[data-seg="health_focus"] { border-left-color: var(--seg-health); }
+  .screen-card.branch[data-seg="busy_pro"] { border-left-color: var(--seg-pro); }
+  .screen-card.branch[data-seg="budget"] { border-left-color: var(--seg-budget); }
+
+  .screen-top {
+    display: flex; align-items: center; gap: 6px;
+    padding: 10px 14px; border-bottom: 1px solid #f0f0f0; flex-wrap: wrap;
+  }
+  .step-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--dark); color: #fff;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .screen-id { font-weight: 700; font-size: 13px; }
+  .type-badge {
+    padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; color: #fff;
+  }
+  .type-badge.welcome { background: var(--purple); }
+  .type-badge.single_choice { background: #3B82F6; }
+  .type-badge.single_choice_dynamic { background: #1D4ED8; }
+  .type-badge.multi_choice { background: #0891B2; }
+  .type-badge.multi_choice_custom { background: #0E7490; }
+  .type-badge.number_input { background: #D97706; }
+  .type-badge.interstitial { background: #6B7280; }
+  .type-badge.analyzing { background: #7C3AED; }
+  .type-badge.info { background: var(--green); color: var(--dark); }
+  .type-badge.capture { background: #DC2626; }
+
+  .field-badge {
+    padding: 2px 8px; border-radius: 10px; font-size: 10px;
+    font-weight: 600; background: #f0f0f0; color: #666;
+  }
+  .seg-badge {
+    padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;
+    color: #fff; margin-left: auto;
+  }
+  .shared-tag {
+    padding: 2px 8px; border-radius: 10px; font-size: 10px;
+    font-weight: 600; background: #E8E8E8; color: #666; margin-left: auto;
+  }
+
+  .screen-link {
+    display: flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 6px;
+    background: #f4f3ff; color: var(--purple); text-decoration: none;
+    font-size: 14px; flex-shrink: 0; transition: background .15s;
+    margin-left: auto;
+  }
+  .screen-link:hover { background: var(--purple); color: #fff; }
+
+  .condition-tag {
+    font-size: 10px; color: #999; padding: 2px 8px;
+    background: #f8f8f8; border-radius: 4px; font-family: monospace;
+  }
+
+  .screen-content { padding: 14px; }
+
+  /* ── Content elements ── */
+  .screen-title {
+    font-size: 17px; font-weight: 700; line-height: 1.25;
+    margin-bottom: 4px; letter-spacing: -.3px;
+  }
+  .screen-title mark {
+    background: linear-gradient(120deg, #fef08a 0%, #fde047 100%);
+    padding: 0 3px; border-radius: 3px;
+  }
+  .screen-subtitle { font-size: 12px; color: #666; margin-bottom: 10px; }
+
+  .lbl {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .5px; color: #999; margin: 10px 0 4px;
+  }
+  .lbl:first-child { margin-top: 0; }
+
+  .opt-list { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+  .opt-item {
+    padding: 5px 10px; background: #f8f8f8; border-radius: 6px;
+    font-size: 12px; display: flex; align-items: baseline; gap: 6px;
+  }
+  .opt-id { font-size: 10px; color: #999; font-family: monospace; flex-shrink: 0; }
+
+  .fields-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .field-item {
+    padding: 5px 10px; background: #FEF3C7; border-radius: 6px; font-size: 12px;
+  }
+  .field-range { color: #92400E; font-size: 10px; }
+
+  /* ── Dynamic text ── */
+  .dyn-block {
+    background: #f8f6ff; border: 1px solid #e8e4ff;
+    border-radius: 8px; padding: 10px; margin-top: 6px;
+  }
+  .dyn-tabs { display: flex; gap: 3px; margin-bottom: 6px; flex-wrap: wrap; }
+  .dt {
+    padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;
+    cursor: pointer; border: 1px solid #ddd; background: #fff; color: #666;
+    transition: all .15s;
+  }
+  .dt.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+  .dt[data-ds="busy_parent"].active { background: var(--seg-parent); border-color: var(--seg-parent); }
+  .dt[data-ds="health_focus"].active { background: var(--seg-health); border-color: var(--seg-health); color: var(--dark); }
+  .dt[data-ds="busy_pro"].active { background: var(--seg-pro); border-color: var(--seg-pro); }
+  .dt[data-ds="budget"].active { background: var(--seg-budget); border-color: var(--seg-budget); color: var(--dark); }
+  .dt[data-ds="all"].active { background: var(--dark); border-color: var(--dark); }
+
+  .dyn-text { font-size: 13px; line-height: 1.5; white-space: pre-line; }
+  .var-ref {
+    background: #EDE9FE; color: var(--purple);
+    padding: 1px 5px; border-radius: 4px;
+    font-size: 11px; font-weight: 600; font-family: monospace;
+  }
+
+  .dyn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  @media (max-width: 640px) { .dyn-grid { grid-template-columns: 1fr; } }
+  .dyn-item {
+    padding: 6px 8px; border-radius: 6px; font-size: 12px;
+    line-height: 1.4; white-space: pre-line;
+    border-left: 3px solid #ddd; background: #fff;
+  }
+  .dyn-item[data-ds="busy_parent"] { border-left-color: var(--seg-parent); }
+  .dyn-item[data-ds="health_focus"] { border-left-color: var(--seg-health); }
+  .dyn-item[data-ds="busy_pro"] { border-left-color: var(--seg-pro); }
+  .dyn-item[data-ds="budget"] { border-left-color: var(--seg-budget); }
+  .dyn-seg-label {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .5px; margin-bottom: 2px; display: block; color: #888;
+  }
+
+  /* ── Info cards ── */
+  .info-cards { display: flex; flex-direction: column; gap: 6px; }
+  .info-card {
+    padding: 8px 12px; border-radius: 8px; border-left: 4px solid #ddd;
+  }
+  .info-card[data-c="orange"] { border-left-color: var(--orange); background: #FFF7ED; }
+  .info-card[data-c="pink"] { border-left-color: var(--pink); background: #FDF2F8; }
+  .info-card[data-c="violett"] { border-left-color: var(--purple); background: #F5F3FF; }
+  .info-card[data-c="green"] { border-left-color: var(--green); background: #F0FDF4; }
+  .card-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .5px; color: #666; margin-bottom: 3px;
+  }
+  .card-cond { font-size: 9px; color: #999; font-style: italic; margin-bottom: 3px; }
+
+  /* ── Misc content ── */
+  .steps-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .step-pill {
+    padding: 4px 12px; background: var(--purple); color: #fff;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+  }
+  .stats-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .stat-item { padding: 6px 12px; border-radius: 8px; font-size: 12px; text-align: center; }
+  .stat-item[data-c="violett"] { background: #F5F3FF; }
+  .stat-item[data-c="green"] { background: #F0FDF4; }
+  .stat-val { font-weight: 700; font-size: 16px; display: block; }
+
+  .check-list { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+  .check-item {
+    padding: 5px 10px; background: #F0FDF4; border-radius: 6px; font-size: 12px;
+  }
+  .check-item::before { content: "✓ "; color: var(--green); font-weight: 700; }
+
+  .bullets { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+  .bullet {
+    padding: 5px 10px; border-radius: 6px; font-size: 12px;
+    border-left: 3px solid #ddd; background: #fafafa;
+  }
+  .bullet[data-c="violett"] { border-left-color: var(--purple); background: #F5F3FF; }
+  .bullet[data-c="orange"] { border-left-color: var(--orange); background: #FFF7ED; }
+  .bullet[data-c="pink"] { border-left-color: var(--pink); background: #FDF2F8; }
+
+  .cta-pill {
+    margin-top: 10px; padding: 6px 14px;
+    background: var(--purple); color: #fff; border-radius: 30px;
+    font-size: 12px; font-weight: 600; display: inline-block;
+  }
+
+  .summary-rows { display: flex; flex-direction: column; gap: 3px; }
+  .sum-row {
+    display: flex; justify-content: space-between;
+    padding: 6px 10px; background: #f8f8f8; border-radius: 6px; font-size: 12px;
+  }
+  .sum-row .label { color: #666; }
+  .sum-row .value { font-weight: 600; }
+
+  .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
+  .comp-col h4 {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .5px; margin-bottom: 6px; color: #666;
+  }
+  .comp-col.without h4 { color: #DC2626; }
+  .comp-col.with h4 { color: var(--green); }
+  .comp-item { font-size: 12px; padding: 3px 0; border-bottom: 1px solid #f0f0f0; }
+
+  .pricing-box {
+    background: #F5F3FF; border-radius: 8px; padding: 10px;
+    text-align: center; margin-top: 6px;
+  }
+  .pricing-trial { font-weight: 700; font-size: 15px; color: var(--purple); }
+  .pricing-price { font-size: 12px; color: #666; }
+  .pricing-guar { font-size: 11px; color: #999; margin-top: 3px; }
+
+  .testimonial-box {
+    background: #f8f8f8; border-radius: 8px; padding: 10px; margin-top: 6px;
+    font-style: italic; font-size: 12px; color: #555;
+  }
+  .test-author { font-style: normal; font-weight: 600; margin-top: 3px; font-size: 11px; color: #888; }
+
+  .recipe-list { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+  .recipe-item {
+    padding: 6px 10px; background: #f8f8f8; border-radius: 6px;
+    font-size: 12px; display: flex; justify-content: space-between;
+  }
+  .recipe-time { color: #999; font-size: 11px; }
+  .blurred-hint {
+    margin-top: 6px; padding: 8px; background: #f0f0f0;
+    border-radius: 6px; font-size: 11px; color: #999; font-style: italic;
+  }
+
+  .opt-sources-group { margin-bottom: 6px; }
+  .opt-src-key { font-size: 10px; color: #999; font-family: monospace; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>MealPreply Quiz — Product Map</h1>
+    <div class="header-actions">
+      <button class="toggle-all-btn" id="toggleAllBtn" onclick="toggleAll()">Collapse All</button>
+      <div class="stats">
+        <span id="statPath">—</span> screens &middot;
+        <span id="statTotal">—</span> total &middot;
+        <span id="statPhases">—</span> phases
+      </div>
+    </div>
+  </div>
+  <div class="segment-tabs" id="segTabs"></div>
+</div>
+
+<div class="main" id="main"></div>
+
+<script>
+let QUIZ = null;
+
+// Segment labels — derived from quiz data, but we provide friendly labels
+const SEG_LABEL_MAP = {
+  busy_parent: 'Busy Parent',
+  health_focus: 'Health Focus',
+  busy_pro: 'Busy Pro',
+  budget: 'Budget'
+};
+
+// Which screen types are "connectors" (bridge/transition/display) vs "question" (interactive)
+const CONNECTOR_TYPES = new Set(['interstitial', 'analyzing', 'info']);
+
+// Phase display names (capitalise + replace hyphens)
+function phaseName(phase) {
+  return phase.charAt(0).toUpperCase() + phase.slice(1).replace(/-/g, ' ');
+}
+
+// ── Derived state (populated after QUIZ loads) ──
+let SEGMENTS = [];       // ['busy_parent', 'health_focus', ...]
+let SEG_LABEL = {};      // { busy_parent: 'Busy Parent', ... }
+let BRANCH_MAP = {};     // { busy_parent: ['family-size', ...], ... }
+let ALL_BRANCH = [];     // flat list of all segment-specific screen IDs
+let PHASES = [];         // ordered list of phase group objects: { phase, name, items[] }
+                         //   item = { type:'block'|'conn', screens: Screen[] }
+let seg = '';
+
+// ── Derive structure from quiz-data.json ──
+function deriveStructure() {
+  SEGMENTS = QUIZ.meta.segments;
+  SEG_LABEL = {};
+  SEGMENTS.forEach(s => {
+    SEG_LABEL[s] = SEG_LABEL_MAP[s] || s.replace(/_/g, ' ');
+  });
+
+  // Build BRANCH_MAP: screens conditioned on computed segment flags
+  // Pass 1: direct segment flags — isBusyParent → busy_parent, isHealthFocus → health_focus, etc.
+  const flagToSeg = {};
+  SEGMENTS.forEach(s => {
+    // Convert segment id to camelCase flag: busy_parent → isBusyParent
+    const flag = 'is' + s.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+    flagToSeg[flag] = s;
+  });
+
+  BRANCH_MAP = {};
+  SEGMENTS.forEach(s => { BRANCH_MAP[s] = []; });
+
+  // First pass: direct segment conditions
+  QUIZ.screens.forEach(screen => {
+    if (!screen.condition) return;
+    const c = screen.condition;
+    if (c.computed === true && c.operator === '===' && c.value === true) {
+      const segId = flagToSeg[c.field];
+      if (segId) BRANCH_MAP[segId].push(screen.id);
+    }
+  });
+
+  // Second pass: screens with computed conditions that aren't direct segment flags
+  // (e.g., hasKids — only true within busy_parent). Attribute to the segment whose
+  // branch screens they appear adjacent to in the ordered screen list.
+  const directBranchIds = new Set(Object.values(BRANCH_MAP).flat());
+  let lastKnownSeg = null;
+
+  QUIZ.screens.forEach(screen => {
+    if (!screen.condition) { lastKnownSeg = null; return; }
+    const c = screen.condition;
+    if (!c.computed) { lastKnownSeg = null; return; }
+
+    const segId = flagToSeg[c.field];
+    if (segId) {
+      // This is a direct segment screen — update lastKnownSeg
+      lastKnownSeg = segId;
+    } else if (lastKnownSeg && !directBranchIds.has(screen.id)) {
+      // Sub-condition within a segment block — inherit the enclosing segment
+      BRANCH_MAP[lastKnownSeg].push(screen.id);
+    }
+  });
+
+  ALL_BRANCH = Object.values(BRANCH_MAP).flat();
+
+  // Group screens by phase (preserving order)
+  const phaseOrder = [];
+  const phaseScreens = {};
+  QUIZ.screens.forEach(screen => {
+    const p = screen.phase;
+    if (!phaseScreens[p]) {
+      phaseOrder.push(p);
+      phaseScreens[p] = [];
+    }
+    phaseScreens[p].push(screen);
+  });
+
+  // For each phase, split into contiguous runs of block vs connector screens
+  // A screen is a "connector" if its type is in CONNECTOR_TYPES
+  // Within a phase, consecutive connector-type screens form a connector group,
+  // consecutive question-type screens form a block group.
+  PHASES = phaseOrder.map(phase => {
+    const screens = phaseScreens[phase];
+    const groups = [];
+    let currentGroup = null;
+
+    screens.forEach(screen => {
+      const isConn = CONNECTOR_TYPES.has(screen.type);
+      const groupType = isConn ? 'conn' : 'block';
+      if (!currentGroup || currentGroup.type !== groupType) {
+        currentGroup = { type: groupType, screens: [] };
+        groups.push(currentGroup);
+      }
+      currentGroup.screens.push(screen);
+    });
+
+    return { phase, name: phaseName(phase), groups };
+  });
+}
+
+// ── Visibility ──
+function isVisible(screen) {
+  if (!ALL_BRANCH.includes(screen.id)) return true;
+  return BRANCH_MAP[seg]?.includes(screen.id) || false;
+}
+
+function getBranchSeg(screenId) {
+  for (const [s, ids] of Object.entries(BRANCH_MAP)) {
+    if (ids.includes(screenId)) return s;
+  }
+  return null;
+}
+
+// ── Formatting ──
+function fmtTitle(t) {
+  if (!t) return '';
+  return t
+    .replace(/\{(\w+)\}/g, '<span class="var-ref">{$1}</span>')
+    .replace(/==(.+?)==/g, '<mark>$1</mark>')
+    .replace(/\n/g, '<br>');
+}
+function fmtVars(t) {
+  if (!t) return '';
+  return t
+    .replace(/\{(\w+)\}/g, '<span class="var-ref">{$1}</span>')
+    .replace(/==(.+?)==/g, '<mark>$1</mark>');
+}
+
+function screenLink(id) {
+  const base = location.pathname.replace(/\/[^/]*$/, '');
+  return `${base}/?screen=${id}&segment=${seg}`;
+}
+
+function countVisible() {
+  let n = 0;
+  QUIZ.screens.forEach(s => { if (isVisible(s)) n++; });
+  return n;
+}
+
+// ── Dynamic text ──
+function renderDyn(dyn, uid) {
+  if (!dyn?.cases) return `<div class="dyn-text">${fmtVars(dyn?.default || '')}</div>`;
+  const segs = Object.keys(dyn.cases);
+  const id = uid + '-' + Math.random().toString(36).slice(2, 7);
+  let h = `<div class="dyn-block" data-did="${id}">`;
+  h += `<div class="dyn-tabs">`;
+  segs.forEach(s => {
+    h += `<div class="dt${s === seg ? ' active' : ''}" data-ds="${s}" data-did="${id}">${SEG_LABEL[s] || s}</div>`;
+  });
+  h += `<div class="dt" data-ds="all" data-did="${id}">All</div></div>`;
+  segs.forEach(s => {
+    h += `<div class="dyn-text dyn-s" data-did="${id}" data-ds="${s}" style="${s === seg ? '' : 'display:none'}">${fmtVars(dyn.cases[s])}</div>`;
+  });
+  h += `<div class="dyn-grid dyn-a" data-did="${id}" style="display:none">`;
+  segs.forEach(s => {
+    h += `<div class="dyn-item" data-ds="${s}"><span class="dyn-seg-label">${SEG_LABEL[s] || s}</span>${fmtVars(dyn.cases[s])}</div>`;
+  });
+  h += `</div></div>`;
+  return h;
+}
+
+// ── Screen content renderer ──
+function renderContent(s) {
+  let h = '';
+  if (s.title) h += `<div class="screen-title">${fmtTitle(s.title)}</div>`;
+  if (s.dynamicTitle) { h += `<div class="lbl">Title (dynamic)</div>`; h += renderDyn(s.dynamicTitle, s.id + '-t'); }
+  if (s.subtitle) h += `<div class="screen-subtitle">${s.subtitle.replace(/\n/g, '<br>')}</div>`;
+
+  if (s.bullets) {
+    h += `<div class="lbl">Value props</div><ul class="bullets">`;
+    s.bullets.forEach(b => { h += `<li class="bullet" data-c="${b.color}">${b.text}</li>`; });
+    h += `</ul>`;
+  }
+  if (s.socialProof && s.type === 'welcome')
+    h += `<div style="font-size:12px;color:#666;margin-top:4px"><b>${s.socialProof.title}</b> — ${(s.socialProof.text || '').replace(/\n/g, ' ')}</div>`;
+  if (s.trustText && s.type === 'welcome')
+    h += `<div style="font-size:11px;color:#999;margin-top:4px">${s.trustText}</div>`;
+
+  if (s.options) {
+    h += `<div class="lbl">Options${s.field ? ' → ' + s.field : ''}</div><ul class="opt-list">`;
+    s.options.forEach(o => { h += `<li class="opt-item"><span class="opt-id">${o.id}</span>${o.text}</li>`; });
+    h += `</ul>`;
+  }
+  if (s.fields) {
+    h += `<div class="lbl">Input fields</div><div class="fields-row">`;
+    s.fields.forEach(f => { h += `<div class="field-item"><b>${f.label}</b> (${f.id}) <span class="field-range">${f.min}–${f.max}, default ${f.default}</span></div>`; });
+    h += `</div>`;
+  }
+  if (s.dynamicText) { h += `<div class="lbl">Text (dynamic per segment)</div>`; h += renderDyn(s.dynamicText, s.id); }
+  if (s.dynamicBenefit) { h += `<div class="lbl">Benefit (dynamic)</div>`; h += renderDyn(s.dynamicBenefit, s.id + '-b'); }
+
+  if (s.summaryRows) {
+    h += `<div class="lbl">Summary mirror</div><div class="summary-rows">`;
+    s.summaryRows.forEach(r => { h += `<div class="sum-row"><span class="label">${r.label}</span><span class="value">${fmtVars(r.value)}</span></div>`; });
+    h += `</div>`;
+  }
+  if (s.steps) {
+    h += `<div class="lbl">Steps</div><div class="steps-row">`;
+    s.steps.forEach((st, i) => { h += `<div class="step-pill">${i + 1}. ${st}</div>`; });
+    h += `</div>`;
+  }
+  if (s.stats) {
+    h += `<div class="lbl">Stats</div><div class="stats-row">`;
+    s.stats.forEach(st => { h += `<div class="stat-item" data-c="${st.color}"><span class="stat-val">${fmtVars(st.value)}</span>${st.label}</div>`; });
+    h += `</div>`;
+  }
+  if (s.cards) {
+    h += `<div class="lbl">Insight cards</div><div class="info-cards">`;
+    s.cards.forEach((c, i) => {
+      h += `<div class="info-card" data-c="${c.color}"><div class="card-label">${c.label}</div>`;
+      if (c.condition) h += `<div class="card-cond">${c.condition.field} ${c.condition.operator} "${c.condition.value}"</div>`;
+      if (c.dynamicText) h += renderDyn(c.dynamicText, s.id + '-c' + i);
+      h += `</div>`;
+    });
+    h += `</div>`;
+  }
+  if (s.checklist) {
+    h += `<div class="lbl">Animation checklist</div><ul class="check-list">`;
+    s.checklist.forEach(item => { h += `<li class="check-item">${fmtVars(item)}</li>`; });
+    h += `</ul>`;
+  }
+  if (s.optionSources) {
+    h += `<div class="lbl">Dynamic options (from prior answers)</div>`;
+    s.optionSources.forEach(src => {
+      h += `<div class="opt-sources-group"><span class="opt-src-key">from ${src.key}:</span><ul class="opt-list" style="margin-top:2px">`;
+      Object.entries(src.options).forEach(([k, o]) => {
+        h += `<li class="opt-item"><span class="opt-id">${k} → ${o.id}</span>${o.text}</li>`;
+      });
+      h += `</ul></div>`;
+    });
+    if (s.defaultOptions)
+      h += `<div style="font-size:10px;color:#999;margin-top:4px">Fallback: ${s.defaultOptions.map(o => o.text).join(' · ')}</div>`;
+  }
+  if (s.recipes) {
+    h += `<div class="lbl">Recipe preview</div>`;
+    if (s.costBadge) h += `<div style="font-size:11px;color:var(--green);font-weight:600;margin-bottom:3px">${fmtVars(s.costBadge)}</div>`;
+    h += `<ul class="recipe-list">`;
+    s.recipes.forEach(r => { h += `<li class="recipe-item"><span>${fmtVars(r.name)}</span><span class="recipe-time">${fmtVars(r.time)}</span></li>`; });
+    h += `</ul>`;
+    if (s.blurredItems) h += `<div class="blurred-hint">${s.blurredItems.join(' · ')}</div>`;
+  }
+  if (s.comparison) {
+    h += `<div class="lbl">Transformation comparison</div><div class="comp-grid">`;
+    h += `<div class="comp-col without"><h4>Without</h4>`;
+    s.comparison.without.forEach(t => { h += `<div class="comp-item">${fmtVars(t)}</div>`; });
+    h += `</div><div class="comp-col with"><h4>With MealPreply</h4>`;
+    s.comparison.with.forEach(t => { h += `<div class="comp-item">${fmtVars(t)}</div>`; });
+    h += `</div></div>`;
+  }
+  if (s.pricing) {
+    h += `<div class="pricing-box"><div class="pricing-trial">${s.pricing.trial}</div>`;
+    h += `<div class="pricing-price">${s.pricing.price}</div>`;
+    h += `<div class="pricing-guar">${s.pricing.guarantee}</div></div>`;
+  }
+  if (s.testimonial) {
+    h += `<div class="testimonial-box">"${fmtVars(s.testimonial.text)}"`;
+    h += `<div class="test-author">— ${fmtVars(s.testimonial.author)}</div></div>`;
+  }
+  if (s.testimonials) {
+    h += `<div class="lbl">Testimonials</div>`;
+    s.testimonials.forEach((t, i) => {
+      h += `<div class="testimonial-box">"${fmtVars(t.text)}"`;
+      h += `<div class="test-author">${fmtVars(t.author)}</div></div>`;
+    });
+  }
+  if (s.socialProof && s.type !== 'welcome')
+    h += `<div style="font-size:11px;color:#999;margin-top:6px;text-align:center">★ ${s.socialProof}</div>`;
+  if (s.cta) h += `<div class="cta-pill">${s.cta}</div>`;
+  return h;
+}
+
+// ── Segment color helper ──
+function segColor(s) {
+  const map = { busy_parent: 'parent', health_focus: 'health', busy_pro: 'pro', budget: 'budget' };
+  return `var(--seg-${map[s] || s})`;
+}
+
+// ── Screen card ──
+// groupIdx and cardIdx are used to generate a unique element ID for toggle
+function renderCard(screen, stepNum) {
+  if (!isVisible(screen)) return '';
+  const brSeg = getBranchSeg(screen.id);
+  const isBranch = !!brSeg;
+
+  let h = `<div class="screen-card${isBranch ? ' branch' : ''}"${brSeg ? ` data-seg="${brSeg}"` : ''}>`;
+  h += `<div class="screen-top">`;
+  h += `<div class="step-num">${stepNum}</div>`;
+  h += `<div class="screen-id">${screen.id}</div>`;
+  h += `<div class="type-badge ${screen.type}">${screen.type}${screen.variant ? '/' + screen.variant : ''}</div>`;
+  if (screen.field) h += `<div class="field-badge">→ ${screen.field}</div>`;
+  if (isBranch) {
+    h += `<div class="seg-badge" style="background:${segColor(brSeg)};${brSeg === 'health_focus' || brSeg === 'budget' ? 'color:var(--dark)' : ''}">${SEG_LABEL[brSeg]}</div>`;
+  }
+  h += `<a class="screen-link" href="${screenLink(screen.id)}" target="_blank" title="Open in quiz">&#x2197;</a>`;
+  h += `</div>`;
+  if (screen.condition) h += `<div style="padding:0 14px 6px"><span class="condition-tag">${screen.condition.field} ${screen.condition.operator} ${JSON.stringify(screen.condition.value)}</span></div>`;
+  h += `<div class="screen-content">${renderContent(screen)}</div>`;
+  h += `</div>`;
+  return h;
+}
+
+// ── Main render ──
+// Each phase generates one or more collapsible groups (blocks or connectors).
+// We assign sequential element IDs (f-0, f-1, ...) across all groups for toggle().
+let groupElements = []; // populated during render, used by toggle()
+
+function render() {
+  if (!QUIZ) return;
+  groupElements = [];
+  let stepNum = 0;
+  let html = '';
+  let elemIdx = 0;
+  let totalGroupsWithContent = 0;
+
+  PHASES.forEach((phaseData, pi) => {
+    // Track whether the phase header has been shown yet (first visible group wins)
+    let phaseHeaderShown = false;
+    const phaseScreenCount = phaseData.groups.flatMap(g => g.screens).filter(s => isVisible(s)).length;
+
+    phaseData.groups.forEach((group, gi) => {
+      const visScreens = group.screens.filter(s => isVisible(s));
+      if (visScreens.length === 0) return;
+
+      const eid = `f-${elemIdx}`;
+      groupElements.push({ id: eid, type: group.type });
+      elemIdx++;
+      totalGroupsWithContent++;
+
+      // Phase label: show before the first visible group of each phase
+      if (!phaseHeaderShown) {
+        phaseHeaderShown = true;
+        const isFirstPhase = pi === 0;
+        html += `<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#999;padding:${isFirstPhase ? '0' : '16px'} 0 6px;margin-top:${isFirstPhase ? '0' : '4px'}">${phaseData.name} &nbsp;·&nbsp; ${phaseScreenCount} screen${phaseScreenCount !== 1 ? 's' : ''}</div>`;
+      }
+
+      if (group.type === 'block') {
+        html += `<div class="block" id="${eid}">`;
+        html += `<div class="block-header" onclick="toggle('${eid}')">`;
+        html += `<div class="block-badge">Block</div>`;
+        html += `<div class="block-info">`;
+        html += `<div class="block-name">${phaseData.name}</div>`;
+        html += `<div class="block-purpose">${visScreens.length} question screen${visScreens.length !== 1 ? 's' : ''}</div>`;
+        html += `</div>`;
+        html += `<div class="block-meta">${visScreens.length} screen${visScreens.length > 1 ? 's' : ''}</div>`;
+        html += `<div class="block-toggle">▼</div>`;
+        html += `</div>`;
+        html += `<div class="block-body">`;
+        visScreens.forEach((screen, i) => {
+          stepNum++;
+          html += renderCard(screen, stepNum);
+          if (i < visScreens.length - 1) html += `<div class="flow-arrow">↓</div>`;
+        });
+        html += `</div></div>`;
+      } else {
+        // Connector
+        html += `<div class="connector" id="${eid}">`;
+        html += `<div class="conn-header" onclick="toggle('${eid}')">`;
+        html += `<div class="conn-badge">Connector</div>`;
+        html += `<div class="conn-info">`;
+        html += `<div class="conn-name">${phaseData.name}</div>`;
+        html += `<div class="conn-purpose">${visScreens.map(s => s.id).join(', ')}</div>`;
+        html += `</div>`;
+        html += `<div class="conn-toggle">▼</div>`;
+        html += `</div>`;
+        html += `<div class="conn-body">`;
+        visScreens.forEach(screen => {
+          stepNum++;
+          html += renderCard(screen, stepNum);
+        });
+        html += `</div></div>`;
+      }
+
+      // Arrow after each group (but not the last)
+      html += `<div class="flow-arrow">↓</div>`;
+    });
+  });
+
+  // Remove trailing arrow
+  html = html.replace(/<div class="flow-arrow">↓<\/div>$/, '');
+
+  document.getElementById('main').innerHTML = html;
+  document.getElementById('statPath').textContent = countVisible();
+  document.getElementById('statPhases').textContent = PHASES.length;
+
+  attachDynTabListeners();
+}
+
+function attachDynTabListeners() {
+  document.querySelectorAll('.dt').forEach(tab => {
+    tab.addEventListener('click', function () {
+      const did = this.dataset.did, ds = this.dataset.ds;
+      document.querySelectorAll(`.dt[data-did="${did}"]`).forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      if (ds === 'all') {
+        document.querySelectorAll(`.dyn-s[data-did="${did}"]`).forEach(el => el.style.display = 'none');
+        document.querySelector(`.dyn-a[data-did="${did}"]`).style.display = 'grid';
+      } else {
+        const allView = document.querySelector(`.dyn-a[data-did="${did}"]`);
+        if (allView) allView.style.display = 'none';
+        document.querySelectorAll(`.dyn-s[data-did="${did}"]`).forEach(el => {
+          el.style.display = el.dataset.ds === ds ? '' : 'none';
+        });
+      }
+    });
+  });
+}
+
+function toggle(eid) {
+  document.getElementById(eid).classList.toggle('collapsed');
+}
+
+let allCollapsed = false;
+function toggleAll() {
+  allCollapsed = !allCollapsed;
+  document.querySelectorAll('.block, .connector').forEach(el => {
+    el.classList.toggle('collapsed', allCollapsed);
+  });
+  document.getElementById('toggleAllBtn').textContent = allCollapsed ? 'Expand All' : 'Collapse All';
+}
+
+// ── Build segment tabs dynamically ──
+function buildSegTabs() {
+  const container = document.getElementById('segTabs');
+  container.innerHTML = SEGMENTS.map((s, i) =>
+    `<div class="seg-tab${i === 0 ? ' active' : ''}" data-s="${s}">${SEG_LABEL[s]}</div>`
+  ).join('');
+}
+
+// ── Init: fetch quiz data at runtime ──
+async function init() {
+  const urls = ['quiz-data.json', './quiz-data.json'];
+  for (const url of urls) {
+    try {
+      const resp = await fetch(url);
+      if (!resp.ok) continue;
+      QUIZ = await resp.json();
+      break;
+    } catch { /* try next */ }
+  }
+  if (!QUIZ) {
+    document.getElementById('main').innerHTML =
+      '<div style="padding:60px 20px;text-align:center;color:#999">' +
+      '<p style="font-size:16px;font-weight:600;margin-bottom:8px">Could not load quiz-data.json</p>' +
+      '<p style="font-size:13px">Make sure the Vite dev server is running:</p>' +
+      '<p style="font-size:14px;margin-top:6px"><code style="background:#eee;padding:6px 12px;border-radius:6px">cd quiz && npm run dev</code></p></div>';
+    return;
+  }
+
+  document.getElementById('statTotal').textContent = QUIZ.meta.totalScreens;
+
+  deriveStructure();
+  seg = SEGMENTS[0]; // default to first segment
+  buildSegTabs();
+  render();
+}
+
+// Segment switch
+document.getElementById('segTabs').addEventListener('click', function (e) {
+  const tab = e.target.closest('.seg-tab');
+  if (!tab) return;
+  document.querySelectorAll('.seg-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  seg = tab.dataset.s;
+  allCollapsed = false;
+  document.getElementById('toggleAllBtn').textContent = 'Collapse All';
+  render();
+});
+
+init();
+</script>
+</body>
+</html>

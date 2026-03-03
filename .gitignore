@@ -1,0 +1,13 @@
+# Private / local only
+meetings/
+docs/
+CLAUDE.md
+
+# Build artifacts
+node_modules/
+dist/
+.vite/
+
+# IDE / OS
+.DS_Store
+.claude/
