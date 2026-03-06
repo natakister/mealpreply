@@ -1,5 +1,4 @@
-const DEFAULT_WEB_APP_URL =
-  'https://script.google.com/macros/s/AKfycbwBMKSk1p4Tv6jRRC3wrVCF0kQ10z1J5_78738hssZFnalokBaB6dV9r6vlqfQ5jgka/exec';
+const DEFAULT_WEB_APP_URL = '';
 
 const SESSION_ID_STORAGE_KEY = 'mpq_session_id';
 const SENT_ONCE_SESSION_STORAGE_PREFIX = 'mpq_telemetry_sent:';
