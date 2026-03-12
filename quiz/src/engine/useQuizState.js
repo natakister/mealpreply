@@ -94,8 +94,9 @@ export default function useQuizState(config) {
   }, [config.screens, answers, ctx])
 
   const currentScreen = visibleScreens[currentIndex]
-  const totalSteps = visibleScreens.filter(s => s.field).length
-  const currentStep = visibleScreens.slice(0, currentIndex + 1).filter(s => s.field).length
+  const isQuestion = s => s.field || (s.type === 'number_input' && s.fields)
+  const totalSteps = visibleScreens.filter(isQuestion).length
+  const currentStep = visibleScreens.slice(0, currentIndex + 1).filter(isQuestion).length
 
   const next = useCallback(() => {
     if (currentIndex < visibleScreens.length - 1) {
