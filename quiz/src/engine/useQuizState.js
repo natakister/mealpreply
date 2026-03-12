@@ -95,7 +95,18 @@ export default function useQuizState(config) {
 
   const currentScreen = visibleScreens[currentIndex]
   const isQuestion = s => s.field || (s.type === 'number_input' && s.fields)
-  const totalSteps = visibleScreens.filter(isQuestion).length
+  // Before segment selection, show max across all possible paths to avoid total jump
+  let totalSteps = visibleScreens.filter(isQuestion).length
+  if (!answers.lifeStage) {
+    totalSteps = Math.max(...Object.keys(SEGMENT_DEFAULTS).map(seg => {
+      const simAnswers = { ...answers, lifeStage: seg }
+      const simVars = resolveVars(config.computedVars, simAnswers)
+      const simCtx = { ...simAnswers, ...simVars }
+      return config.screens.filter(s =>
+        evaluateCondition(s.condition, simCtx, simAnswers) && isQuestion(s)
+      ).length
+    }))
+  }
   const currentStep = visibleScreens.slice(0, currentIndex + 1).filter(isQuestion).length
 
   const next = useCallback(() => {
