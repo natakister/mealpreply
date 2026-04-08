@@ -194,8 +194,8 @@ export default function InfoScreen({ screen, ctx = {}, onNext, onBack }) {
   const isImageBg = screen.theme === 'image'
 
   const wrapperClasses = [
-    'flex flex-col gap-4 min-h-dvh px-5 pt-4 pb-28',
-    isDark ? 'screen-dark' : '',
+    'flex flex-col gap-4 min-h-dvh px-5 pb-28',
+    isDark ? 'screen-dark pt-10' : 'pt-4',
     isImageBg ? 'screen-image-bg' : '',
     !isDark && !isImageBg ? 'bg-bright' : '',
   ].filter(Boolean).join(' ')

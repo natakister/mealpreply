@@ -252,8 +252,8 @@ export default function CaptureScreen({ screen, answer, ctx = {}, onSelect, onNe
   const isDark = screen.theme === 'dark'
 
   const wrapperClasses = [
-    'flex flex-col gap-5 min-h-dvh px-5 pt-4 pb-28',
-    isDark ? 'screen-dark' : 'bg-bright',
+    'flex flex-col gap-5 min-h-dvh px-5 pb-28',
+    isDark ? 'screen-dark pt-10' : 'bg-bright pt-4',
   ].join(' ')
 
   const arrowColor = isDark ? 'text-bright' : 'text-dark'
