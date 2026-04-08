@@ -263,6 +263,36 @@
       },
       "default": "5 min assembly"
     },
+    "recipe4Name": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Sheet-Pan Sausage & Peppers",
+        "health_focus": "Lemon Herb Cod with Asparagus",
+        "busy_pro": "Beef & Broccoli Stir-Fry",
+        "budget": "Chickpea Curry with Rice"
+      },
+      "default": "Sheet-Pan Sausage & Peppers"
+    },
+    "recipe5Name": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Mini Meatball Subs",
+        "health_focus": "Tofu Buddha Bowl",
+        "busy_pro": "Pesto Pasta with Grilled Chicken",
+        "budget": "Veggie Lentil Soup"
+      },
+      "default": "Mini Meatball Subs"
+    },
+    "recipe6Name": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "Breakfast-for-Dinner Pancake Stack",
+        "health_focus": "Spicy Shrimp & Avocado Salad",
+        "busy_pro": "Sweet Chili Tofu Bowl",
+        "budget": "Egg Fried Rice with Peas"
+      },
+      "default": "Breakfast-for-Dinner Pancake Stack"
+    },
 
     "_doc_segment_stat": "Segment-bridge stat variant — big stat number + description per segment",
     "segmentStat": {
@@ -1035,9 +1065,9 @@
         { "name": "{recipe1Name}", "time": "5 min", "image": "/tricia-timney.jpg" },
         { "name": "{recipe2Name}", "time": "5 min", "image": "/emma-miller.jpg" },
         { "name": "{recipe3Name}", "time": "5 min", "image": "/max-griss.jpg" },
-        { "name": "{recipe2Name}", "time": "5 min", "image": "/emma-miller.jpg" },
-        { "name": "{recipe1Name}", "time": "5 min", "image": "/tricia-timney.jpg" },
-        { "name": "{recipe3Name}", "time": "5 min", "image": "/max-griss.jpg" }
+        { "name": "{recipe4Name}", "time": "5 min", "image": "/recipe-4.jpg" },
+        { "name": "{recipe5Name}", "time": "5 min", "image": "/recipe-5.jpg" },
+        { "name": "{recipe6Name}", "time": "5 min", "image": "/recipe-6.jpg" }
       ],
       "cta": "Get my full plan →"
     },
