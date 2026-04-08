@@ -295,19 +295,19 @@
               "id": "4WFNB",
               "type": "ref",
               "ref": "KMLHe",
-              "x": 114.3916246851314,
+              "x": 114.39390184166852,
               "y": 811,
               "width": "fit_content",
               "height": "fit_content",
               "descendants": {
                 "CE0p8": {
-                  "x": 0.0022771565371044744
+                  "x": 0
                 },
                 "g8H6Y": {
                   "width": "fit_content",
                   "height": "fit_content",
-                  "x": 20.216329871024588,
-                  "y": 6.092632696891773,
+                  "x": 20.214052714487483,
+                  "y": 6.092632696891769,
                   "rotation": -0.26094381981098913
                 },
                 "kbfPO": {
@@ -317,7 +317,7 @@
                   "y": 19
                 },
                 "wGlxs": {
-                  "x": 201.2144734732001
+                  "x": 201.21219631666298
                 }
               }
             },
@@ -1667,7 +1667,7 @@
               "name": "ps3",
               "height": "fit_content",
               "x": 20,
-              "y": 280,
+              "y": 279,
               "descendants": {
                 "7xYW3": {
                   "width": "fill_container",
@@ -1719,7 +1719,7 @@
                   "y": 222
                 },
                 "EqEl8": {
-                  "y": 11.000000000000002
+                  "y": 11.000000000000004
                 },
                 "GfoSp": {
                   "x": 368.09473391003405
@@ -5253,7 +5253,7 @@
                   "name": "header2",
                   "height": "fit_content",
                   "x": 0,
-                  "y": 236.184552761499,
+                  "y": 236.18455276149902,
                   "gap": 20,
                   "descendants": {
                     "3uATF": {
@@ -5522,7 +5522,7 @@
           "fill": {
             "type": "image",
             "enabled": true,
-            "url": "Background.png",
+            "url": "../quiz/public/Background.png",
             "mode": "fill"
           },
           "cornerRadius": 16,
@@ -5580,7 +5580,7 @@
               "type": "ref",
               "ref": "OWgYE",
               "x": 20,
-              "y": 323,
+              "y": 322,
               "fill": "$bright",
               "cornerRadius": 12,
               "padding": 20,
@@ -5745,7 +5745,7 @@
           "fill": {
             "type": "image",
             "enabled": true,
-            "url": "Background.png",
+            "url": "../quiz/public/Background.png",
             "mode": "fill"
           },
           "cornerRadius": 16,
@@ -5919,7 +5919,7 @@
           "fill": {
             "type": "image",
             "enabled": true,
-            "url": "Background.png",
+            "url": "../quiz/public/Background.png",
             "mode": "fill"
           },
           "cornerRadius": 16,
@@ -6099,7 +6099,7 @@
               "fill": {
                 "type": "image",
                 "enabled": true,
-                "url": "Familyy.png",
+                "url": "../quiz/public/Familyy.png",
                 "mode": "fill"
               }
             }
@@ -6161,7 +6161,7 @@
               "fill": {
                 "type": "image",
                 "enabled": true,
-                "url": "Banana.png",
+                "url": "../quiz/public/Banana.png",
                 "mode": "fill"
               }
             },
@@ -9873,7 +9873,7 @@
                   "ref": "J1tkL",
                   "width": 360,
                   "name": "pbar",
-                  "y": 11.000000000000002,
+                  "y": 11.000000000000004,
                   "x": 0,
                   "fill": "$border",
                   "cornerRadius": 3,
@@ -9957,13 +9957,13 @@
               "type": "text",
               "id": "aZvgI",
               "name": "label",
-              "fill": "$grey",
+              "fill": "$dark",
               "textGrowth": "fixed-width",
               "width": "fill_container",
               "content": "Almost there — just a few more questions!",
               "textAlign": "center",
               "fontFamily": "DM Sans",
-              "fontSize": "$size-body",
+              "fontSize": "$size-cta",
               "fontWeight": "normal"
             }
           ]

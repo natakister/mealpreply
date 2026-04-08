@@ -87,7 +87,7 @@ function ProgressVariant({ screen, ctx }) {
       <div className="flex-1" />
 
       <div className="animate-in delay-1">
-        <p className="font-title text-[60px] leading-[0.88] tracking-tight text-bright text-center">
+        <p className="font-title text-[60px] leading-[0.88] tracking-tight text-dark text-center">
           {interpolate(screen.title, ctx)}
         </p>
       </div>
@@ -102,14 +102,15 @@ function ProgressVariant({ screen, ctx }) {
             </div>
           ))}
         </div>
-        <div className="mt-5">
-          <div className="w-full h-1.5 bg-border rounded-full overflow-hidden">
+        <div className="mt-5 flex items-center gap-2">
+          <div className="flex-1 h-1.5 bg-border rounded-full overflow-hidden">
             <div className="h-full bg-green rounded-full" style={{ width: '78%' }} />
           </div>
-          {screen.progressMessage && (
-            <p className="text-cta text-dark text-center w-full mt-3">{screen.progressMessage}</p>
-          )}
+          <img src={assetUrl('/fire.png')} alt="" className="w-6 h-6 shrink-0" />
         </div>
+        {screen.progressMessage && (
+          <p className="text-cta text-dark text-center w-full mt-5">{screen.progressMessage}</p>
+        )}
       </div>
 
       <div className="flex-1" />
