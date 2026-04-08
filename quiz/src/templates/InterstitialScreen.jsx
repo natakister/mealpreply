@@ -84,8 +84,6 @@ function ProgressVariant({ screen, ctx }) {
   const rows = screen.summaryRows || []
   return (
     <>
-      <div className="flex-1" />
-
       <div className="animate-in delay-1">
         <p className="font-title text-[60px] leading-[0.88] tracking-tight text-dark text-center">
           {interpolate(screen.title, ctx)}
@@ -94,7 +92,7 @@ function ProgressVariant({ screen, ctx }) {
 
       {/* Summary in white card */}
       <div className="animate-in delay-2 bg-bright rounded-xl p-5 w-full">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           {rows.map((row, i) => (
             <div key={i} className="flex justify-between items-center">
               <span className="text-cta text-grey">{interpolate(row.label, ctx)}</span>
