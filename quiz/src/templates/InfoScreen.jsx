@@ -1,6 +1,12 @@
 import Button from '../components/atoms/Button'
 import { interpolate } from '../engine/computeVars'
 import { assetUrl } from '../utils/assetUrl'
+import { CalendarCheck, Coins } from 'lucide-react'
+
+const statIconMap = {
+  violett: CalendarCheck,
+  green: Coins,
+}
 
 function resolveDynamic(dynamicDef, ctx) {
   if (!dynamicDef) return ''
@@ -20,11 +26,23 @@ function InsightVariant({ screen, ctx }) {
   const cards = screen.cards || []
   return (
     <>
+      {/* Hero image — family photo */}
+      {screen.heroImage ? (
+        <div className="w-full max-h-[220px] overflow-hidden rounded-2xl animate-in">
+          <img src={assetUrl(screen.heroImage)} alt="" className="w-full h-full object-cover" />
+        </div>
+      ) : (
+        <div className="w-full flex-1 max-h-[220px] rounded-2xl bg-white/10 flex items-center justify-center animate-in">
+          <span className="text-bright/40 text-small">image</span>
+        </div>
+      )}
+
       <div className="animate-in delay-1">
-        <h1 className="text-title font-title leading-[1.1] tracking-tight text-dark">
+        <h1 className="font-title text-title leading-[1.1] tracking-tight text-bright">
           {interpolate(screen.title, ctx)}
         </h1>
       </div>
+
       <div className="flex flex-col gap-3">
         {cards.map((card, i) => {
           const body = resolveDynamic(card.dynamicText, ctx)
@@ -43,62 +61,45 @@ function InsightVariant({ screen, ctx }) {
           )
         })}
       </div>
-
-      {screen.socialProofBadge && (
-        <div className="flex items-center justify-center gap-2 py-4 animate-in delay-3">
-          <img src={assetUrl('/laurel_l.png')} alt="" className="w-6 h-6 object-contain" />
-          <div className="text-center">
-            <p className="text-small font-bold tracking-wider uppercase text-dark">{screen.socialProofBadge.title}</p>
-            <p className="text-small text-grey">{screen.socialProofBadge.text}</p>
-          </div>
-          <img src={assetUrl('/laurel_r.png')} alt="" className="w-6 h-6 object-contain" />
-        </div>
-      )}
     </>
   )
 }
 
 function SolutionVariant({ screen, ctx }) {
   const headline = resolveDynamic(screen.dynamicTitle, ctx)
-  const benefit = resolveDynamic(screen.dynamicBenefit, ctx)
-  const steps = screen.steps || []
+  const subtitle = screen.subtitle ? interpolate(screen.subtitle, ctx) : ''
   const stats = screen.stats || []
 
   return (
     <>
       <div className="animate-in delay-1">
-        <h1 className="text-title font-title leading-[1.1] tracking-tight text-dark">
+        <h1 className="font-title text-title leading-[1.1] tracking-tight text-bright">
           {headline}
         </h1>
       </div>
 
-      <div className="animate-in delay-2 flex items-center justify-evenly w-full">
-        {steps.map((step, i) => (
-          <div key={i} className="flex items-center gap-0">
-            {i > 0 && <span className="text-body text-grey mx-1">&rarr;</span>}
-            <div className="flex flex-col items-center gap-1 px-2 py-3">
-              <span className="text-lg font-bold text-violett">{i + 1}</span>
-              <span className="text-small font-semibold text-dark">{step}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {benefit && (
-        <div className="animate-in delay-3 bg-beige rounded-xl p-4">
-          <p className="text-body text-dark leading-[1.4]">{benefit}</p>
-        </div>
+      {subtitle && (
+        <p className="text-cta text-bright leading-[1.3] animate-in delay-2">
+          {subtitle}
+        </p>
       )}
 
-      <div className="animate-in delay-4 flex gap-3 w-full">
-        {stats.map((stat, i) => (
-          <div key={i} className="flex-1 bg-beige rounded-xl py-5 px-4 flex flex-col items-center gap-1">
-            <span className={`text-lg font-bold ${colorMap[stat.color] || 'text-violett'}`}>
+      {/* Stat cards — time + money */}
+      <div className="animate-in delay-3 flex gap-3 w-full">
+        {stats.map((stat, i) => {
+          const IconComponent = statIconMap[stat.color]
+          return (
+          <div key={i} className="flex-1 bg-bright rounded-xl py-4 px-4 flex flex-col items-center gap-2">
+            <div className="w-11 h-11 flex items-center justify-center">
+              {IconComponent && <IconComponent size={44} className={`${colorMap[stat.color] || 'text-violett'}`} strokeWidth={1.5} />}
+            </div>
+            <span className={`text-[40px] font-bold ${colorMap[stat.color] || 'text-violett'}`}>
               {interpolate(stat.value, ctx)}
             </span>
-            <span className="text-small text-grey">{interpolate(stat.label, ctx)}</span>
+            <span className="text-cta text-grey text-center">{interpolate(stat.label, ctx)}</span>
           </div>
-        ))}
+          )
+        })}
       </div>
     </>
   )
@@ -106,58 +107,99 @@ function SolutionVariant({ screen, ctx }) {
 
 function ValueDemoVariant({ screen, ctx }) {
   const recipes = screen.recipes || []
-  const blurred = screen.blurredItems || []
 
   return (
     <>
       <div className="animate-in delay-1">
-        <h1 className="text-title font-title leading-[1.1] tracking-tight text-dark">
+        <h1 className="font-title text-title leading-[1.1] tracking-tight text-bright">
           {interpolate(screen.title, ctx)}
         </h1>
       </div>
 
-      <div className="animate-in delay-2">
-        <span className="inline-block bg-beige rounded-full px-5 py-2 text-body font-semibold text-dark">
-          {interpolate(screen.costBadge, ctx)}
-        </span>
-      </div>
-
-      <div className="flex flex-col gap-3">
-        {recipes.map((recipe, i) => (
-          <div key={i} className={`animate-in delay-${Math.min(i + 3, 5)} flex items-center justify-between bg-beige rounded-xl px-4 py-4`}>
-            <span className="text-body font-semibold text-dark">{interpolate(recipe.name, ctx)}</span>
-            <span className="bg-violett text-bright text-small rounded-full px-3 py-1 whitespace-nowrap">{interpolate(recipe.time, ctx)}</span>
-          </div>
-        ))}
-      </div>
-
-      <div className="animate-in delay-5 flex flex-col gap-1.5 opacity-30 px-2">
-        {blurred.map((item, i) => (
-          <p key={i} className="text-body text-dark">{item}</p>
-        ))}
-      </div>
-
+      {/* Rating badge with laurels */}
       {screen.socialProofBadge && (
-        <div className="flex items-center justify-center gap-2 py-4 animate-in delay-3">
-          <img src={assetUrl('/laurel_l.png')} alt="" className="w-6 h-6 object-contain" />
-          <div className="text-center">
-            <p className="text-small font-bold tracking-wider uppercase text-dark">{screen.socialProofBadge.title}</p>
-            <p className="text-small text-grey">{screen.socialProofBadge.text}</p>
+        <div className="flex items-center justify-start gap-2 animate-in delay-2 w-full">
+          <img src={assetUrl('/laurel_l.png')} alt="" className="w-6 h-8 object-contain brightness-0 invert" />
+          <div>
+            <p className="text-body font-bold text-bright">{screen.socialProofBadge.title}</p>
+            <p className="text-small text-bright">{screen.socialProofBadge.text}</p>
           </div>
-          <img src={assetUrl('/laurel_r.png')} alt="" className="w-6 h-6 object-contain" />
+          <img src={assetUrl('/laurel_r.png')} alt="" className="w-6 h-8 object-contain brightness-0 invert" />
         </div>
       )}
+
+      {/* Highlight card — summary stats */}
+      {screen.highlightCard && (
+        <div className="animate-in delay-2 flex items-center gap-3 bg-bright rounded-xl p-3 w-full">
+          <div className="w-[100px] h-[100px] shrink-0 rounded-[10px] bg-border/30 flex items-center justify-center overflow-hidden">
+            {screen.highlightCard.image ? (
+              <img src={assetUrl(screen.highlightCard.image)} alt="" className="w-full h-full object-cover" />
+            ) : (
+              <span className="text-micro text-grey">photo</span>
+            )}
+          </div>
+          <div className="flex flex-col gap-1.5 flex-1">
+            {screen.highlightCard.lines.map((line, i) => (
+              <p key={i} className="text-small text-dark">{interpolate(line, ctx)}</p>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Recipe cards — scroll naturally, no height limit */}
+      <div className="flex flex-col gap-2 w-full">
+        {recipes.map((recipe, i) => (
+          <div key={i} className={`animate-in delay-${Math.min(i + 3, 5)} flex items-center gap-3 bg-bright rounded-xl px-3 py-3`}>
+            {recipe.image ? (
+              <img src={assetUrl(recipe.image)} alt="" className="w-[60px] h-[60px] shrink-0 rounded-[10px] object-cover" />
+            ) : (
+              <div className="w-[60px] h-[60px] shrink-0 rounded-[10px] bg-border/50 flex items-center justify-center">
+                <span className="text-micro text-grey">photo</span>
+              </div>
+            )}
+            <div className="flex flex-col gap-1 flex-1">
+              <span className="text-body font-semibold text-dark">{interpolate(recipe.name, ctx)}</span>
+              <span className="text-small text-grey">( {interpolate(recipe.time, ctx)} )</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Gradient fade at bottom — fixed position over recipe list */}
+      <div className="w-[calc(100%+40px)] -mx-5 h-64 -mt-64 relative z-10 bg-gradient-to-t from-violett via-violett/70 to-transparent pointer-events-none" />
     </>
   )
 }
 
 export default function InfoScreen({ screen, ctx = {}, onNext, onBack }) {
   const variant = screen.variant || 'insight'
+  const isDark = screen.theme === 'dark'
+  const isImageBg = screen.theme === 'image'
+
+  const wrapperClasses = [
+    'flex flex-col gap-4 min-h-dvh px-5 pt-4',
+    isDark ? 'screen-dark pb-6' : 'pb-28',
+    isImageBg ? 'screen-image-bg' : '',
+    !isDark && !isImageBg ? 'bg-bright' : '',
+  ].filter(Boolean).join(' ')
+
+  const backArrowColor = (isDark || isImageBg) ? 'text-dark' : 'text-dark'
+  // Insight has image bg but dark back arrow per design
+  const arrowColor = variant === 'insight' ? 'text-dark' : isDark ? 'text-bright' : 'text-dark'
+
+  const ctaFooterBg = isDark
+    ? 'bg-violett'
+    : isImageBg
+      ? 'bg-gradient-to-t from-[#FBFBFB]/95 via-[#FBFBFB]/80 to-transparent'
+      : 'bg-gradient-to-t from-[#FBFBFB] via-[#FBFBFB] to-transparent'
 
   return (
-    <div className="flex flex-col gap-4 min-h-dvh px-5 pt-4 pb-28 bg-bright">
+    <div
+      className={wrapperClasses}
+      style={isImageBg && screen.bgImage ? { backgroundImage: `url(${screen.bgImage})` } : undefined}
+    >
       <div className="animate-in">
-        <button onClick={onBack} className="w-10 h-10 flex items-center justify-start cursor-pointer">
+        <button onClick={onBack} className={`w-10 h-10 flex items-center justify-start cursor-pointer ${arrowColor}`}>
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <line x1="19" y1="12" x2="5" y2="12" />
             <polyline points="12 19 5 12 12 5" />
@@ -171,11 +213,17 @@ export default function InfoScreen({ screen, ctx = {}, onNext, onBack }) {
 
       <div className="flex-1" />
 
-      <div className="fixed bottom-0 left-0 right-0 z-20 px-5 pb-6 pt-2 bg-gradient-to-t from-[#FBFBFB] via-[#FBFBFB] to-transparent">
-        <div className="max-w-[448px] mx-auto">
+      {isDark ? (
+        <div className="w-full max-w-[448px] mx-auto pb-4">
           <Button label={screen.cta || 'Continue →'} onClick={onNext} />
         </div>
-      </div>
+      ) : (
+        <div className={`fixed bottom-0 left-0 right-0 z-20 px-5 pb-8 pt-2 ${ctaFooterBg}`}>
+          <div className="max-w-[448px] mx-auto">
+            <Button label={screen.cta || 'Continue →'} onClick={onNext} />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

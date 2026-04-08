@@ -85,10 +85,51 @@
   border-radius: 2px;
 }
 
+/* Dark-theme screen wrapper: violet bg, bright text, adjusted CTA footer gradient */
+.screen-dark {
+  background: var(--color-violett);
+  color: var(--color-bright);
+}
+
+/* Prevent body bleed-through on dark screens (overscroll, safe-area) */
+body:has(.screen-dark) {
+  background: var(--color-violett);
+}
+
+body:has(.screen-image-bg) {
+  background: var(--color-bright);
+}
+
+.screen-dark .cta-footer {
+  background: linear-gradient(to top, var(--color-violett), var(--color-violett) 60%, transparent);
+}
+
+/* Image-background screen wrapper */
+.screen-image-bg {
+  background-size: cover;
+  background-position: center;
+  color: var(--color-dark);
+}
+
+.screen-image-bg .cta-footer {
+  background: linear-gradient(to top, rgba(251, 251, 251, 0.95), rgba(251, 251, 251, 0.8) 60%, transparent);
+}
+
+/* Glass card for dark screens (testimonials, inputs) */
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 body {
   font-family: var(--font-sans);
   background: var(--color-bright);
   color: var(--color-dark);
   margin: 0;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Safe area support for fixed CTA footers on notched devices */
+.cta-footer-fixed {
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
 }

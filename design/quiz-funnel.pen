@@ -56,13 +56,16 @@
                   "letterSpacing": -1,
                   "lineHeight": 1.1,
                   "fontSize": "$size-title",
-                  "fill": "$dark"
+                  "fill": "$dark",
+                  "width": "fill_container"
                 },
                 "ZfGnz": {
                   "content": "A personalized meal system — built in under 2 minutes.",
                   "textAlign": "center",
                   "fill": "$dark",
-                  "fontSize": "$size-cta"
+                  "fontSize": "$size-cta",
+                  "width": "fill_container",
+                  "y": 96
                 }
               }
             },
@@ -292,7 +295,26 @@
               "type": "ref",
               "ref": "KMLHe",
               "x": 114.5,
-              "y": 807
+              "y": 807,
+              "width": "fit_content",
+              "height": "fit_content",
+              "descendants": {
+                "g8H6Y": {
+                  "width": "fit_content",
+                  "height": "fit_content",
+                  "x": 20,
+                  "y": 6.5
+                },
+                "kbfPO": {
+                  "x": 31
+                },
+                "4HAv2": {
+                  "y": 19
+                },
+                "wGlxs": {
+                  "x": 201
+                }
+              }
             },
             {
               "id": "ZzqSK",
@@ -305,7 +327,8 @@
               "y": 901,
               "descendants": {
                 "8hVEG": {
-                  "fill": "$dark"
+                  "fill": "$dark",
+                  "width": "fill_container"
                 },
                 "8hVEG/t9mZc": {
                   "content": "Build My System →",
@@ -313,13 +336,17 @@
                   "fontStyle": "normal",
                   "fontWeight": "400",
                   "fill": "$beige",
-                  "fontSize": "$size-cta"
+                  "fontSize": "$size-cta",
+                  "x": 125.5,
+                  "y": 18.5
                 },
                 "ppEa8": {
                   "content": "Instant access to your meal plan, shopping list & prep guides",
                   "textAlign": "center",
                   "fill": "$dark",
-                  "fontSize": "$size-small"
+                  "fontSize": "$size-small",
+                  "x": 19.5,
+                  "y": 68
                 }
               }
             }
@@ -346,7 +373,14 @@
               "ref": "GvFyQ",
               "width": "fill_container",
               "name": "progress",
+              "height": "fit_content",
+              "x": 20,
+              "y": 40,
               "descendants": {
+                "JdwKt": {
+                  "width": "fill_container",
+                  "height": "fit_content"
+                },
                 "qRkpv": {
                   "fontSize": "$size-lg",
                   "fill": "$dark"
@@ -354,7 +388,9 @@
                 "5p6HK": {
                   "content": "1/12",
                   "fontSize": "$size-cta",
-                  "fill": "$dark"
+                  "fill": "$dark",
+                  "x": 358,
+                  "y": 3
                 },
                 "zWQi2": {
                   "fill": "$border"
@@ -373,6 +409,7 @@
               "name": "header",
               "x": 20,
               "y": 156,
+              "height": "fit_content",
               "descendants": {
                 "3uATF": {
                   "content": "What's your #1 goal\nwith family meals?",
@@ -382,13 +419,16 @@
                   "textAlign": "center",
                   "fontSize": "$size-title",
                   "fill": "$dark",
-                  "fontStyle": "normal"
+                  "fontStyle": "normal",
+                  "width": "fill_container"
                 },
                 "ZfGnz": {
                   "content": "Pick the one that resonates most —\nwe'll build your plan around it.",
                   "textAlign": "center",
                   "fontSize": "$size-cta",
-                  "fill": "$dark"
+                  "fill": "$dark",
+                  "width": "fill_container",
+                  "y": 96
                 }
               }
             },
@@ -412,17 +452,23 @@
                     "thickness": 2,
                     "fill": "$dark"
                   },
+                  "height": "fit_content",
                   "descendants": {
                     "XOdGq": {
                       "content": "End the daily “what to cook?” stress",
                       "fontSize": "$size-body",
-                      "fill": "$dark"
+                      "fill": "$dark",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 21.5
                     },
                     "qW7N3": {
                       "stroke": {
                         "thickness": 2,
                         "fill": "$dark"
-                      }
+                      },
+                      "x": 364,
+                      "y": 20
                     }
                   }
                 },
@@ -437,14 +483,21 @@
                     "fill": "$violett"
                   },
                   "fill": "$bright",
+                  "height": "fit_content",
+                  "y": 76,
                   "descendants": {
                     "RVIja": {
                       "content": "Get everyone eating healthier",
                       "fontSize": "$size-body",
-                      "fill": "$dark"
+                      "fill": "$dark",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 21.5
                     },
                     "SUznR": {
-                      "fill": "$violett"
+                      "fill": "$violett",
+                      "x": 364,
+                      "y": 20
                     }
                   }
                 },
@@ -459,17 +512,24 @@
                     "thickness": 2,
                     "fill": "$dark"
                   },
+                  "height": "fit_content",
+                  "y": 152,
                   "descendants": {
                     "XOdGq": {
                       "content": "Stop wasting food and money",
                       "fontSize": "$size-body",
-                      "fill": "$dark"
+                      "fill": "$dark",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 21.5
                     },
                     "qW7N3": {
                       "stroke": {
                         "thickness": 2,
                         "fill": "$dark"
-                      }
+                      },
+                      "x": 364,
+                      "y": 20
                     }
                   }
                 },
@@ -484,17 +544,24 @@
                     "thickness": 2,
                     "fill": "$dark"
                   },
+                  "height": "fit_content",
+                  "y": 228,
                   "descendants": {
                     "XOdGq": {
                       "content": "Spend less time in the kitchen",
                       "fontSize": "$size-body",
-                      "fill": "$dark"
+                      "fill": "$dark",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 21.5
                     },
                     "qW7N3": {
                       "stroke": {
                         "thickness": 2,
                         "fill": "$dark"
-                      }
+                      },
+                      "x": 364,
+                      "y": 20
                     }
                   }
                 }
@@ -507,11 +574,15 @@
               "width": "fill_container",
               "name": "cta2",
               "fill": "$dark",
+              "x": 20,
+              "y": 744,
               "descendants": {
                 "t9mZc": {
                   "content": "Next →",
                   "fontSize": "$size-cta",
-                  "fill": "$beige"
+                  "fill": "$beige",
+                  "x": 175,
+                  "y": 18.5
                 }
               }
             }
@@ -538,7 +609,14 @@
               "ref": "GvFyQ",
               "width": "fill_container",
               "name": "prog3",
+              "height": "fit_content",
+              "x": 20,
+              "y": 40,
               "descendants": {
+                "JdwKt": {
+                  "width": "fill_container",
+                  "height": "fit_content"
+                },
                 "qRkpv": {
                   "fontSize": "$size-lg",
                   "fill": "$dark"
@@ -546,7 +624,9 @@
                 "5p6HK": {
                   "content": "2/12",
                   "fontSize": "$size-cta",
-                  "fill": "$dark"
+                  "fill": "$dark",
+                  "x": 358,
+                  "y": 3
                 },
                 "zWQi2": {
                   "fill": "$border"
@@ -563,6 +643,9 @@
               "ref": "r8NXb",
               "width": "fill_container",
               "name": "hdr3",
+              "height": "fit_content",
+              "x": 20,
+              "y": 156,
               "descendants": {
                 "3uATF": {
                   "content": "A month from now, what does success look like?",
@@ -572,13 +655,16 @@
                   "textAlign": "center",
                   "fontSize": "$size-title",
                   "fill": "$dark",
-                  "fontStyle": "normal"
+                  "fontStyle": "normal",
+                  "width": "fill_container"
                 },
                 "ZfGnz": {
                   "content": "Pick the one that excites you most.",
                   "textAlign": "center",
                   "fontSize": "$size-cta",
-                  "fill": "$dark"
+                  "fill": "$dark",
+                  "width": "fill_container",
+                  "y": 140
                 }
               }
             },
@@ -602,17 +688,23 @@
                     "thickness": 2,
                     "fill": "$dark"
                   },
+                  "height": "fit_content",
                   "descendants": {
                     "XOdGq": {
                       "content": "I know exactly what we’re eating — zero decisions",
                       "fontSize": "$size-body",
-                      "fill": "$dark"
+                      "fill": "$dark",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 20
                     },
                     "qW7N3": {
                       "stroke": {
                         "thickness": 2,
                         "fill": "$dark"
-                      }
+                      },
+                      "x": 364,
+                      "y": 29
                     }
                   }
                 },
@@ -627,17 +719,24 @@
                     "thickness": 2,
                     "fill": "$dark"
                   },
+                  "height": "fit_content",
+                  "y": 94,
                   "descendants": {
                     "XOdGq": {
                       "content": "Mealtimes are calm, everyone eats, no battles",
                       "fontSize": "$size-body",
-                      "fill": "$dark"
+                      "fill": "$dark",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 20
                     },
                     "qW7N3": {
                       "stroke": {
                         "thickness": 2,
                         "fill": "$dark"
-                      }
+                      },
+                      "x": 364,
+                      "y": 29
                     }
                   }
                 },
@@ -652,14 +751,21 @@
                     "fill": "$violett"
                   },
                   "fill": "$bright",
+                  "height": "fit_content",
+                  "y": 188,
                   "descendants": {
                     "RVIja": {
                       "content": "Fridge organized, nothing spoils, no last-minute runs",
                       "fontSize": "$size-body",
-                      "fill": "$dark"
+                      "fill": "$dark",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 20
                     },
                     "SUznR": {
-                      "fill": "$violett"
+                      "fill": "$violett",
+                      "x": 364,
+                      "y": 29
                     }
                   }
                 },
@@ -674,17 +780,24 @@
                     "thickness": 2,
                     "fill": "$dark"
                   },
+                  "height": "fit_content",
+                  "y": 282,
                   "descendants": {
                     "XOdGq": {
                       "content": "I have energy left after meals — cooking doesn’t drain me",
                       "fontSize": "$size-body",
-                      "fill": "$dark"
+                      "fill": "$dark",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 20
                     },
                     "qW7N3": {
                       "stroke": {
                         "thickness": 2,
                         "fill": "$dark"
-                      }
+                      },
+                      "x": 364,
+                      "y": 29
                     }
                   }
                 }
@@ -697,11 +810,15 @@
               "width": "fill_container",
               "name": "cta3",
               "fill": "$dark",
+              "x": 20,
+              "y": 744,
               "descendants": {
                 "t9mZc": {
                   "content": "That’s my goal →",
                   "fontSize": "$size-cta",
-                  "fill": "$beige"
+                  "fill": "$beige",
+                  "x": 134.5,
+                  "y": 18.5
                 }
               }
             }
@@ -728,9 +845,18 @@
               "ref": "GvFyQ",
               "width": "fill_container",
               "name": "progress",
+              "height": "fit_content",
+              "x": 20,
+              "y": 40,
               "descendants": {
+                "JdwKt": {
+                  "width": "fill_container",
+                  "height": "fit_content"
+                },
                 "5p6HK": {
-                  "content": "5/12"
+                  "content": "5/12",
+                  "x": 358,
+                  "y": 3
                 }
               }
             },
@@ -740,12 +866,18 @@
               "ref": "r8NXb",
               "width": "fill_container",
               "name": "header",
+              "height": "fit_content",
+              "x": 20,
+              "y": 156,
               "descendants": {
                 "3uATF": {
-                  "content": "Any dietary lifestyles\nin your family?"
+                  "content": "Any dietary lifestyles\nin your family?",
+                  "width": "fill_container"
                 },
                 "ZfGnz": {
-                  "content": "Select all that apply."
+                  "content": "Select all that apply.",
+                  "width": "fill_container",
+                  "y": 112
                 }
               }
             },
@@ -764,9 +896,21 @@
                   "ref": "yInJN",
                   "width": "fill_container",
                   "name": "opt1",
+                  "height": "fit_content",
                   "descendants": {
                     "K9bvg": {
-                      "content": "No specific diet"
+                      "content": "No specific diet",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 21.5
+                    },
+                    "luhOq": {
+                      "x": 364,
+                      "y": 20
+                    },
+                    "n7bQd": {
+                      "x": 4,
+                      "y": 4
                     }
                   }
                 },
@@ -776,9 +920,18 @@
                   "ref": "YbhXt",
                   "width": "fill_container",
                   "name": "opt2",
+                  "height": "fit_content",
+                  "y": 76,
                   "descendants": {
                     "IyYg0": {
-                      "content": "Vegetarian"
+                      "content": "Vegetarian",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 21.5
+                    },
+                    "nXLM0": {
+                      "x": 364,
+                      "y": 20
                     }
                   }
                 },
@@ -788,9 +941,18 @@
                   "ref": "YbhXt",
                   "width": "fill_container",
                   "name": "opt3",
+                  "height": "fit_content",
+                  "y": 152,
                   "descendants": {
                     "IyYg0": {
-                      "content": "Vegan"
+                      "content": "Vegan",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 21.5
+                    },
+                    "nXLM0": {
+                      "x": 364,
+                      "y": 20
                     }
                   }
                 },
@@ -800,9 +962,18 @@
                   "ref": "YbhXt",
                   "width": "fill_container",
                   "name": "opt4",
+                  "height": "fit_content",
+                  "y": 228,
                   "descendants": {
                     "IyYg0": {
-                      "content": "Pescatarian"
+                      "content": "Pescatarian",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 21.5
+                    },
+                    "nXLM0": {
+                      "x": 364,
+                      "y": 20
                     }
                   }
                 },
@@ -812,9 +983,18 @@
                   "ref": "YbhXt",
                   "width": "fill_container",
                   "name": "opt5",
+                  "height": "fit_content",
+                  "y": 304,
                   "descendants": {
                     "IyYg0": {
-                      "content": "Keto / Low-Carb"
+                      "content": "Keto / Low-Carb",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 21.5
+                    },
+                    "nXLM0": {
+                      "x": 364,
+                      "y": 20
                     }
                   }
                 },
@@ -824,9 +1004,18 @@
                   "ref": "YbhXt",
                   "width": "fill_container",
                   "name": "opt6",
+                  "height": "fit_content",
+                  "y": 380,
                   "descendants": {
                     "IyYg0": {
-                      "content": "Mediterranean"
+                      "content": "Mediterranean",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 21.5
+                    },
+                    "nXLM0": {
+                      "x": 364,
+                      "y": 20
                     }
                   }
                 }
@@ -838,9 +1027,13 @@
               "ref": "QpYSv",
               "width": "fill_container",
               "name": "cta",
+              "x": 20,
+              "y": 835,
               "descendants": {
                 "t9mZc": {
-                  "content": "Continue →"
+                  "content": "Continue →",
+                  "x": 156,
+                  "y": 18.5
                 }
               }
             }
@@ -867,9 +1060,18 @@
               "ref": "GvFyQ",
               "width": "fill_container",
               "name": "numProg",
+              "height": "fit_content",
+              "x": 20,
+              "y": 40,
               "descendants": {
+                "JdwKt": {
+                  "width": "fill_container",
+                  "height": "fit_content"
+                },
                 "5p6HK": {
-                  "content": "4/12"
+                  "content": "4/12",
+                  "x": 358,
+                  "y": 3
                 }
               }
             },
@@ -879,12 +1081,18 @@
               "ref": "r8NXb",
               "width": "fill_container",
               "name": "numHead",
+              "height": "fit_content",
+              "x": 20,
+              "y": 156,
               "descendants": {
                 "3uATF": {
-                  "content": "Who are we feeding?"
+                  "content": "Who are we feeding?",
+                  "width": "fill_container"
                 },
                 "ZfGnz": {
-                  "content": "We'll calculate exact portions —\nno waste, no leftovers."
+                  "content": "We'll calculate exact portions —\nno waste, no leftovers.",
+                  "width": "fill_container",
+                  "y": 60
                 }
               }
             },
@@ -905,10 +1113,31 @@
                   "name": "cnt1",
                   "descendants": {
                     "20J9U": {
-                      "content": "Adults"
+                      "content": "Adults",
+                      "x": 20,
+                      "y": 25.5
+                    },
+                    "VALQF": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 261,
+                      "y": 16
+                    },
+                    "jdLjd": {
+                      "x": 13,
+                      "y": 4.5
                     },
                     "ydy0P": {
-                      "content": "2"
+                      "content": "2",
+                      "x": 56,
+                      "y": 4.5
+                    },
+                    "FFC20": {
+                      "x": 87
+                    },
+                    "TWLlz": {
+                      "x": 13,
+                      "y": 4.5
                     }
                   }
                 },
@@ -918,12 +1147,34 @@
                   "ref": "Mbu4b",
                   "width": "fill_container",
                   "name": "cnt2",
+                  "y": 84,
                   "descendants": {
                     "20J9U": {
-                      "content": "Kids"
+                      "content": "Kids",
+                      "x": 20,
+                      "y": 25.5
+                    },
+                    "VALQF": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 261,
+                      "y": 16
+                    },
+                    "jdLjd": {
+                      "x": 13,
+                      "y": 4.5
                     },
                     "ydy0P": {
-                      "content": "2"
+                      "content": "2",
+                      "x": 56,
+                      "y": 4.5
+                    },
+                    "FFC20": {
+                      "x": 87
+                    },
+                    "TWLlz": {
+                      "x": 13,
+                      "y": 4.5
                     }
                   }
                 }
@@ -935,9 +1186,13 @@
               "ref": "QpYSv",
               "width": "fill_container",
               "name": "numCta",
+              "x": 20,
+              "y": 744,
               "descendants": {
                 "t9mZc": {
-                  "content": "Continue →"
+                  "content": "Continue →",
+                  "x": 156,
+                  "y": 18.5
                 }
               }
             }
@@ -964,9 +1219,18 @@
               "ref": "GvFyQ",
               "width": "fill_container",
               "name": "mcProg",
+              "height": "fit_content",
+              "x": 20,
+              "y": 40,
               "descendants": {
+                "JdwKt": {
+                  "width": "fill_container",
+                  "height": "fit_content"
+                },
                 "5p6HK": {
-                  "content": "6/12"
+                  "content": "6/12",
+                  "x": 358,
+                  "y": 3
                 }
               }
             },
@@ -976,12 +1240,18 @@
               "ref": "r8NXb",
               "width": "fill_container",
               "name": "mcHead",
+              "height": "fit_content",
+              "x": 20,
+              "y": 156,
               "descendants": {
                 "3uATF": {
-                  "content": "Any foods to\ncompletely exclude?"
+                  "content": "Any foods to\ncompletely exclude?",
+                  "width": "fill_container"
                 },
                 "ZfGnz": {
-                  "content": "Allergies, intolerances, or foods you hate.\nThese will NEVER appear."
+                  "content": "Allergies, intolerances, or foods you hate.\nThese will NEVER appear.",
+                  "width": "fill_container",
+                  "y": 112
                 }
               }
             },
@@ -1000,9 +1270,21 @@
                   "ref": "yInJN",
                   "width": "fill_container",
                   "name": "mcO1",
+                  "height": "fit_content",
                   "descendants": {
                     "K9bvg": {
-                      "content": "No exclusions"
+                      "content": "No exclusions",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 21.5
+                    },
+                    "luhOq": {
+                      "x": 364,
+                      "y": 20
+                    },
+                    "n7bQd": {
+                      "x": 4,
+                      "y": 4
                     }
                   }
                 },
@@ -1012,9 +1294,18 @@
                   "ref": "YbhXt",
                   "width": "fill_container",
                   "name": "mcO2",
+                  "height": "fit_content",
+                  "y": 76,
                   "descendants": {
                     "IyYg0": {
-                      "content": "Gluten / Wheat"
+                      "content": "Gluten / Wheat",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 21.5
+                    },
+                    "nXLM0": {
+                      "x": 364,
+                      "y": 20
                     }
                   }
                 },
@@ -1024,9 +1315,18 @@
                   "ref": "YbhXt",
                   "width": "fill_container",
                   "name": "mcO3",
+                  "height": "fit_content",
+                  "y": 152,
                   "descendants": {
                     "IyYg0": {
-                      "content": "Dairy / Lactose"
+                      "content": "Dairy / Lactose",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 21.5
+                    },
+                    "nXLM0": {
+                      "x": 364,
+                      "y": 20
                     }
                   }
                 },
@@ -1036,9 +1336,18 @@
                   "ref": "YbhXt",
                   "width": "fill_container",
                   "name": "mcO4",
+                  "height": "fit_content",
+                  "y": 228,
                   "descendants": {
                     "IyYg0": {
-                      "content": "Tree Nuts"
+                      "content": "Tree Nuts",
+                      "width": "fill_container",
+                      "x": 20,
+                      "y": 21.5
+                    },
+                    "nXLM0": {
+                      "x": 364,
+                      "y": 20
                     }
                   }
                 },
@@ -1048,9 +1357,12 @@
                   "ref": "9I1v5",
                   "width": "fill_container",
                   "name": "mcInput",
+                  "y": 304,
                   "descendants": {
                     "OuVZx": {
-                      "content": "Other allergies (comma-separated)"
+                      "content": "Other allergies (comma-separated)",
+                      "x": 16,
+                      "y": 17.5
                     }
                   }
                 }
@@ -1062,9 +1374,13 @@
               "ref": "QpYSv",
               "width": "fill_container",
               "name": "mcCta",
+              "x": 20,
+              "y": 780,
               "descendants": {
                 "t9mZc": {
-                  "content": "Continue →"
+                  "content": "Continue →",
+                  "x": 156,
+                  "y": 18.5
                 }
               }
             }
@@ -1127,7 +1443,19 @@
               "type": "ref",
               "ref": "cE3vL",
               "width": "fill_container",
-              "name": "sd1"
+              "name": "sd1",
+              "height": "fit_content",
+              "x": 20,
+              "y": 382.5,
+              "descendants": {
+                "AYsEt": {
+                  "width": "fill_container"
+                },
+                "4uKBI": {
+                  "width": "fill_container",
+                  "y": 60
+                }
+              }
             },
             {
               "type": "frame",
@@ -1142,12 +1470,22 @@
               "ref": "hIflG",
               "width": "fill_container",
               "name": "cta1",
+              "height": "fit_content",
+              "x": 20,
+              "y": 719,
               "descendants": {
+                "8hVEG": {
+                  "width": "fill_container"
+                },
                 "8hVEG/t9mZc": {
-                  "content": "Continue →"
+                  "content": "Continue →",
+                  "x": 156,
+                  "y": 18.5
                 },
                 "ppEa8": {
-                  "content": ""
+                  "content": "",
+                  "x": 204,
+                  "y": 68
                 }
               }
             }
@@ -1196,14 +1534,20 @@
               "ref": "r8NXb",
               "width": "fill_container",
               "name": "header2",
+              "height": "fit_content",
+              "x": 20,
+              "y": 335,
               "descendants": {
                 "3uATF": {
-                  "content": "Now let's dig deeper."
+                  "content": "Now let's dig deeper.",
+                  "width": "fill_container"
                 },
                 "ZfGnz": {
                   "content": "You spend {hoursPerWeek}+ hours on food weekly.\nThat's {daysPerYear} full days a year.",
                   "fontSize": "$size-cta",
-                  "lineHeight": 1.3
+                  "lineHeight": 1.3,
+                  "width": "fill_container",
+                  "y": 60
                 }
               }
             },
@@ -1220,12 +1564,22 @@
               "ref": "hIflG",
               "width": "fill_container",
               "name": "cta2",
+              "height": "fit_content",
+              "x": 20,
+              "y": 719,
               "descendants": {
+                "8hVEG": {
+                  "width": "fill_container"
+                },
                 "8hVEG/t9mZc": {
-                  "content": "Continue →"
+                  "content": "Continue →",
+                  "x": 156,
+                  "y": 18.5
                 },
                 "ppEa8": {
-                  "content": ""
+                  "content": "",
+                  "x": 204,
+                  "y": 68
                 }
               }
             }
@@ -1288,7 +1642,44 @@
               "type": "ref",
               "ref": "OWgYE",
               "width": "fill_container",
-              "name": "ps3"
+              "name": "ps3",
+              "height": "fit_content",
+              "x": 20,
+              "y": 346.5,
+              "descendants": {
+                "7xYW3": {
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "y": 20
+                },
+                "nYPKX": {
+                  "x": 340
+                },
+                "UqgVu": {
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "y": 57
+                },
+                "ODeeS": {
+                  "x": 331
+                },
+                "w1wAu": {
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "y": 94
+                },
+                "pGOlq": {
+                  "x": 303
+                },
+                "Ge8ay": {
+                  "width": "fill_container",
+                  "y": 131
+                },
+                "EqEl8": {
+                  "width": "fill_container",
+                  "y": 148
+                }
+              }
             },
             {
               "type": "frame",
@@ -1303,12 +1694,22 @@
               "ref": "hIflG",
               "width": "fill_container",
               "name": "cta3",
+              "height": "fit_content",
+              "x": 20,
+              "y": 719,
               "descendants": {
+                "8hVEG": {
+                  "width": "fill_container"
+                },
                 "8hVEG/t9mZc": {
-                  "content": "Continue →"
+                  "content": "Continue →",
+                  "x": 156,
+                  "y": 18.5
                 },
                 "ppEa8": {
-                  "content": ""
+                  "content": "",
+                  "x": 204,
+                  "y": 68
                 }
               }
             }
@@ -1384,9 +1785,18 @@
                   "ref": "N7Wzx",
                   "width": "fill_container",
                   "name": "c1",
+                  "height": "fit_content",
+                  "y": 8,
                   "descendants": {
+                    "ZjM9K": {
+                      "x": 4,
+                      "y": 4
+                    },
                     "S6X9d": {
-                      "content": "Family profile analyzed"
+                      "content": "Family profile analyzed",
+                      "width": "fill_container",
+                      "x": 36,
+                      "y": 1.5
                     }
                   }
                 },
@@ -1396,9 +1806,18 @@
                   "ref": "N7Wzx",
                   "width": "fill_container",
                   "name": "c2",
+                  "height": "fit_content",
+                  "y": 48,
                   "descendants": {
+                    "ZjM9K": {
+                      "x": 4,
+                      "y": 4
+                    },
                     "S6X9d": {
-                      "content": "Dietary needs mapped"
+                      "content": "Dietary needs mapped",
+                      "width": "fill_container",
+                      "x": 36,
+                      "y": 1.5
                     }
                   }
                 },
@@ -1408,9 +1827,14 @@
                   "ref": "v1nZa",
                   "width": "fill_container",
                   "name": "c3",
+                  "height": "fit_content",
+                  "y": 88,
                   "descendants": {
                     "b24BG": {
-                      "content": "Matching recipes..."
+                      "content": "Matching recipes...",
+                      "width": "fill_container",
+                      "x": 36,
+                      "y": 1.5
                     }
                   }
                 },
@@ -1420,9 +1844,14 @@
                   "ref": "v1nZa",
                   "width": "fill_container",
                   "name": "c4",
+                  "height": "fit_content",
+                  "y": 128,
                   "descendants": {
                     "b24BG": {
-                      "content": "Generating meal plan..."
+                      "content": "Generating meal plan...",
+                      "width": "fill_container",
+                      "x": 36,
+                      "y": 1.5
                     }
                   }
                 }
@@ -1433,7 +1862,9 @@
               "type": "ref",
               "ref": "J1tkL",
               "width": "fill_container",
-              "name": "pbar4"
+              "name": "pbar4",
+              "x": 20,
+              "y": 599
             },
             {
               "type": "frame",
@@ -1499,13 +1930,18 @@
                   "ref": "EIhyv",
                   "name": "card-cost",
                   "width": "fill_container",
+                  "height": "fit_content",
                   "descendants": {
                     "BEKG9": {
                       "content": "The Real Cost",
-                      "fill": "$orange"
+                      "fill": "$orange",
+                      "x": 20,
+                      "y": 16
                     },
                     "la8FB": {
-                      "content": "You're making {decisionsPerYear}+ food decisions per year.\nThat's {daysPerYear} full days of mental energy."
+                      "content": "You're making {decisionsPerYear}+ food decisions per year.\nThat's {daysPerYear} full days of mental energy.",
+                      "x": 20,
+                      "y": 39
                     }
                   }
                 },
@@ -1515,13 +1951,19 @@
                   "ref": "EIhyv",
                   "name": "card-pattern",
                   "width": "fill_container",
+                  "height": "fit_content",
+                  "y": 111,
                   "descendants": {
                     "BEKG9": {
                       "content": "The Pattern",
-                      "fill": "$pink"
+                      "fill": "$pink",
+                      "x": 20,
+                      "y": 16
                     },
                     "la8FB": {
-                      "content": "You start strong, but by Wednesday you're improvising — bringing back all the stress."
+                      "content": "You start strong, but by Wednesday you're improvising — bringing back all the stress.",
+                      "x": 20,
+                      "y": 39
                     }
                   }
                 },
@@ -1531,13 +1973,19 @@
                   "ref": "EIhyv",
                   "name": "card-priority",
                   "width": "fill_container",
+                  "height": "fit_content",
+                  "y": 200,
                   "descendants": {
                     "BEKG9": {
                       "content": "Your Priority",
-                      "fill": "$violett"
+                      "fill": "$violett",
+                      "x": 20,
+                      "y": 16
                     },
                     "la8FB": {
-                      "content": "Take all daily food decisions off your plate — so cooking becomes automatic."
+                      "content": "Take all daily food decisions off your plate — so cooking becomes automatic.",
+                      "x": 20,
+                      "y": 39
                     }
                   }
                 }
@@ -1556,12 +2004,22 @@
               "ref": "hIflG",
               "name": "cta",
               "width": "fill_container",
+              "height": "fit_content",
+              "x": 20,
+              "y": 719,
               "descendants": {
+                "8hVEG": {
+                  "width": "fill_container"
+                },
                 "8hVEG/t9mZc": {
-                  "content": "Show me the solution →"
+                  "content": "Show me the solution →",
+                  "x": 103.5,
+                  "y": 18.5
                 },
                 "ppEa8": {
-                  "content": ""
+                  "content": "",
+                  "x": 204,
+                  "y": 68
                 }
               }
             }
@@ -1871,12 +2329,22 @@
               "ref": "hIflG",
               "name": "cta",
               "width": "fill_container",
+              "height": "fit_content",
+              "x": 20,
+              "y": 719,
               "descendants": {
+                "8hVEG": {
+                  "width": "fill_container"
+                },
                 "8hVEG/t9mZc": {
-                  "content": "See my 7-day plan →"
+                  "content": "See my 7-day plan →",
+                  "x": 116,
+                  "y": 18.5
                 },
                 "ppEa8": {
-                  "content": ""
+                  "content": "",
+                  "x": 204,
+                  "y": 68
                 }
               }
             }
@@ -2154,12 +2622,22 @@
               "ref": "hIflG",
               "name": "cta",
               "width": "fill_container",
+              "height": "fit_content",
+              "x": 20,
+              "y": 719,
               "descendants": {
+                "8hVEG": {
+                  "width": "fill_container"
+                },
                 "8hVEG/t9mZc": {
-                  "content": "Get my full plan →"
+                  "content": "Get my full plan →",
+                  "x": 128.5,
+                  "y": 18.5
                 },
                 "ppEa8": {
-                  "content": ""
+                  "content": "",
+                  "x": 204,
+                  "y": 68
                 }
               }
             }
@@ -2212,9 +2690,13 @@
               "ref": "9I1v5",
               "name": "email-input",
               "width": "fill_container",
+              "x": 20,
+              "y": 208,
               "descendants": {
                 "OuVZx": {
-                  "content": "your@email.com"
+                  "content": "your@email.com",
+                  "x": 16,
+                  "y": 17.5
                 }
               }
             },
@@ -2266,12 +2748,22 @@
               "ref": "hIflG",
               "name": "cta",
               "width": "fill_container",
+              "height": "fit_content",
+              "x": 20,
+              "y": 719,
               "descendants": {
+                "8hVEG": {
+                  "width": "fill_container"
+                },
                 "8hVEG/t9mZc": {
-                  "content": "Send my plan →"
+                  "content": "Send my plan →",
+                  "x": 137.5,
+                  "y": 18.5
                 },
                 "ppEa8": {
-                  "content": "No spam. Unsubscribe anytime."
+                  "content": "No spam. Unsubscribe anytime.",
+                  "x": 108.5,
+                  "y": 68
                 }
               }
             }
@@ -2325,14 +2817,85 @@
               "type": "ref",
               "ref": "Mn6nr",
               "name": "comparison",
-              "width": "fill_container"
+              "width": "fill_container",
+              "height": "fit_content",
+              "x": 20,
+              "y": 200,
+              "descendants": {
+                "kxrJB": {
+                  "width": "fill_container",
+                  "height": "fit_content"
+                },
+                "y6QJU": {
+                  "x": 12,
+                  "y": 16
+                },
+                "xBDkz": {
+                  "x": 12,
+                  "y": 41
+                },
+                "uwbHq": {
+                  "x": 12,
+                  "y": 83
+                },
+                "7CoHo": {
+                  "x": 12,
+                  "y": 125
+                },
+                "4dsYf": {
+                  "x": 12,
+                  "y": 167
+                },
+                "nvecZ": {
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "x": 210
+                },
+                "gCGTG": {
+                  "x": 12,
+                  "y": 16
+                },
+                "eH9EX": {
+                  "x": 12,
+                  "y": 41
+                },
+                "O8pVl": {
+                  "x": 12,
+                  "y": 83
+                },
+                "a7hJW": {
+                  "x": 12,
+                  "y": 125
+                },
+                "rcGeD": {
+                  "x": 12,
+                  "y": 167
+                }
+              }
             },
             {
               "id": "o7LVu",
               "type": "ref",
               "ref": "Z8tBp",
               "name": "pricing",
-              "width": "fill_container"
+              "width": "fill_container",
+              "height": "fit_content",
+              "x": 20,
+              "y": 433,
+              "descendants": {
+                "DlkUK": {
+                  "x": 131.5,
+                  "y": 24
+                },
+                "go7Bp": {
+                  "x": 134,
+                  "y": 55
+                },
+                "gdw0V": {
+                  "x": 87.5,
+                  "y": 84
+                }
+              }
             },
             {
               "type": "text",
@@ -2358,12 +2921,22 @@
               "ref": "hIflG",
               "name": "cta",
               "width": "fill_container",
+              "height": "fit_content",
+              "x": 20,
+              "y": 719,
               "descendants": {
+                "8hVEG": {
+                  "width": "fill_container"
+                },
                 "8hVEG/t9mZc": {
-                  "content": "Start my free trial →"
+                  "content": "Start my free trial →",
+                  "x": 120,
+                  "y": 18.5
                 },
                 "ppEa8": {
-                  "content": ""
+                  "content": "",
+                  "x": 204,
+                  "y": 68
                 }
               }
             }
@@ -2720,7 +3293,8 @@
               "type": "ref",
               "ref": "J1tkL",
               "width": "fill_container",
-              "name": "pbar"
+              "name": "pbar",
+              "y": 148
             }
           ]
         },
@@ -3052,6 +3626,7 @@
           "name": "Atom/CheckItem",
           "reusable": true,
           "width": 408,
+          "height": "fit_content(0)",
           "gap": 4,
           "children": [
             {
@@ -3097,7 +3672,13 @@
               "type": "ref",
               "ref": "QpYSv",
               "width": "fill_container",
-              "name": "ctaButton"
+              "name": "ctaButton",
+              "descendants": {
+                "t9mZc": {
+                  "x": 155.5,
+                  "y": 18.5
+                }
+              }
             },
             {
               "type": "text",

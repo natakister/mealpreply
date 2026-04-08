@@ -19,6 +19,7 @@ export default function AnalyzingScreen({ screen, ctx = {}, onNext, onBack }) {
   const items = screen.checklist || []
   const [doneCount, setDoneCount] = useState(0)
   const delay = screen.itemDelay || 1200
+  const isDark = screen.theme === 'image'
 
   const advance = useCallback(() => {
     setDoneCount(prev => prev + 1)
@@ -37,9 +38,12 @@ export default function AnalyzingScreen({ screen, ctx = {}, onNext, onBack }) {
   const progress = items.length > 0 ? (doneCount / items.length) * 100 : 0
 
   return (
-    <div className="flex flex-col items-center gap-6 min-h-dvh px-5 pt-4 pb-28 bg-bright">
+    <div
+      className={`flex flex-col items-center gap-6 min-h-dvh px-5 pt-4 pb-28 ${isDark ? 'screen-image-bg' : 'bg-bright'}`}
+      style={isDark && screen.bgImage ? { backgroundImage: `url(${screen.bgImage})` } : undefined}
+    >
       <div className="w-full animate-in">
-        <button onClick={onBack} className="w-10 h-10 flex items-center justify-start cursor-pointer">
+        <button onClick={onBack} className="w-10 h-10 flex items-center justify-start cursor-pointer text-dark">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <line x1="19" y1="12" x2="5" y2="12" />
             <polyline points="12 19 5 12 12 5" />
@@ -49,26 +53,28 @@ export default function AnalyzingScreen({ screen, ctx = {}, onNext, onBack }) {
       <div className="flex-1" />
 
       <div className="animate-in">
-        <p className="text-title font-title leading-[1.1] tracking-tight text-dark text-center">
+        <p className={`font-title text-[60px] leading-[0.88] tracking-tight text-center ${isDark ? 'text-bright' : 'text-dark'}`}>
           {interpolate(screen.title, ctx)}
         </p>
       </div>
 
-      <div className="flex flex-col gap-4 w-full py-2 animate-in delay-1">
-        {items.map((item, i) => (
-          <ChecklistItem
-            key={i}
-            label={interpolate(item, ctx)}
-            done={i < doneCount}
+      {/* Checklist in white card */}
+      <div className="bg-bright rounded-xl p-5 w-full animate-in delay-1">
+        <div className="flex flex-col gap-4">
+          {items.map((item, i) => (
+            <ChecklistItem
+              key={i}
+              label={interpolate(item, ctx)}
+              done={i < doneCount}
+            />
+          ))}
+        </div>
+        <div className="mt-5 w-full h-1.5 bg-border rounded-full overflow-hidden">
+          <div
+            className="h-full bg-green rounded-full transition-all duration-700 ease-out"
+            style={{ width: `${progress}%` }}
           />
-        ))}
-      </div>
-
-      <div className="w-full h-1.5 bg-border rounded-full overflow-hidden animate-in delay-2">
-        <div
-          className="h-full bg-dark rounded-full transition-all duration-700 ease-out"
-          style={{ width: `${progress}%` }}
-        />
+        </div>
       </div>
 
       <div className="flex-1" />

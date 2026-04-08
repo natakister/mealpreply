@@ -91,6 +91,11 @@
     "allergiesCount": { "expr": "(allergies || []).filter(a => a !== 'none').length" },
     "equipmentCount": { "expr": "(kitchenEquipment || []).length" },
 
+    "_doc_dietary_chips": "Dietary chip labels for diet-mapped bridge screen",
+    "dietaryChip1": { "expr": "(dietary || []).filter(d => d !== 'none')[0] || 'Balanced'" },
+    "dietaryChip2": { "expr": "(dietary || []).filter(d => d !== 'none')[1] || 'High Protein'" },
+    "dietaryChip3": { "expr": "(dietary || []).filter(d => d !== 'none')[2] || 'Low Sugar'" },
+
     "_doc_labels": "Human-readable labels for progress-summary display",
     "mainGoalLabel": {
       "switch": "mainGoal",
@@ -259,6 +264,28 @@
       "default": "5 min assembly"
     },
 
+    "_doc_segment_stat": "Segment-bridge stat variant — big stat number + description per segment",
+    "segmentStat": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "12+ food\ndecisions daily",
+        "health_focus": "87% quit\nwithin 2 months",
+        "busy_pro": "35,000+\nmicro-decisions",
+        "budget": "30% of groceries\nthrown away"
+      },
+      "default": "12+ food\ndecisions daily"
+    },
+    "segmentStatText": {
+      "switch": "lifeStage",
+      "cases": {
+        "busy_parent": "made by an average parent. That's over 4,000\na year — no wonder you're drained.",
+        "health_focus": "The problem isn't motivation — it's monotony.\nLet's break the cycle.",
+        "busy_pro": "at work. Then \"what's for dinner?\" breaks the\ncamel's back. It's not laziness — it's fatigue.",
+        "budget": "That's like tossing €1 out of every €3\nyou spend on food."
+      },
+      "default": "made by an average person daily.\nThat's thousands a year."
+    },
+
     "_doc_paywall": "F-001: Segment-specific paywall comparison (highest conversion impact)",
     "paywallWithout1": {
       "switch": "lifeStage",
@@ -400,35 +427,17 @@
     },
 
     {
-      "_doc": "SEGMENT BRIDGE — first personalized hit. Research-based stats per segment.",
+      "_doc": "SEGMENT BRIDGE — first personalized hit. Research-based stats per segment. NEW DESIGN: violet bg, illustration, big stat number.",
       "id": "segment-bridge",
       "type": "interstitial",
-      "variant": "bridge",
+      "variant": "stat",
       "phase": "engagement",
-      "title": "You're not alone.",
-      "dynamicText": {
-        "key": "lifeStage",
-        "cases": {
-          "busy_parent": "The average parent makes 12+ food decisions daily.\nThat's over 4,000 a year — no wonder you're drained.",
-          "health_focus": "87% of people who start meal prepping quit within 2 months.\nThe problem isn't motivation — it's monotony.",
-          "busy_pro": "After 35,000+ micro-decisions at work, \"what's for dinner?\" breaks the camel's back.\nIt's decision fatigue, not laziness.",
-          "budget": "The average household throws away 30% of groceries.\nThat's like tossing €1 out of every €3 you spend."
-        },
-        "default": "Most people struggle with the same thing. Let's change that."
-      },
-      "infoCards": [
-        {
-          "label": "The Math",
-          "color": "orange",
-          "body": "Average family: 4.5 hours/week on food planning + cooking.\nThat's 10 full days a year you'll never get back."
-        },
-        {
-          "label": "The Good News",
-          "color": "green",
-          "body": "With a prep system, most families cut that time in half — and eat better."
-        }
-      ],
-      "cta": "Let's fix this →"
+      "theme": "dark",
+      "illustration": "/Cherries.png",
+      "statSubtitle": "You are not alone",
+      "stat": "{segmentStat}",
+      "statText": "{segmentStatText}",
+      "cta": "Let's fix that →"
     },
 
 
@@ -692,22 +701,25 @@
     },
 
     {
-      "_doc": "F-006: MICRO-BRIDGE after dietary+exclusions. Breaks 4-screen input fatigue. Validates what was captured.",
+      "_doc": "F-006: MICRO-BRIDGE after dietary+exclusions. NEW DESIGN: violet bg, checkmark icon, dietary chips.",
       "id": "diet-mapped",
       "type": "interstitial",
       "variant": "bridge",
       "phase": "context",
-      "title": "Dietary profile ==locked in==.",
+      "theme": "dark",
+      "icon": "/AppleIcon.png",
+      "title": "Dietary profile\nlocked in",
       "dynamicText": {
         "key": "lifeStage",
         "cases": {
-          "busy_parent": "{dietaryCount} dietary filter(s) and {allergiesCount} exclusion(s) mapped for your family. Every recipe will respect these — no exceptions.",
-          "health_focus": "{dietaryCount} dietary filter(s) and {allergiesCount} exclusion(s) saved. Only meals that match your nutritional standards.",
-          "busy_pro": "{dietaryCount} dietary filter(s) and {allergiesCount} exclusion(s) — saved. You'll never see a recipe that breaks your rules.",
-          "budget": "{dietaryCount} dietary filter(s) and {allergiesCount} exclusion(s) mapped. We'll only suggest ingredients that fit your diet AND your budget."
+          "busy_parent": "You spend {hoursPerWeek}+ hours on food weekly.\nThat's {daysPerYear} full days a year.",
+          "health_focus": "You spend {hoursPerWeek}+ hours on food weekly.\nThat's {daysPerYear} full days a year.",
+          "busy_pro": "You spend {hoursPerWeek}+ hours on food weekly.\nThat's {daysPerYear} full days a year.",
+          "budget": "You spend {hoursPerWeek}+ hours on food weekly.\nThat's {daysPerYear} full days a year."
         },
-        "default": "{dietaryCount} dietary filter(s) and {allergiesCount} exclusion(s) mapped. Every recipe will respect these."
+        "default": "You spend {hoursPerWeek}+ hours on food weekly.\nThat's {daysPerYear} full days a year."
       },
+      "chips": ["{dietaryChip1}", "{dietaryChip2}", "{dietaryChip3}"],
       "cta": "Two more questions →"
     },
 
@@ -750,12 +762,14 @@
 
 
     {
-      "_doc": "TRANSITION: Progress summary — mirror of answers. IKEA effect.",
+      "_doc": "TRANSITION: Progress summary — mirror of answers. IKEA effect. NEW DESIGN: image bg, summary in white card.",
       "id": "progress-summary",
       "type": "interstitial",
       "variant": "progress",
       "phase": "transition",
-      "title": "Here's what we know.",
+      "theme": "image",
+      "bgImage": "/Background.png",
+      "title": "Here's what we know",
       "summaryRows": [
         { "label": "Focus", "value": "{lifeStageLabel}" },
         { "label": "Cooking for", "value": "{totalPeople} {peopleWord}" },
@@ -770,12 +784,14 @@
 
 
     {
-      "_doc": "REALITY BRIDGE — emotional gear shift.",
+      "_doc": "REALITY BRIDGE — emotional gear shift. NEW DESIGN: violet bg, magnifying glass icon.",
       "id": "reality-bridge",
       "type": "interstitial",
       "variant": "bridge",
       "phase": "reality",
-      "title": "Now let's find\nwhat's ==not working==.",
+      "theme": "dark",
+      "icon": "/LoopIcon.png",
+      "title": "Now let's find\nwhat's not working",
       "dynamicText": {
         "key": "lifeStage",
         "cases": {
@@ -890,10 +906,12 @@
     },
 
     {
-      "_doc": "F-007: ANALYZING — segment-specific checklist for perceived computational effort.",
+      "_doc": "F-007: ANALYZING — segment-specific checklist. NEW DESIGN: image bg, checklist in white card, green progress bar.",
       "id": "analyzing",
       "type": "analyzing",
       "phase": "diagnosis",
+      "theme": "image",
+      "bgImage": "/Background.png",
       "title": "Building your\npersonalized plan...",
       "checklist": [
         "{analyzingItem1}",
@@ -905,12 +923,15 @@
     },
 
     {
-      "_doc": "INSIGHT MIRROR — the PEAK MOMENT. 3 colored cards with heavy dynamic text per segment.",
+      "_doc": "INSIGHT MIRROR — the PEAK MOMENT. NEW DESIGN: image bg, family photo, white cards.",
       "id": "insight-mirror",
       "type": "info",
       "variant": "insight",
       "phase": "insight",
-      "title": "Here's what\nwe discovered:",
+      "theme": "image",
+      "bgImage": "/Background.png",
+      "heroImage": "/Familyy.png",
+      "title": "Method trusted by\n12,000 families",
       "cards": [
         {
           "label": "The Real Cost",
@@ -970,32 +991,23 @@
     },
 
     {
-      "_doc": "SOLUTION PREVIEW — relief after the peak. Dynamic title + benefit per segment.",
+      "_doc": "SOLUTION PREVIEW — relief after the peak. NEW DESIGN: violet bg, stat cards (time + money). Steps removed (shown elsewhere).",
       "id": "solution-preview",
       "type": "info",
       "variant": "solution",
       "phase": "solution",
+      "theme": "dark",
       "dynamicTitle": {
         "key": "lifeStage",
         "cases": {
-          "busy_parent": "Zero daily food decisions.\nHere's how:",
-          "health_focus": "Clean eating on autopilot.\nHere's how:",
-          "busy_pro": "Dinner solved in 5 minutes.\nHere's how:",
-          "budget": "Every euro works harder.\nHere's how:"
+          "busy_parent": "Save your precious time and money every month",
+          "health_focus": "Save your precious time and money every month",
+          "busy_pro": "Save your precious time and money every month",
+          "budget": "Save your precious time and money every month"
         },
-        "default": "Your personalized system.\nHere's how it works:"
+        "default": "Save your precious time and money every month"
       },
-      "steps": ["Plan Once", "Prep Twice", "Eat All Week"],
-      "dynamicBenefit": {
-        "key": "lifeStage",
-        "cases": {
-          "busy_parent": "Your entire week planned around your family's real needs. Just open and assemble — no thinking, no stress, no fights at the table.",
-          "health_focus": "Macros built in, variety guaranteed. One focused prep session gives you a full week of meals you'll actually want to eat.",
-          "busy_pro": "Come home, open the fridge, eat in 5 minutes. The system runs itself — you just show up.",
-          "budget": "Every ingredient used, every euro tracked. Two prep sessions, one precise shopping list, zero waste."
-        },
-        "default": "A system built around your real needs."
-      },
+      "subtitle": "Your entire week is planned. Just open and assemble. No thinking required.",
       "stats": [
         { "value": "{weeklyTimeSaved}h", "label": "saved per week", "color": "violett" },
         { "value": "€{monthlySavings}", "label": "saved per month", "color": "green" }
@@ -1004,74 +1016,93 @@
     },
 
     {
-      "_doc": "F-002: VALUE DEMO — segment-specific recipes, cost framing, title. Reciprocity moment.",
+      "_doc": "F-002: VALUE DEMO — segment-specific recipes. NEW DESIGN: violet bg, recipe cards with photos, laurel badge, gradient overlay.",
       "id": "value-demo",
       "type": "info",
       "variant": "value_demo",
       "phase": "conversion",
+      "theme": "dark",
       "title": "{valueDemoTitle}",
-      "costBadge": "{valueDemoCost}",
+      "highlightCard": {
+        "image": "/HappyBanana.png",
+        "lines": [
+          "+ 18 more recipes inside",
+          "~ €{monthlySavings} saved on groceries",
+          "+ Organized Shopping list"
+        ]
+      },
       "recipes": [
-        { "name": "{recipe1Name}", "time": "{recipe1Time}" },
-        { "name": "{recipe2Name}", "time": "{recipe2Time}" },
-        { "name": "{recipe3Name}", "time": "{recipe3Time}" }
-      ],
-      "blurredItems": [
-        "+18 more recipes",
-        "+Full prep guides",
-        "+Organized shopping list"
+        { "name": "{recipe1Name}", "time": "5 min", "image": "/Tricia Timney Photo.jpg" },
+        { "name": "{recipe2Name}", "time": "5 min", "image": "/Emma Miller Unsplash.jpg" },
+        { "name": "{recipe3Name}", "time": "5 min", "image": "/Max Griss Photo.jpg" },
+        { "name": "{recipe2Name}", "time": "5 min", "image": "/Emma Miller Unsplash.jpg" },
+        { "name": "{recipe1Name}", "time": "5 min", "image": "/Tricia Timney Photo.jpg" },
+        { "name": "{recipe3Name}", "time": "5 min", "image": "/Max Griss Photo.jpg" }
       ],
       "cta": "Get my full plan →",
-      "socialProofBadge": {"title": "MEAL PREP PRO", "text": "4.8★ · 12K users"}
+      "socialProofBadge": {"title": "MealPreply PRO", "text": "4.8★ · 12K users"}
     },
 
     {
-      "_doc": "F-005: EMAIL CAPTURE — segment-specific testimonials. Each audience hears from someone like them.",
+      "_doc": "F-005: EMAIL CAPTURE. NEW DESIGN: violet bg, glass input, glass testimonials, free badge.",
       "id": "email-capture",
       "type": "capture",
       "variant": "email",
       "phase": "conversion",
+      "theme": "dark",
       "field": "email",
-      "title": "Your personalized\nplan is ready.",
-      "subtitle": "Enter your email to receive it — free.",
+      "title": "Your personalized plan\nis ready",
+      "subtitle": "Enter your email to receive it",
+      "freeBadge": "free",
       "placeholder": "your@email.com",
-      "privacyText": "Your data is never shared or sold.",
       "testimonials": [
         {"text": "{testimonialText}", "author": "{testimonialAuthor}"},
-        {"text": "Finally stopped ordering takeout every night. The shopping list alone saved me 2 hours.", "author": "— Mike, busy professional"}
+        {"text": "Finally stopped ordering takeout every night. The shopping list alone saved me 2 hours.", "author": "Mike, busy professional"}
       ],
       "socialProofBadge": {"title": "TRUSTED BY", "text": "12,000+ users"},
-      "trustText": "No spam. Unsubscribe anytime.",
+      "trustText": "Your data is never shared or sold",
       "cta": "Send my plan →"
     },
 
     {
-      "_doc": "F-001: PAYWALL — segment-specific comparison. Each audience sees THEIR pain (WITHOUT) and THEIR solution (WITH). Peak-End Rule: this is the END.",
+      "_doc": "F-001: PAYWALL — long version. NEW DESIGN: violet bg, hero, social proof, recipe preview, pricing, FAQ, guarantee.",
       "id": "paywall",
       "type": "capture",
       "variant": "paywall",
       "phase": "monetization",
-      "title": "Your life with vs.\nwithout the system",
-      "comparison": {
-        "without": [
-          "{paywallWithout1}",
-          "{paywallWithout2}",
-          "{paywallWithout3}",
-          "{paywallWithout4}"
-        ],
-        "with": [
-          "{paywallWith1}",
-          "{paywallWith2}",
-          "{paywallWith3}",
-          "{paywallWith4}"
-        ]
-      },
+      "theme": "dark",
+      "title": "Stop thinking about\nwhat to cook every day",
+      "heroSubtitle": "Your personalized weekly plan is ready",
+      "heroImage": "/VegeFamily.png",
+      "paywallTestimonials": [
+        {"text": "{testimonialText}", "author": "{testimonialAuthor}"},
+        {"text": "The shopping list alone saved me 2 hours a week.", "author": "Mike, busy professional"},
+        {"text": "My kids actually eat dinner now without complaints.", "author": "Sarah, mom of 3"}
+      ],
+      "previewTitle": "Here's your weekly plan!",
+      "previewPhotos": ["/Max Griss Photo.jpg", "/Tricia Timney Photo.jpg", "/Emma Miller Unsplash.jpg"],
+      "features": [
+        "+18 more meals waiting inside",
+        "+ Full prep guides — no thinking required!",
+        "One shopping list for the whole week"
+      ],
       "pricing": {
         "trial": "14-day free trial",
         "price": "then €9.99/month",
         "guarantee": "Cancel anytime • 30-day money-back"
       },
-      "socialProof": "4.8 from 12,847 reviews",
+      "pricingCta": "Try for $0 →",
+      "guarantee": {
+        "title": "30-day money-back guarantee",
+        "text": "Try it risk-free. Full refund within 30 days."
+      },
+      "faqTitle": "People often ask",
+      "faqs": [
+        {"q": "Can I cancel anytime?", "a": "Yes, cancel in one tap."},
+        {"q": "Do I need cooking skills?", "a": "No. Every recipe is beginner-friendly."},
+        {"q": "How fast will I see results?", "a": "Most users feel the difference in week one."}
+      ],
+      "bottomCta": "Start my free trial →",
       "cta": "Start my free trial →"
     },
 

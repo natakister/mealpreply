@@ -1,42 +1,35 @@
-import SectionHeader from '../components/molecules/SectionHeader'
 import Button from '../components/atoms/Button'
 import { interpolate } from '../engine/computeVars'
-
-const colorMap = { orange: 'text-orange', pink: 'text-pink', violett: 'text-violett', green: 'text-green' }
-
-function InfoCard({ card, delayMs }) {
-  return (
-    <div
-      className="border border-border rounded-xl bg-bright p-4 w-full animate-in"
-      style={{ animationDelay: delayMs != null ? `${delayMs}ms` : undefined }}
-    >
-      <p className={`text-small font-bold mb-1 ${colorMap[card.color] || 'text-violett'}`}>
-        {card.label}
-      </p>
-      <p className="text-body text-dark leading-[1.4]">{card.body}</p>
-    </div>
-  )
-}
+import { assetUrl } from '../utils/assetUrl'
 
 function StatVariant({ screen, ctx }) {
   return (
     <>
-      <div className="animate-in delay-1">
-        <p className="text-title font-title leading-[1.1] tracking-tight text-dark text-center">
-          {interpolate(screen.title, ctx)}
-        </p>
+      {/* Illustration — Cherries */}
+      <div className="w-full flex items-center justify-center animate-in" style={{ height: '240px' }}>
+        {screen.illustration ? (
+          <img src={assetUrl(screen.illustration)} alt="" className="max-h-full object-contain" />
+        ) : (
+          <div className="w-48 h-48 rounded-2xl bg-white/10 flex items-center justify-center">
+            <span className="text-bright/40 text-small">illustration</span>
+          </div>
+        )}
       </div>
-      <div className="animate-in delay-2 flex flex-col items-center gap-2">
-        <p className="text-title font-sans leading-[1.1] tracking-tight text-violett text-center font-bold">
+
+      {screen.statSubtitle && (
+        <p className="text-body text-bright/80 text-center animate-in delay-1">
+          ( {interpolate(screen.statSubtitle, ctx)} )
+        </p>
+      )}
+
+      <div className="animate-in delay-2 flex flex-col items-center gap-5 w-full">
+        <p className="font-title text-[60px] leading-[0.88] tracking-tight text-bright text-center">
           {interpolate(screen.stat, ctx)}
         </p>
-        <p className="text-body text-dark text-center leading-[1.3]">
+        <p className="text-cta text-bright text-center leading-[1.3]">
           {interpolate(screen.statText, ctx)}
         </p>
       </div>
-      {screen.infoCard && (
-        <InfoCard card={screen.infoCard} delayMs={300} />
-      )}
     </>
   )
 }
@@ -51,16 +44,38 @@ function BridgeVariant({ screen, ctx }) {
 
   return (
     <>
-      <div className="animate-in delay-1">
-        <SectionHeader
-          title={interpolate(screen.title, ctx)}
-          subtitle={interpolate(body, ctx)}
-          subtitleClassName="text-cta"
-        />
+      {/* Icon — AppleIcon or LoopIcon */}
+      <div className="animate-in">
+        {screen.icon ? (
+          <img src={assetUrl(screen.icon)} alt="" className="w-[136px] h-[129px] object-contain mx-auto" />
+        ) : (
+          <div className="w-[136px] h-[129px] rounded-2xl bg-white/10 flex items-center justify-center mx-auto">
+            <span className="text-bright/40 text-small">icon</span>
+          </div>
+        )}
       </div>
-      {screen.infoCards?.map((card, i) => (
-        <InfoCard key={i} card={card} delayMs={(i + 1) * 150} />
-      ))}
+
+      <div className="animate-in delay-1 flex flex-col gap-5 w-full">
+        <h1 className="font-title text-[60px] leading-[0.88] text-bright">
+          {interpolate(screen.title, ctx)}
+        </h1>
+        {body && (
+          <p className="text-cta text-bright leading-[1.3]">
+            {interpolate(body, ctx)}
+          </p>
+        )}
+      </div>
+
+      {/* Dietary chips — shown when screen has chips data */}
+      {screen.chips && (
+        <div className="flex flex-wrap gap-2 animate-in delay-2">
+          {screen.chips.map((chip, i) => (
+            <span key={i} className="bg-white/15 text-bright text-body rounded-full px-4 py-1.5 border border-white/20">
+              {interpolate(chip, ctx)}
+            </span>
+          ))}
+        </div>
+      )}
     </>
   )
 }
@@ -69,56 +84,100 @@ function ProgressVariant({ screen, ctx }) {
   const rows = screen.summaryRows || []
   return (
     <>
+      <div className="flex-1" />
+
       <div className="animate-in delay-1">
-        <p className="text-title font-title leading-[1.1] tracking-tight text-dark text-center">
+        <p className="font-title text-[60px] leading-[0.88] tracking-tight text-bright text-center">
           {interpolate(screen.title, ctx)}
         </p>
       </div>
-      <div className="animate-in delay-2 flex flex-col gap-4 w-full py-5">
-        {rows.map((row, i) => (
-          <div key={i} className="flex justify-between items-center">
-            <span className="text-body text-grey">{interpolate(row.label, ctx)}</span>
-            <span className="text-body text-dark font-semibold">{interpolate(row.value, ctx)}</span>
-          </div>
-        ))}
-      </div>
-      <div className="w-full animate-in delay-2">
-        <div className="w-full h-2 bg-border rounded-full overflow-hidden">
-          <div className="h-full bg-violett rounded-full" style={{ width: '78%' }} />
+
+      {/* Summary in white card */}
+      <div className="animate-in delay-2 bg-bright rounded-xl p-5 w-full">
+        <div className="flex flex-col gap-4">
+          {rows.map((row, i) => (
+            <div key={i} className="flex justify-between items-center">
+              <span className="text-body text-grey">{interpolate(row.label, ctx)}</span>
+              <span className="text-body text-dark font-semibold">{interpolate(row.value, ctx)}</span>
+            </div>
+          ))}
         </div>
-        {screen.progressMessage && (
-          <p className="text-small text-grey text-center w-full mt-3">{screen.progressMessage}</p>
-        )}
+        <div className="mt-5">
+          <div className="w-full h-1.5 bg-border rounded-full overflow-hidden">
+            <div className="h-full bg-green rounded-full" style={{ width: '78%' }} />
+          </div>
+          {screen.progressMessage && (
+            <p className="text-small text-grey text-center w-full mt-3">{screen.progressMessage}</p>
+          )}
+        </div>
       </div>
+
+      <div className="flex-1" />
     </>
   )
 }
 
 export default function InterstitialScreen({ screen, step, totalSteps, ctx = {}, onNext, onBack }) {
   const variant = screen.variant || 'stat'
+  const isDark = screen.theme === 'dark'
+  const isImageBg = screen.theme === 'image'
+
+  const wrapperClasses = [
+    'flex flex-col items-center gap-6 min-h-dvh px-5',
+    isDark ? 'screen-dark pt-10 pb-6' : 'pb-28',
+    isImageBg ? 'screen-image-bg pt-32' : '',
+    !isDark && !isImageBg ? 'bg-bright pt-4' : '',
+  ].filter(Boolean).join(' ')
+
+  const backArrowColor = isDark ? 'text-bright' : 'text-dark'
+  const ctaFooterBg = isDark
+    ? 'bg-violett'
+    : isImageBg
+      ? 'bg-gradient-to-t from-[#FBFBFB]/95 via-[#FBFBFB]/80 to-transparent'
+      : 'bg-gradient-to-t from-[#FBFBFB] via-[#FBFBFB] to-transparent'
 
   return (
-    <div className="flex flex-col items-center gap-6 min-h-dvh px-5 pt-4 pb-28 bg-bright">
-      <div className="w-full animate-in">
-        <button onClick={onBack} className="w-10 h-10 flex items-center justify-start cursor-pointer">
+    <div
+      className={wrapperClasses}
+      style={isImageBg && screen.bgImage ? { backgroundImage: `url(${screen.bgImage})` } : undefined}
+    >
+      {/* Back arrow — absolute on image-bg, normal flow otherwise */}
+      {isImageBg ? (
+        <button onClick={onBack} className={`fixed top-10 left-5 z-10 w-10 h-10 flex items-center justify-start cursor-pointer ${backArrowColor}`}>
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <line x1="19" y1="12" x2="5" y2="12" />
             <polyline points="12 19 5 12 12 5" />
           </svg>
         </button>
-      </div>
+      ) : (
+        <div className="w-full animate-in">
+          <button onClick={onBack} className={`w-10 h-10 flex items-center justify-start cursor-pointer ${backArrowColor}`}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+          </button>
+        </div>
+      )}
 
       {variant === 'stat' && <StatVariant screen={screen} ctx={ctx} />}
       {variant === 'bridge' && <BridgeVariant screen={screen} ctx={ctx} />}
       {variant === 'progress' && <ProgressVariant screen={screen} ctx={ctx} />}
 
-      <div className="flex-1" />
+      {variant !== 'progress' && <div className="flex-1" />}
 
-      <div className="fixed bottom-0 left-0 right-0 z-20 px-5 pb-6 pt-2 bg-gradient-to-t from-[#FBFBFB] via-[#FBFBFB] to-transparent">
-        <div className="max-w-[448px] mx-auto">
+      {/* Dark screens: inline CTA, no fixed footer. Light/image screens: fixed footer with gradient */}
+      {isDark ? (
+        <div className="w-full max-w-[448px] mx-auto pb-4">
           <Button label={screen.cta || 'Continue →'} onClick={onNext} />
         </div>
-      </div>
+      ) : (
+        <div className={`fixed bottom-0 left-0 right-0 z-20 px-5 pb-8 pt-2 ${ctaFooterBg}`}>
+          <div className="max-w-[448px] mx-auto">
+            <Button label={screen.cta || 'Continue →'} onClick={onNext} />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
