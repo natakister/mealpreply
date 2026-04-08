@@ -1063,7 +1063,7 @@
       },
       "recipes": [
         { "name": "Veggie Hummus Wraps",          "time": "12 min", "servings": 4, "image": "/1.png" },
-        { "name": "Mediterranean Veggie Bowl",    "time": "10 min", "servings": 2, "image": "/2.png" },
+        { "name": "Mediterranean Bowl",           "time": "10 min", "servings": 2, "image": "/2.png" },
         { "name": "Tomato Basil Flatbread",       "time": "12 min", "servings": 3, "image": "/3.png" },
         { "name": "Roasted Pumpkin Soup",         "time": "12 min", "servings": 4, "image": "/4.png" },
         { "name": "Banana Almond Oatmeal",        "time": "5 min",  "servings": 2, "image": "/5.png" },

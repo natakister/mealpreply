@@ -256,13 +256,13 @@ export default function InfoScreen({ screen, ctx = {}, onNext, onBack }) {
 
       <div className="flex-1" />
 
-      {/* Soft violet-to-transparent fade sitting above the CTA — covers the last
-          recipe rows on scroll AND at initial load so there's no hard cutoff line. */}
+      {/* Soft violet-to-transparent fade sitting above the CTA — tall and
+          low-opacity at the top so the upper edge is imperceptible. */}
       {variant === 'value_demo' && (
         <div
-          className="fixed left-0 right-0 bottom-0 h-56 z-10 pointer-events-none"
+          className="fixed left-0 right-0 bottom-0 h-96 z-10 pointer-events-none"
           style={{
-            background: 'linear-gradient(to top, rgb(77 73 214) 0%, rgb(77 73 214) 35%, rgba(77,73,214,0) 100%)',
+            background: 'linear-gradient(to top, rgba(77,73,214,1) 0%, rgba(77,73,214,1) 18%, rgba(77,73,214,0.92) 32%, rgba(77,73,214,0.6) 55%, rgba(77,73,214,0) 100%)',
           }}
         />
       )}
