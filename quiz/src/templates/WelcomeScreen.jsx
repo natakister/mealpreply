@@ -51,7 +51,7 @@ export default function WelcomeScreen({ screen, ctx = {}, onNext }) {
         </div>
       )}
 
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[448px] z-20 px-4 pt-2 bg-gradient-to-t from-[#FBFBFB] via-[#FBFBFB] to-transparent" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
+      <div className="fixed bottom-0 left-0 right-0 z-20 px-4 pt-2 bg-gradient-to-t from-[#FBFBFB] via-[#FBFBFB] to-transparent" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
         <div className="max-w-[448px] mx-auto flex flex-col items-center gap-2">
           <Button label={screen.cta} onClick={onNext} className="animate-btn-pulse" />
           {screen.trustText && (

@@ -119,6 +119,27 @@ export default function QuizEngine({ config }) {
     }
   }, [buildBasePayload, currentScreen?.id, currentScreen?.type, currentScreen?.variant, sessionId])
 
+  // Sync body background with current screen theme so fixed footers blend
+  // seamlessly on desktop (where content column is 448px but viewport is wider).
+  useEffect(() => {
+    const theme = currentScreen?.theme
+    const body = document.body
+    body.classList.remove('theme-dark', 'theme-image')
+    body.style.backgroundImage = ''
+    if (theme === 'dark') {
+      body.classList.add('theme-dark')
+    } else if (theme === 'image') {
+      body.classList.add('theme-image')
+      if (currentScreen?.bgImage) {
+        body.style.backgroundImage = `url(${currentScreen.bgImage})`
+      }
+    }
+    return () => {
+      body.classList.remove('theme-dark', 'theme-image')
+      body.style.backgroundImage = ''
+    }
+  }, [currentScreen?.theme, currentScreen?.bgImage])
+
   const nextWithTelemetry = useCallback(() => {
     if (!currentScreen) return
 

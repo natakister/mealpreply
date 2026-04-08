@@ -295,7 +295,7 @@ export default function CaptureScreen({ screen, answer, ctx = {}, onSelect, onNe
       <div className="flex-1" />
 
       {/* Fixed CTA footer: solid violet on dark, gradient fade on light */}
-      <div className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[448px] z-20 px-5 pb-8 pt-2 ${ctaFooterBg}`}>
+      <div className={`fixed bottom-0 left-0 right-0 z-20 px-5 pb-8 pt-2 ${ctaFooterBg}`}>
         <div className="max-w-[448px] mx-auto flex flex-col items-center gap-2">
           {isDark && variant === 'paywall' ? (
             <button

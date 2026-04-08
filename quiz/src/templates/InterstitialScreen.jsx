@@ -5,12 +5,12 @@ import { assetUrl } from '../utils/assetUrl'
 function StatVariant({ screen, ctx }) {
   return (
     <>
-      {/* Illustration — Cherries */}
-      <div className="w-full flex items-center justify-center animate-in">
+      {/* Illustration — Cherries. Allowed to overflow above the screen like in the design. */}
+      <div className="w-full flex items-center justify-center animate-in -mt-10">
         {screen.illustration ? (
-          <img src={assetUrl(screen.illustration)} alt="" className="h-[180px] object-contain" />
+          <img src={assetUrl(screen.illustration)} alt="" className="h-[260px] object-contain" />
         ) : (
-          <div className="w-40 h-40 rounded-2xl bg-white/10 flex items-center justify-center">
+          <div className="w-48 h-48 rounded-2xl bg-white/10 flex items-center justify-center">
             <span className="text-bright/40 text-small">illustration</span>
           </div>
         )}
@@ -165,7 +165,7 @@ export default function InterstitialScreen({ screen, step, totalSteps, ctx = {},
       {variant === 'progress' && <ProgressVariant screen={screen} ctx={ctx} />}
 
       {/* Fixed CTA footer: solid violet on dark, gradient fade on light/image */}
-      <div className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[448px] z-20 px-5 pb-8 pt-2 ${ctaFooterBg}`}>
+      <div className={`fixed bottom-0 left-0 right-0 z-20 px-5 pb-8 pt-2 ${ctaFooterBg}`}>
         <div className="max-w-[448px] mx-auto">
           <Button label={screen.cta || 'Continue →'} onClick={onNext} />
         </div>

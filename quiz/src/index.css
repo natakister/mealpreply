@@ -15,6 +15,17 @@ body {
   font-family: 'Inter', sans-serif;
   background-color: #FBFBFB;
   color: #2C2C2C;
+  transition: background-color 0.2s ease;
+}
+
+/* Screen theme: body bg matches current screen so fixed footers and dark
+   content blend seamlessly across the whole viewport on desktop. */
+body.theme-dark { background-color: #4D49D6; }
+body.theme-image {
+  background-color: #4D49D6;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 /* Headings use Platform */

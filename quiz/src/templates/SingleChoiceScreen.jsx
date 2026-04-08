@@ -27,7 +27,7 @@ export default function SingleChoiceScreen({ screen, step, totalSteps, answer, c
         ))}
       </div>
 
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[448px] z-20 px-5 pb-6 pt-2 bg-gradient-to-t from-[#FBFBFB] via-[#FBFBFB] to-transparent">
+      <div className="fixed bottom-0 left-0 right-0 z-20 px-5 pb-6 pt-2 bg-gradient-to-t from-[#FBFBFB] via-[#FBFBFB] to-transparent">
         <div className="max-w-[448px] mx-auto">
           <Button
             label={screen.cta}
