@@ -6,8 +6,8 @@ function ChecklistItem({ label, done }) {
   return (
     <div className={`flex items-center gap-3 transition-all duration-500 ${done ? 'opacity-100' : 'opacity-40'}`}>
       <span className={`w-6 h-6 rounded-md shrink-0 flex items-center justify-center transition-colors duration-500
-        ${done ? 'bg-violett' : 'border-2 border-dark'}`}>
-        {done && <span className="text-bright text-body font-semibold font-['Lacquer']">X</span>}
+        ${done ? 'bg-violett' : ''}`}>
+        {done && <span className="text-bright text-body font-semibold font-['Lacquer']">V</span>}
       </span>
       <span className={`text-body transition-colors duration-500 ${done ? 'text-dark font-medium' : 'text-grey'}`}>
         {label}
@@ -53,15 +53,10 @@ export default function AnalyzingScreen({ screen, ctx = {}, onNext, onBack }) {
       </div>
       <div className="flex-1" />
 
-      <div className="animate-in flex flex-col gap-3">
+      <div className="animate-in">
         <p className="font-title text-[60px] leading-[0.88] tracking-tight text-center text-dark">
           {interpolate(screen.title, ctx)}
         </p>
-        {screen.subtitle && (
-          <p className="text-cta text-dark text-center">
-            {interpolate(screen.subtitle, ctx)}
-          </p>
-        )}
       </div>
 
       {/* Checklist in white card */}
@@ -75,11 +70,16 @@ export default function AnalyzingScreen({ screen, ctx = {}, onNext, onBack }) {
             />
           ))}
         </div>
-        <div className="mt-5 w-full h-1.5 bg-border rounded-full overflow-hidden">
-          <div
-            className="h-full bg-green rounded-full transition-all duration-700 ease-out"
-            style={{ width: `${progress}%` }}
-          />
+        <div className="mt-10 flex items-center gap-3">
+          <div className="flex-1 h-1.5 bg-border rounded-full overflow-hidden">
+            <div
+              className="h-full bg-violett rounded-full transition-all duration-700 ease-out"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <span className="text-body text-violett font-semibold tabular-nums shrink-0 w-10 text-right">
+            {Math.round(progress)}%
+          </span>
         </div>
       </div>
 

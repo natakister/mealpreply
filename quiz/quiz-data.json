@@ -913,7 +913,6 @@
       "theme": "image",
       "bgImage": "/Background.png",
       "title": "Building your\npersonalized plan...",
-      "subtitle": "Analyzing your {totalPeople}-person family profile",
       "checklist": [
         "{analyzingItem1}",
         "{analyzingItem2}",
