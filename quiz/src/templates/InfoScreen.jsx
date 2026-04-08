@@ -106,7 +106,12 @@ function SolutionVariant({ screen, ctx }) {
               {interpolate(stat.value, ctx)}
             </span>
             <div className="flex flex-col items-center">
-              <span className="text-cta text-dark">{firstLine}</span>
+              <span
+                className="text-cta text-dark highlight-sweep"
+                style={{ animationDelay: `${800 + i * 250}ms` }}
+              >
+                {firstLine}
+              </span>
               {secondLine && <span className="text-cta text-grey">{secondLine}</span>}
             </div>
           </div>
