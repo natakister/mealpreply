@@ -1032,15 +1032,14 @@
         ]
       },
       "recipes": [
-        { "name": "{recipe1Name}", "time": "5 min", "image": "/Tricia Timney Photo.jpg" },
-        { "name": "{recipe2Name}", "time": "5 min", "image": "/Emma Miller Unsplash.jpg" },
-        { "name": "{recipe3Name}", "time": "5 min", "image": "/Max Griss Photo.jpg" },
-        { "name": "{recipe2Name}", "time": "5 min", "image": "/Emma Miller Unsplash.jpg" },
-        { "name": "{recipe1Name}", "time": "5 min", "image": "/Tricia Timney Photo.jpg" },
-        { "name": "{recipe3Name}", "time": "5 min", "image": "/Max Griss Photo.jpg" }
+        { "name": "{recipe1Name}", "time": "5 min", "image": "/tricia-timney.jpg" },
+        { "name": "{recipe2Name}", "time": "5 min", "image": "/emma-miller.jpg" },
+        { "name": "{recipe3Name}", "time": "5 min", "image": "/max-griss.jpg" },
+        { "name": "{recipe2Name}", "time": "5 min", "image": "/emma-miller.jpg" },
+        { "name": "{recipe1Name}", "time": "5 min", "image": "/tricia-timney.jpg" },
+        { "name": "{recipe3Name}", "time": "5 min", "image": "/max-griss.jpg" }
       ],
-      "cta": "Get my full plan →",
-      "socialProofBadge": {"title": "MealPreply PRO", "text": "4.8★ · 12K users"}
+      "cta": "Get my full plan →"
     },
 
     {

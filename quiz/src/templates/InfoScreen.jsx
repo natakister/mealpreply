@@ -133,18 +133,6 @@ function ValueDemoVariant({ screen, ctx }) {
         </h1>
       </div>
 
-      {/* Rating badge with laurels */}
-      {screen.socialProofBadge && (
-        <div className="flex items-center justify-start gap-2 animate-in delay-2 w-full">
-          <img src={assetUrl('/laurel_l.png')} alt="" className="w-6 h-8 object-contain brightness-0 invert" />
-          <div>
-            <p className="text-body font-bold text-bright">{screen.socialProofBadge.title}</p>
-            <p className="text-small text-bright">{screen.socialProofBadge.text}</p>
-          </div>
-          <img src={assetUrl('/laurel_r.png')} alt="" className="w-6 h-8 object-contain brightness-0 invert" />
-        </div>
-      )}
-
       {/* Highlight card — summary stats */}
       {screen.highlightCard && (
         <div className="animate-in delay-2 flex items-center gap-3 bg-bright rounded-xl p-3 w-full">
@@ -163,20 +151,20 @@ function ValueDemoVariant({ screen, ctx }) {
         </div>
       )}
 
-      {/* Recipe cards — scroll naturally, no height limit */}
-      <div className="flex flex-col gap-2 w-full">
+      {/* Recipe cards */}
+      <div className="flex flex-col gap-3 w-full">
         {recipes.map((recipe, i) => (
-          <div key={i} className={`animate-in delay-${Math.min(i + 3, 5)} flex items-center gap-3 bg-bright rounded-xl px-3 py-3`}>
+          <div key={i} className={`animate-in delay-${Math.min(i + 3, 5)} flex items-center gap-4 bg-bright rounded-2xl p-3`}>
             {recipe.image ? (
-              <img src={assetUrl(recipe.image)} alt="" className="w-[60px] h-[60px] shrink-0 rounded-[10px] object-cover" />
+              <img src={assetUrl(recipe.image)} alt="" className="w-20 h-20 shrink-0 rounded-xl object-cover" />
             ) : (
-              <div className="w-[60px] h-[60px] shrink-0 rounded-[10px] bg-border/50 flex items-center justify-center">
+              <div className="w-20 h-20 shrink-0 rounded-xl bg-border/50 flex items-center justify-center">
                 <span className="text-micro text-grey">photo</span>
               </div>
             )}
-            <div className="flex flex-col gap-1 flex-1">
-              <span className="text-body font-semibold text-dark">{interpolate(recipe.name, ctx)}</span>
-              <span className="text-small text-grey">( {interpolate(recipe.time, ctx)} )</span>
+            <div className="flex flex-col gap-1 flex-1 min-w-0">
+              <span className="text-cta font-semibold text-dark leading-tight truncate">{interpolate(recipe.name, ctx)}</span>
+              <span className="text-small text-grey">{interpolate(recipe.time, ctx)}</span>
             </div>
           </div>
         ))}
