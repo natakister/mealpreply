@@ -133,19 +133,19 @@ function ValueDemoVariant({ screen, ctx }) {
         </h1>
       </div>
 
-      {/* Highlight card — green with banana masked / cropped at waist */}
+      {/* Highlight card — green with banana flush to bottom-left */}
       {screen.highlightCard && (
-        <div className="animate-in delay-2 flex items-center gap-3 bg-green rounded-2xl p-3 pr-4 w-full overflow-hidden">
-          <div className="w-[110px] h-[110px] shrink-0 overflow-hidden relative">
+        <div className="animate-in delay-2 flex items-end gap-3 bg-green rounded-2xl py-4 pr-4 pl-0 w-full overflow-hidden relative">
+          <div className="w-[130px] h-[130px] shrink-0 relative self-end">
             {screen.highlightCard.image && (
               <img
                 src={assetUrl(screen.highlightCard.image)}
                 alt=""
-                className="absolute left-1/2 -translate-x-1/2 top-0 h-[180px] max-w-none object-contain"
+                className="absolute left-1/2 -translate-x-1/2 bottom-0 h-[200px] max-w-none object-contain animate-banana-bob"
               />
             )}
           </div>
-          <div className="flex flex-col gap-1.5 flex-1">
+          <div className="flex flex-col gap-1.5 flex-1 self-center py-2">
             {screen.highlightCard.lines.map((line, i) => (
               <p key={i} className="text-body font-semibold text-dark leading-tight">{interpolate(line, ctx)}</p>
             ))}

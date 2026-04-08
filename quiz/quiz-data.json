@@ -1062,10 +1062,10 @@
         ]
       },
       "recipes": [
-        { "name": "Chicken Fajita Wraps",         "time": "15 min", "servings": 4, "image": "/1.png" },
+        { "name": "Veggie Hummus Wraps",          "time": "12 min", "servings": 4, "image": "/1.png" },
         { "name": "Mediterranean Veggie Bowl",    "time": "10 min", "servings": 2, "image": "/2.png" },
-        { "name": "BBQ Chicken Flatbread",        "time": "12 min", "servings": 3, "image": "/3.png" },
-        { "name": "Roasted Pumpkin Soup",         "time": "15 min", "servings": 4, "image": "/4.png" },
+        { "name": "Tomato Basil Flatbread",       "time": "12 min", "servings": 3, "image": "/3.png" },
+        { "name": "Roasted Pumpkin Soup",         "time": "12 min", "servings": 4, "image": "/4.png" },
         { "name": "Banana Almond Oatmeal",        "time": "5 min",  "servings": 2, "image": "/5.png" },
         { "name": "Herbed Rice with Radish",      "time": "10 min", "servings": 3, "image": "/6.png" }
       ],
