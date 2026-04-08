@@ -28,11 +28,11 @@ function InsightVariant({ screen, ctx }) {
     <>
       {/* Hero image */}
       {screen.heroImage && (
-        <div className="w-full flex justify-center animate-in">
+        <div className="w-full flex justify-center animate-in -mb-2">
           <img
             src={assetUrl(screen.heroImage)}
             alt=""
-            className="max-h-[240px] w-auto object-contain"
+            className="max-h-[340px] w-auto object-contain"
           />
         </div>
       )}
