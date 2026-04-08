@@ -93,15 +93,22 @@ function SolutionVariant({ screen, ctx }) {
       <div className="animate-in delay-3 flex gap-3 w-full">
         {stats.map((stat, i) => {
           const IconComponent = statIconMap[stat.color]
+          const labelText = interpolate(stat.label, ctx)
+          // Split label into first word (dark) and rest (grey), e.g. "saved per week"
+          const [firstLine, ...restWords] = labelText.split(' ')
+          const secondLine = restWords.join(' ')
           return (
           <div key={i} className="flex-1 bg-bright rounded-xl py-4 px-4 flex flex-col items-center gap-2">
             <div className="w-11 h-11 flex items-center justify-center">
               {IconComponent && <IconComponent size={44} className={`${colorMap[stat.color] || 'text-violett'}`} strokeWidth={1.5} />}
             </div>
-            <span className={`text-[40px] font-bold ${colorMap[stat.color] || 'text-violett'}`}>
+            <span className={`font-title text-[40px] leading-[1] ${colorMap[stat.color] || 'text-violett'}`}>
               {interpolate(stat.value, ctx)}
             </span>
-            <span className="text-cta text-grey text-center">{interpolate(stat.label, ctx)}</span>
+            <div className="flex flex-col items-center">
+              <span className="text-cta text-dark">{firstLine}</span>
+              {secondLine && <span className="text-cta text-grey">{secondLine}</span>}
+            </div>
           </div>
           )
         })}
