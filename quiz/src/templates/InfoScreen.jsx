@@ -26,13 +26,13 @@ function InsightVariant({ screen, ctx }) {
   const cards = screen.cards || []
   return (
     <>
-      {/* Hero image */}
+      {/* Hero image — overflows above the viewport top */}
       {screen.heroImage && (
-        <div className="w-full flex justify-center animate-in -mb-2">
+        <div className="w-full flex justify-center animate-in -mt-20 -mb-4">
           <img
             src={assetUrl(screen.heroImage)}
             alt=""
-            className="max-h-[340px] w-auto object-contain"
+            className="max-h-[440px] w-auto object-contain"
           />
         </div>
       )}
