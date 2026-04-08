@@ -159,9 +159,8 @@ function ValueDemoVariant({ screen, ctx }) {
         </div>
       )}
 
-      {/* Recipe list — single white card. Bottom corners square and pb huge so
-          the card extends past the viewport bottom, no visible bottom edge. */}
-      <div className="bg-bright rounded-t-2xl w-full overflow-hidden animate-in delay-3 pb-[40vh] -mb-[40vh]">
+      {/* Recipe list — single white card, thick black dividers only between rows */}
+      <div className="bg-bright rounded-2xl w-full overflow-hidden animate-in delay-3">
         {recipes.map((recipe, i) => {
           const servings = recipe.servings ?? ctx.totalPeople ?? 4
           return (
