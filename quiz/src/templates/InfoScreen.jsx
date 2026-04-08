@@ -102,7 +102,7 @@ function SolutionVariant({ screen, ctx }) {
             <div className="w-11 h-11 flex items-center justify-center">
               {IconComponent && <IconComponent size={44} className={`${colorMap[stat.color] || 'text-violett'}`} strokeWidth={1.5} />}
             </div>
-            <span className={`font-title text-[40px] leading-[1] ${colorMap[stat.color] || 'text-violett'}`}>
+            <span className={`font-title text-[52px] leading-[1] ${colorMap[stat.color] || 'text-violett'}`}>
               {interpolate(stat.value, ctx)}
             </span>
             <div className="flex flex-col items-center">

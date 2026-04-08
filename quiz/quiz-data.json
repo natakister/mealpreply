@@ -167,7 +167,7 @@
         "busy_parent": "I stopped asking 'what should we eat?' — 20 minutes on Sunday and my family's whole week is done. The kids actually eat it.",
         "health_focus": "I finally broke the meal prep boredom cycle. Different flavors every day, macros on point, and I haven't skipped a week in 3 months.",
         "busy_pro": "I come home, open the fridge, and dinner is ready in 5 minutes. No decisions, no energy wasted. It changed my evenings completely.",
-        "budget": "We cut our grocery waste to nearly zero. I can see exactly where every euro goes — we're saving over €150/month now."
+        "budget": "We cut our grocery waste to nearly zero. I can see exactly where every dollar goes — we're saving over $150/month now."
       },
       "default": "I stopped stressing about food. 20 minutes on Sunday and the whole week is sorted — I actually look forward to meals now."
     },
@@ -196,12 +196,12 @@
     "valueDemoCost": {
       "switch": "lifeStage",
       "cases": {
-        "busy_parent": "€87 for {totalPeople} people",
+        "busy_parent": "$87 for {totalPeople} people",
         "health_focus": "Macros calculated per meal",
         "busy_pro": "Under 5 min per meal",
-        "budget": "Under €4 per serving"
+        "budget": "Under $4 per serving"
       },
-      "default": "€87 for the week"
+      "default": "$87 for the week"
     },
     "recipe1Name": {
       "switch": "lifeStage",
@@ -219,7 +219,7 @@
         "busy_parent": "kid-approved",
         "health_focus": "42g protein",
         "busy_pro": "grab & eat",
-        "budget": "€1.20/serving"
+        "budget": "$1.20/serving"
       },
       "default": "5 min assembly"
     },
@@ -239,7 +239,7 @@
         "busy_parent": "5 min assembly",
         "health_focus": "38g protein",
         "busy_pro": "microwave 2 min",
-        "budget": "€1.50/serving"
+        "budget": "$1.50/serving"
       },
       "default": "5 min assembly"
     },
@@ -259,7 +259,7 @@
         "busy_parent": "family favorite",
         "health_focus": "35g protein",
         "busy_pro": "just combine",
-        "budget": "€0.90/serving"
+        "budget": "$0.90/serving"
       },
       "default": "5 min assembly"
     },
@@ -281,7 +281,7 @@
         "busy_parent": "made by an average parent. That's over 4,000\na year — no wonder you're drained.",
         "health_focus": "The problem isn't motivation — it's monotony.\nLet's break the cycle.",
         "busy_pro": "at work. Then \"what's for dinner?\" breaks the\ncamel's back. It's not laziness — it's fatigue.",
-        "budget": "That's like tossing €1 out of every €3\nyou spend on food."
+        "budget": "That's like tossing $1 out of every $3\nyou spend on food."
       },
       "default": "made by an average person daily.\nThat's thousands a year."
     },
@@ -292,8 +292,8 @@
       "cases": {
         "busy_parent": "{decisionsPerDay}+ food decisions draining you every day",
         "health_focus": "Same 4 meals on repeat until you quit",
-        "busy_pro": "€{weeklyTakeoutSpend}/week on takeout you didn't plan",
-        "budget": "€{monthlyWasteAmount}/month thrown away on spoiled food"
+        "busy_pro": "${weeklyTakeoutSpend}/week on takeout you didn't plan",
+        "budget": "${monthlyWasteAmount}/month thrown away on spoiled food"
       },
       "default": "Daily stress about what to eat"
     },
@@ -310,12 +310,12 @@
     "paywallWithout3": {
       "switch": "lifeStage",
       "cases": {
-        "busy_parent": "~€{wastedFoodPerMonth}/month on food nobody ate",
+        "busy_parent": "~${wastedFoodPerMonth}/month on food nobody ate",
         "health_focus": "{prepHoursPerWeek}+ hours/week on prep that still bores you",
         "busy_pro": "Fridge full of ingredients you're too tired to cook",
         "budget": "No visibility into where food money actually goes"
       },
-      "default": "~€{wastedFoodPerMonth}/month wasted on food"
+      "default": "~${wastedFoodPerMonth}/month wasted on food"
     },
     "paywallWithout4": {
       "switch": "lifeStage",
@@ -333,7 +333,7 @@
         "busy_parent": "Zero decisions — open the app, see today's meals",
         "health_focus": "New flavors every day from the same base prep",
         "busy_pro": "Open fridge, grab container, eat — zero thinking",
-        "budget": "Every ingredient planned and used — €0 waste"
+        "budget": "Every ingredient planned and used — $0 waste"
       },
       "default": "Zero decisions — just open and assemble"
     },
@@ -342,7 +342,7 @@
       "cases": {
         "busy_parent": "Family-tested recipes everyone actually eats",
         "health_focus": "Variety that keeps you on track all week",
-        "busy_pro": "Save €{monthlySavings}/month on unplanned food",
+        "busy_pro": "Save ${monthlySavings}/month on unplanned food",
         "budget": "One precise list, two shopping trips, nothing excess"
       },
       "default": "Fresh ingredients, zero waste"
@@ -350,12 +350,12 @@
     "paywallWith3": {
       "switch": "lifeStage",
       "cases": {
-        "busy_parent": "Save ~€{monthlySavings}/month — buy only what gets eaten",
+        "busy_parent": "Save ~${monthlySavings}/month — buy only what gets eaten",
         "health_focus": "Macros auto-calculated — no counting, no spreadsheets",
         "busy_pro": "5-minute assembly meals even on your worst days",
-        "budget": "Save ~€{monthlySavings}/month on groceries"
+        "budget": "Save ~${monthlySavings}/month on groceries"
       },
-      "default": "Save ~€{monthlySavings}/month on groceries"
+      "default": "Save ~${monthlySavings}/month on groceries"
     },
     "paywallWith4": {
       "switch": "lifeStage",
@@ -941,8 +941,8 @@
             "cases": {
               "busy_parent": "You're making {decisionsPerYear}+ food decisions per year. That's {daysPerYear} full days of mental energy — just on \"what should we eat?\"",
               "health_focus": "You're spending {prepHoursPerWeek}+ hours per week on meal prep. That's {prepDaysPerYear} full days a year — and it still falls apart by Thursday.",
-              "busy_pro": "You're spending €{weeklyTakeoutSpend}/week on unplanned food. That's €{yearlyTakeoutSpend} a year — more than most vacations.",
-              "budget": "You're wasting ~€{monthlyWasteAmount}/month on food that spoils. That's €{yearlyWasteAmount} a year — literally money in the bin."
+              "busy_pro": "You're spending ${weeklyTakeoutSpend}/week on unplanned food. That's ${yearlyTakeoutSpend} a year — more than most vacations.",
+              "budget": "You're wasting ~${monthlyWasteAmount}/month on food that spoils. That's ${yearlyWasteAmount} a year — literally money in the bin."
             },
             "default": "Your current food routine costs more than you realize — in time, money, and energy."
           }
@@ -1010,7 +1010,7 @@
       "subtitle": "Your entire week is planned. Just open and assemble. No thinking required.",
       "stats": [
         { "value": "{weeklyTimeSaved}h", "label": "saved per week", "color": "violett" },
-        { "value": "€{monthlySavings}", "label": "saved per month", "color": "green" }
+        { "value": "${monthlySavings}", "label": "saved per month", "color": "green" }
       ],
       "cta": "See my 7-day plan →"
     },
@@ -1027,7 +1027,7 @@
         "image": "/HappyBanana.png",
         "lines": [
           "+ 18 more recipes inside",
-          "~ €{monthlySavings} saved on groceries",
+          "~ ${monthlySavings} saved on groceries",
           "+ Organized Shopping list"
         ]
       },
@@ -1088,7 +1088,7 @@
       ],
       "pricing": {
         "trial": "14-day free trial",
-        "price": "then €9.99/month",
+        "price": "then $9.99/month",
         "guarantee": "Cancel anytime • 30-day money-back"
       },
       "pricingCta": "Try for $0 →",
