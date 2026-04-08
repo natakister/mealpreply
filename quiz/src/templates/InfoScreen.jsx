@@ -1,7 +1,7 @@
 import Button from '../components/atoms/Button'
 import { interpolate } from '../engine/computeVars'
 import { assetUrl } from '../utils/assetUrl'
-import { CalendarCheck, Coins } from 'lucide-react'
+import { CalendarCheck, Coins, Clock, MoreHorizontal, Minus, Plus } from 'lucide-react'
 
 const statIconMap = {
   violett: CalendarCheck,
@@ -151,23 +151,48 @@ function ValueDemoVariant({ screen, ctx }) {
         </div>
       )}
 
-      {/* Recipe cards */}
-      <div className="flex flex-col gap-3 w-full">
-        {recipes.map((recipe, i) => (
-          <div key={i} className={`animate-in delay-${Math.min(i + 3, 5)} flex items-center gap-4 bg-bright rounded-2xl p-3`}>
-            {recipe.image ? (
-              <img src={assetUrl(recipe.image)} alt="" className="w-20 h-20 shrink-0 rounded-xl object-cover" />
-            ) : (
-              <div className="w-20 h-20 shrink-0 rounded-xl bg-border/50 flex items-center justify-center">
-                <span className="text-micro text-grey">photo</span>
+      {/* Recipe list — single white card, rows separated by dividers */}
+      <div className="bg-bright rounded-2xl w-full overflow-hidden animate-in delay-3">
+        {recipes.map((recipe, i) => {
+          const servings = ctx.totalPeople || 4
+          return (
+            <div
+              key={i}
+              className={`flex items-center gap-3 p-3 ${i > 0 ? 'border-t border-border' : ''}`}
+            >
+              {recipe.image ? (
+                <img src={assetUrl(recipe.image)} alt="" className="w-20 h-20 shrink-0 rounded-xl object-cover" />
+              ) : (
+                <div className="w-20 h-20 shrink-0 rounded-xl bg-border/50 flex items-center justify-center">
+                  <span className="text-micro text-grey">photo</span>
+                </div>
+              )}
+              <div className="flex flex-col gap-2 flex-1 min-w-0">
+                <span className="text-body font-semibold text-dark leading-tight line-clamp-2">
+                  {interpolate(recipe.name, ctx)}
+                </span>
+                <div className="flex items-center gap-1.5 text-grey">
+                  <Clock size={14} strokeWidth={1.8} />
+                  <span className="text-small">{interpolate(recipe.time, ctx)}</span>
+                </div>
+                <div className="flex items-center justify-between mt-0.5">
+                  <div className="inline-flex items-center gap-2 bg-border/40 rounded-full pl-1 pr-1 py-0.5">
+                    <button type="button" className="w-6 h-6 rounded-full flex items-center justify-center text-dark" aria-label="decrease">
+                      <Minus size={14} strokeWidth={2} />
+                    </button>
+                    <span className="text-small font-semibold text-dark tabular-nums w-4 text-center">{servings}</span>
+                    <button type="button" className="w-6 h-6 rounded-full flex items-center justify-center text-dark" aria-label="increase">
+                      <Plus size={14} strokeWidth={2} />
+                    </button>
+                  </div>
+                  <button type="button" className="w-7 h-7 flex items-center justify-center text-grey" aria-label="more">
+                    <MoreHorizontal size={18} strokeWidth={2} />
+                  </button>
+                </div>
               </div>
-            )}
-            <div className="flex flex-col gap-1 flex-1 min-w-0">
-              <span className="text-cta font-semibold text-dark leading-tight truncate">{interpolate(recipe.name, ctx)}</span>
-              <span className="text-small text-grey">{interpolate(recipe.time, ctx)}</span>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       {/* Gradient fade at bottom — fixed position over recipe list */}
