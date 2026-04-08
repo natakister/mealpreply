@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react'
 import Button from '../components/atoms/Button'
 import { interpolate } from '../engine/computeVars'
 import { assetUrl } from '../utils/assetUrl'
-import parseHighlight from '../utils/parseHighlight'
 
 function StatVariant({ screen, ctx }) {
   return (
@@ -84,13 +82,6 @@ function BridgeVariant({ screen, ctx }) {
 
 function ProgressVariant({ screen, ctx }) {
   const rows = screen.summaryRows || []
-  const targetPct = 78
-  const [progress, setProgress] = useState(0)
-  useEffect(() => {
-    // Delay so the card animates in first, then the bar fills
-    const t = setTimeout(() => setProgress(targetPct), 400)
-    return () => clearTimeout(t)
-  }, [])
   return (
     <>
       <div className="animate-in delay-1">
@@ -105,17 +96,14 @@ function ProgressVariant({ screen, ctx }) {
           {rows.map((row, i) => (
             <div key={i} className="flex justify-between items-center">
               <span className="text-cta text-grey">{interpolate(row.label, ctx)} →</span>
-              <span className="text-cta text-dark">
-                {parseHighlight(`==${interpolate(row.value, ctx)}==`)}
+              <span
+                className="text-cta text-dark highlight-sweep"
+                style={{ animationDelay: `${400 + i * 250}ms` }}
+              >
+                {interpolate(row.value, ctx)}
               </span>
             </div>
           ))}
-        </div>
-        <div className="mt-5 w-full h-1.5 bg-border rounded-full overflow-hidden">
-          <div
-            className="h-full bg-violett rounded-full transition-all duration-1200 ease-out"
-            style={{ width: `${progress}%` }}
-          />
         </div>
       </div>
 
