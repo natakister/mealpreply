@@ -38,7 +38,7 @@ function InsightVariant({ screen, ctx }) {
       )}
 
       <div className="animate-in delay-1">
-        <h1 className="font-title text-title leading-[1.1] tracking-tight text-bright">
+        <h1 className="font-title text-title leading-[1.1] tracking-tight text-dark">
           {interpolate(screen.title, ctx)}
         </h1>
       </div>
@@ -53,8 +53,13 @@ function InsightVariant({ screen, ctx }) {
           }
           return (
             <div key={i} className={`animate-in delay-${Math.min(i + 2, 5)} border border-border rounded-xl bg-bright p-4`}>
-              <p className={`text-small font-bold mb-1 ${colorMap[card.color] || 'text-grey'}`}>
-                {card.label}
+              <p className="mb-2">
+                <span
+                  className="text-cta font-bold text-dark highlight-sweep"
+                  style={{ animationDelay: `${600 + i * 250}ms` }}
+                >
+                  {card.label}
+                </span>
               </p>
               <p className="text-body text-dark leading-[1.4]">{body}</p>
             </div>
