@@ -101,7 +101,7 @@ function PricingCard({ plan, selected, onSelect }) {
       className={`w-full rounded-2xl p-4 flex items-center gap-4 cursor-pointer transition-all relative
         ${selected
           ? 'bg-violett/8 border-2 border-violett shadow-lg ring-1 ring-violett/20'
-          : 'bg-bright border-2 border-border opacity-60'}
+          : 'bg-bright border-2 border-dark'}
         ${isPopular ? 'py-5' : ''}`}
     >
       {isPopular && (
@@ -144,7 +144,7 @@ function ImageSlider({ images }) {
 
   return (
     <div
-      className="w-full overflow-hidden rounded-2xl border-2 border-dark relative"
+      className="w-full overflow-hidden rounded-2xl relative"
       onTouchStart={e => { touchStart.current = e.touches[0].clientX }}
       onTouchEnd={e => {
         const diff = touchStart.current - e.changedTouches[0].clientX
@@ -175,7 +175,7 @@ function PaywallVariant({ screen, ctx, onBuy, selectedPlan, setSelectedPlan }) {
   const testimonials = screen.paywallTestimonials || []
   const benefits = screen.benefits || []
   const sliderImages = (screen.sliderImages || []).map(p => assetUrl(p))
-  const [timeLeft, setTimeLeft] = useState(15 * 60)
+  const [timeLeft, setTimeLeft] = useState(5 * 60)
   const selected = plans.find(p => p.id === selectedPlan) || plans[0]
 
   // Countdown timer
@@ -189,12 +189,12 @@ function PaywallVariant({ screen, ctx, onBuy, selectedPlan, setSelectedPlan }) {
   return (
     <>
       {/* Discount banner */}
-      <div className="flex items-center gap-2 bg-green/15 border-2 border-green/30 rounded-xl px-4 py-2.5 w-full animate-in">
+      <div className="flex items-center gap-2 bg-green/15 rounded-xl px-4 py-2.5 w-full animate-in">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-green shrink-0">
           <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.2" />
           <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        <p className="text-body font-semibold text-green">15% discount applied!</p>
+        <p className="text-body font-semibold text-dark">15% discount applied!</p>
       </div>
 
       {/* Title — above the slider */}
@@ -230,17 +230,23 @@ function PaywallVariant({ screen, ctx, onBuy, selectedPlan, setSelectedPlan }) {
       )}
 
       {/* Time remaining */}
-      <div className="bg-beige border-2 border-dark rounded-2xl py-4 px-5 w-full text-center animate-in delay-2">
-        <p className="text-body text-dark">Your personalized plan has been saved for the next 15 minutes</p>
+      <div className="bg-green rounded-2xl py-4 px-5 w-full text-center animate-in delay-2">
+        <p className="text-body text-dark">Your personalized plan has been saved for the next 5 minutes</p>
         <p className="text-body font-bold text-dark mt-2">Time remaining:</p>
         <p className="font-title text-[40px] text-dark leading-none mt-1">{mins}:{secs}</p>
       </div>
 
       {/* Money back guarantee */}
       {screen.guarantee && (
-        <div className="border-2 border-dark rounded-2xl p-5 w-full text-center animate-in delay-2">
+        <div className="border-2 border-border rounded-2xl p-5 w-full text-center animate-in delay-2">
+          <div className="flex justify-center mb-3">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="text-green">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="1.5" fill="currentColor" opacity="0.15" />
+              <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
           <h3 className="font-title text-[22px] text-dark mb-2">{screen.guarantee.title}</h3>
-          <p className="text-body text-grey leading-[1.5]">{screen.guarantee.text}</p>
+          <p className="text-body text-dark leading-[1.5]">{screen.guarantee.text}</p>
         </div>
       )}
 
@@ -272,11 +278,21 @@ function PaywallVariant({ screen, ctx, onBuy, selectedPlan, setSelectedPlan }) {
         >
           Get My Plan — ${selected?.perDay}/day
         </button>
-        <p className="text-small text-grey text-center">Guaranteed Safe Checkout</p>
-        <div className="flex items-center gap-4 mt-1">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" className="h-5 opacity-40" />
-          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" className="h-5 opacity-40" />
-          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" alt="Mastercard" className="h-5 opacity-40" />
+        {/* Pay Safe badge */}
+        <div className="flex items-center justify-center gap-1.5 bg-green/10 rounded-full px-4 py-1.5 mt-1">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-green">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="currentColor" opacity="0.2" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <span className="text-body font-semibold text-green">Pay Safe &amp; Secure</span>
+        </div>
+        {/* Payment logos in bordered boxes */}
+        <div className="flex items-center justify-center gap-2 mt-2">
+          {['PayPal', 'Apple Pay', 'VISA', 'MC', 'AMEX'].map(name => (
+            <div key={name} className="border border-border rounded-lg px-2.5 py-1.5 flex items-center justify-center h-9 min-w-[48px]">
+              <span className="text-micro font-bold text-dark">{name}</span>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -316,7 +332,7 @@ function PaywallVariant({ screen, ctx, onBuy, selectedPlan, setSelectedPlan }) {
           <h2 className="font-title text-[24px] text-dark text-center mb-4">People often ask</h2>
           <div className="flex flex-col gap-2.5">
             {faqs.map((faq, i) => (
-              <details key={i} className="bg-beige border-2 border-dark rounded-xl overflow-hidden group">
+              <details key={i} className="bg-beige border border-border rounded-xl overflow-hidden group">
                 <summary className="flex items-center justify-between px-4 py-3.5 cursor-pointer text-body font-semibold text-dark list-none">
                   {faq.q}
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className="text-grey shrink-0 transition-transform group-open:rotate-180">
