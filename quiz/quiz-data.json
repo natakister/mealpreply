@@ -1056,9 +1056,9 @@
       "highlightCard": {
         "image": "/HappyBanana.png",
         "lines": [
-          "🍽 80+ recipes inside",
-          "📋 Step-by-step prep plan",
-          "🛒 Smart shopping list"
+          "* 80+ recipes inside",
+          "* Step-by-step prep plan",
+          "* Smart shopping list"
         ]
       },
       "recipes": [
