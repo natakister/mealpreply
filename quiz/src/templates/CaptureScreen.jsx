@@ -21,7 +21,7 @@
  * or wrap onNext callbacks to fire analytics before navigation.
  */
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Button from '../components/atoms/Button'
 import TextInput from '../components/atoms/TextInput'
 import { interpolate } from '../engine/computeVars'
@@ -99,17 +99,19 @@ function PricingCard({ plan, selected, onSelect }) {
       type="button"
       onClick={() => onSelect(plan.id)}
       className={`w-full rounded-2xl p-4 flex items-center gap-4 cursor-pointer transition-all relative
-        ${selected ? 'bg-bright border-2 border-green shadow-lg' : 'bg-bright border-2 border-border'}
+        ${selected
+          ? 'bg-violett/8 border-2 border-violett shadow-lg ring-1 ring-violett/20'
+          : 'bg-bright border-2 border-border opacity-60'}
         ${isPopular ? 'py-5' : ''}`}
     >
       {isPopular && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-green text-bright text-micro font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange text-bright text-micro font-bold px-3 py-1 rounded-full uppercase tracking-wide">
           Most Popular
         </span>
       )}
       <div className={`w-5 h-5 rounded-full border-2 shrink-0 flex items-center justify-center
-        ${selected ? 'border-green' : 'border-border'}`}>
-        {selected && <div className="w-2.5 h-2.5 rounded-full bg-green" />}
+        ${selected ? 'border-violett' : 'border-border'}`}>
+        {selected && <div className="w-2.5 h-2.5 rounded-full bg-violett" />}
       </div>
       <div className="flex-1 text-left">
         <p className="text-body font-bold text-dark">{plan.label}</p>
@@ -130,62 +132,163 @@ function PricingCard({ plan, selected, onSelect }) {
   )
 }
 
+function ImageSlider({ images }) {
+  const [current, setCurrent] = useState(0)
+  const touchStart = React.useRef(0)
+  return (
+    <div
+      className="w-full overflow-hidden rounded-2xl relative"
+      onTouchStart={e => { touchStart.current = e.touches[0].clientX }}
+      onTouchEnd={e => {
+        const diff = touchStart.current - e.changedTouches[0].clientX
+        if (diff > 50 && current < images.length - 1) setCurrent(c => c + 1)
+        if (diff < -50 && current > 0) setCurrent(c => c - 1)
+      }}
+    >
+      <div
+        className="flex transition-transform duration-300 ease-out"
+        style={{ transform: `translateX(-${current * 100}%)` }}
+      >
+        {images.map((img, i) => (
+          <img key={i} src={img} alt="" className="w-full shrink-0 aspect-[4/3] object-cover" />
+        ))}
+      </div>
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+        {images.map((_, i) => (
+          <div key={i} className={`w-2 h-2 rounded-full transition-all ${i === current ? 'bg-dark w-4' : 'bg-dark/30'}`} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function PaywallVariant({ screen, ctx }) {
   const plans = screen.plans || []
   const faqs = screen.faqs || []
   const testimonials = screen.paywallTestimonials || []
   const benefits = screen.benefits || []
+  const sliderImages = (screen.sliderImages || []).map(p => assetUrl(p))
   const [selectedPlan, setSelectedPlan] = useState(plans.find(p => p.popular)?.id || plans[0]?.id)
   const [showPopup, setShowPopup] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(15 * 60)
   const selected = plans.find(p => p.id === selectedPlan) || plans[0]
+
+  // Countdown timer
+  React.useEffect(() => {
+    const t = setInterval(() => setTimeLeft(s => s > 0 ? s - 1 : 0), 1000)
+    return () => clearInterval(t)
+  }, [])
+  const mins = String(Math.floor(timeLeft / 60)).padStart(2, '0')
+  const secs = String(timeLeft % 60).padStart(2, '0')
+
+  const handleBuy = () => {
+    setShowPopup(true)
+  }
 
   return (
     <>
-      {/* Hero */}
-      <div className="flex flex-col items-center gap-3 animate-in delay-1 w-full">
-        <h1 className="font-title text-[36px] leading-[1.08] tracking-tight text-bright text-center">
+      {/* Discount banner */}
+      <div className="flex items-center gap-2 bg-green/15 rounded-xl px-4 py-2.5 w-full animate-in">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-green shrink-0">
+          <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.2" />
+          <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <p className="text-body font-semibold text-green">15% discount applied!</p>
+      </div>
+
+      {/* Image slider */}
+      {sliderImages.length > 0 && (
+        <div className="w-full animate-in delay-1">
+          <ImageSlider images={sliderImages} />
+        </div>
+      )}
+
+      {/* Title */}
+      <div className="animate-in delay-1 w-full">
+        <h1 className="font-title text-[32px] leading-[1.1] tracking-tight text-dark">
           {interpolate(screen.title, ctx)}
         </h1>
-        {screen.heroSubtitle && (
-          <p className="text-cta text-bright/80 text-center">
-            {interpolate(screen.heroSubtitle, ctx)}
-          </p>
-        )}
-        {screen.heroImage && (
-          <div className="w-full flex justify-center mt-2">
-            <img src={assetUrl(screen.heroImage)} alt="" className="max-h-[200px] w-auto object-contain" />
-          </div>
-        )}
       </div>
 
       {/* What you get */}
       {benefits.length > 0 && (
         <div className="w-full animate-in delay-2">
-          <h2 className="font-title text-[24px] text-bright text-center mb-4">What you get</h2>
-          <div className="flex flex-col gap-3">
+          <p className="text-cta font-semibold text-violett mb-3">What you'll get:</p>
+          <div className="flex flex-col gap-2.5">
             {benefits.map((b, i) => (
               <div key={i} className="flex items-start gap-3">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="text-green shrink-0 mt-0.5">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-green shrink-0 mt-0.5">
                   <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.15" />
                   <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <p className="text-body text-bright leading-[1.4]">{interpolate(b, ctx)}</p>
+                <p className="text-body text-dark leading-[1.4]">{interpolate(b, ctx)}</p>
               </div>
             ))}
           </div>
         </div>
       )}
 
+      {/* Time remaining */}
+      <div className="bg-beige border-2 border-border rounded-2xl py-4 px-5 w-full text-center animate-in delay-2">
+        <p className="text-body text-dark">Your personalized plan has been saved for the next 15 minutes</p>
+        <p className="text-body font-bold text-dark mt-2">Time remaining:</p>
+        <p className="font-title text-[40px] text-dark leading-none mt-1">{mins}:{secs}</p>
+      </div>
+
+      {/* Money back guarantee */}
+      {screen.guarantee && (
+        <div className="border-2 border-border rounded-2xl p-5 w-full text-center animate-in delay-2">
+          <h3 className="font-title text-[22px] text-dark mb-2">{screen.guarantee.title}</h3>
+          <p className="text-body text-grey leading-[1.5]">{screen.guarantee.text}</p>
+        </div>
+      )}
+
+      {/* Choose Your Plan */}
+      <div className="w-full animate-in delay-3">
+        <h2 className="font-title text-[24px] text-dark text-center mb-5">Choose Your Plan</h2>
+        <div className="flex flex-col gap-4">
+          {plans.map(plan => (
+            <PricingCard key={plan.id} plan={plan} selected={selectedPlan === plan.id} onSelect={setSelectedPlan} />
+          ))}
+        </div>
+      </div>
+
+      {/* Guarantee one-liner */}
+      <p className="text-body text-dark text-center animate-in delay-3">
+        30-day <span className="text-green font-semibold underline">money back guarantee</span>
+      </p>
+
+      {/* CTA inline */}
+      <div className="w-full animate-in delay-3 flex flex-col items-center gap-3">
+        <button
+          type="button"
+          onClick={handleBuy}
+          className="w-full h-[56px] rounded-full bg-green text-bright font-sans text-cta font-semibold
+            flex items-center justify-center cursor-pointer hover:opacity-90 active:scale-[0.98] transition-all"
+          data-event="paywall_cta_clicked"
+          data-plan={selectedPlan}
+          data-segment={ctx.lifeStage}
+        >
+          Get My Plan — ${selected?.perDay}/day
+        </button>
+        <p className="text-small text-grey text-center">Guaranteed Safe Checkout</p>
+        <div className="flex items-center gap-3 opacity-40">
+          <span className="text-micro text-dark font-bold">VISA</span>
+          <span className="text-micro text-dark font-bold">PayPal</span>
+          <span className="text-micro text-dark font-bold">Mastercard</span>
+        </div>
+      </div>
+
       {/* Testimonials */}
       {testimonials.length > 0 && (
-        <div className="w-full animate-in delay-2">
-          <h2 className="font-title text-[24px] text-bright text-center mb-4">Users love our plans</h2>
+        <div className="w-full animate-in delay-3">
+          <h2 className="font-title text-[24px] text-dark text-center mb-4">Real people. Real stories</h2>
           <div className="flex flex-col gap-3">
             {testimonials.map((t, i) => {
               const avatarUrl = interpolate(t.avatar || '', ctx)
               return (
-                <div key={i} className="bg-bright rounded-2xl p-4">
-                  <div className="flex gap-1 mb-2">
+                <div key={i} className="bg-beige rounded-2xl p-4">
+                  <div className="flex gap-0.5 mb-2">
                     {[...Array(5)].map((_, j) => (
                       <span key={j} className="text-orange text-body">★</span>
                     ))}
@@ -197,7 +300,7 @@ function PaywallVariant({ screen, ctx }) {
                     ) : (
                       <div className="w-8 h-8 rounded-full bg-border shrink-0" />
                     )}
-                    <p className="text-small text-grey font-semibold">{interpolate(t.author, ctx)}</p>
+                    <p className="text-small text-dark font-semibold">{interpolate(t.author, ctx)}</p>
                   </div>
                 </div>
               )
@@ -206,51 +309,13 @@ function PaywallVariant({ screen, ctx }) {
         </div>
       )}
 
-      {/* Choose Your Plan */}
-      <div className="w-full animate-in delay-3">
-        <h2 className="font-title text-[24px] text-bright text-center mb-5">Choose Your Plan</h2>
-        <div className="flex flex-col gap-4">
-          {plans.map(plan => (
-            <PricingCard key={plan.id} plan={plan} selected={selectedPlan === plan.id} onSelect={setSelectedPlan} />
-          ))}
-        </div>
-      </div>
-
-      {/* 30-day guarantee text */}
-      {screen.guarantee && (
-        <p className="text-body text-bright text-center animate-in delay-3">
-          30-day <span className="text-green font-semibold underline">money back guarantee</span>
-        </p>
-      )}
-
-      {/* CTA — not fixed, inline with content */}
-      <div className="w-full animate-in delay-3 flex flex-col items-center gap-3">
-        <button
-          type="button"
-          onClick={() => setShowPopup(true)}
-          className="w-full h-[56px] rounded-full bg-green text-bright font-sans text-cta font-semibold
-            flex items-center justify-center cursor-pointer hover:opacity-90 active:scale-[0.98] transition-all"
-          data-event="paywall_cta_clicked"
-          data-plan={selectedPlan}
-          data-segment={ctx.lifeStage}
-        >
-          Get My Plan — ${selected?.perDay}/day
-        </button>
-        <p className="text-small text-bright/60 text-center">Guaranteed Safe Checkout</p>
-        <div className="flex items-center gap-3 opacity-50">
-          <span className="text-micro text-bright font-bold">VISA</span>
-          <span className="text-micro text-bright font-bold">PayPal</span>
-          <span className="text-micro text-bright font-bold">Mastercard</span>
-        </div>
-      </div>
-
       {/* FAQ */}
       {faqs.length > 0 && (
         <div className="w-full animate-in delay-4">
-          <h2 className="font-title text-[24px] text-bright text-center mb-4">People often ask</h2>
+          <h2 className="font-title text-[24px] text-dark text-center mb-4">People often ask</h2>
           <div className="flex flex-col gap-2.5">
             {faqs.map((faq, i) => (
-              <details key={i} className="bg-bright rounded-xl overflow-hidden group">
+              <details key={i} className="bg-beige rounded-xl overflow-hidden group">
                 <summary className="flex items-center justify-between px-4 py-3.5 cursor-pointer text-body font-semibold text-dark list-none">
                   {faq.q}
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className="text-grey shrink-0 transition-transform group-open:rotate-180">
@@ -265,6 +330,21 @@ function PaywallVariant({ screen, ctx }) {
           </div>
         </div>
       )}
+
+      {/* Bottom CTA repeat */}
+      <div className="w-full animate-in delay-4 flex flex-col items-center gap-2 pb-4">
+        <button
+          type="button"
+          onClick={handleBuy}
+          className="w-full h-[56px] rounded-full bg-green text-bright font-sans text-cta font-semibold
+            flex items-center justify-center cursor-pointer hover:opacity-90 active:scale-[0.98] transition-all"
+          data-event="paywall_cta_clicked"
+          data-plan={selectedPlan}
+          data-segment={ctx.lifeStage}
+        >
+          Get My Plan — ${selected?.perDay}/day
+        </button>
+      </div>
 
       {/* Waitlist popup */}
       {showPopup && (

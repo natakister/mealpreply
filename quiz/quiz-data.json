@@ -1139,19 +1139,17 @@
       "type": "capture",
       "variant": "paywall",
       "phase": "monetization",
-      "theme": "dark",
-      "title": "Stop thinking about\nwhat to cook every day",
-      "heroSubtitle": "Your personalized weekly plan is ready",
-      "heroImage": "/VegeFamily.png",
+      "title": "Get full access\nto MealPreply",
+      "sliderImages": ["/11.png", "/12.png", "/13.png", "/14.png", "/15.png", "/16.png"],
       "paywallTestimonials": [
         {"text": "{testimonialText}", "author": "{testimonialAuthor}", "avatar": "{testimonialAvatar}"},
         {"text": "{testimonial2Text}", "author": "{testimonial2Author}", "avatar": "{testimonial2Avatar}"}
       ],
       "benefits": [
-        "80+ personalized recipes for your family",
-        "Step-by-step prep plan — cook once, eat all week",
-        "Smart shopping list — zero waste",
-        "New recipes added every week",
+        "Full access to the MealPreply app",
+        "80+ personalized recipes updated weekly",
+        "Step-by-step prep plans — cook once, eat all week",
+        "Automated smart shopping list",
         "Works for any dietary needs"
       ],
       "plans": [
@@ -1160,13 +1158,13 @@
         {"id": "biannual", "label": "6-MONTH PLAN", "oldPrice": "119.94", "price": "99.99", "perDay": "0.56"}
       ],
       "guarantee": {
-        "title": "30-day money-back guarantee",
-        "text": "Try it risk-free. Full refund within 30 days."
+        "title": "30-day Money Back Guarantee",
+        "text": "We're confident you'll love MealPreply. If you don't see results within 30 days, we'll refund your payment in full — no questions asked."
       },
       "faqs": [
-        {"q": "What happens after I order?", "a": "You get instant access to your personalized plan, shopping list, and prep guides."},
-        {"q": "Do I need cooking skills?", "a": "No. Every recipe is beginner-friendly with step-by-step instructions."},
-        {"q": "Can I cancel anytime?", "a": "Yes, cancel in one tap. No questions asked."}
+        {"q": "What happens after I subscribe?", "a": "You get instant access to the MealPreply app with all your personalized recipes, prep plans, and shopping lists."},
+        {"q": "Can I change my meal preferences later?", "a": "Yes, update your dietary preferences, family size, and restrictions anytime inside the app."},
+        {"q": "Can I cancel anytime?", "a": "Absolutely. Cancel in one tap from settings. No questions asked."}
       ],
       "cta": "Get My Plan"
     },
