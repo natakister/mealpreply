@@ -1153,9 +1153,9 @@
         "Works for any dietary needs"
       ],
       "plans": [
-        {"id": "monthly", "label": "1-MONTH PLAN", "oldPrice": "46.99", "price": "39.99", "perDay": "1.33"},
-        {"id": "quarterly", "label": "3-MONTH PLAN", "oldPrice": "82.99", "price": "69.99", "perDay": "0.78", "popular": true},
-        {"id": "biannual", "label": "6-MONTH PLAN", "oldPrice": "117.99", "price": "99.99", "perDay": "0.56"}
+        {"id": "weekly", "label": "1-WEEK PLAN", "oldPrice": "11.99", "price": "9.99", "perDay": "1.43"},
+        {"id": "monthly", "label": "1-MONTH PLAN", "oldPrice": "34.99", "price": "29.99", "perDay": "1.00"},
+        {"id": "quarterly", "label": "3-MONTH PLAN", "oldPrice": "94.99", "price": "79.99", "perDay": "0.89", "popular": true}
       ],
       "guarantee": {
         "title": "30-day Money Back Guarantee",
