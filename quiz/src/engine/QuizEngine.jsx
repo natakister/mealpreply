@@ -45,6 +45,7 @@ export default function QuizEngine({ config }) {
     sessionIdRef.current = getOrCreateSessionId()
   }
   const sessionId = sessionIdRef.current
+  const viewedScreenIdsRef = useRef(new Set())
 
   if (!currentScreen) return null
 
@@ -70,6 +71,20 @@ export default function QuizEngine({ config }) {
     return fields
   }, [config?.screens])
 
+  const numberFieldScreenIds = useMemo(() => {
+    const map = new Map()
+    for (const screen of config?.screens || []) {
+      if (screen?.type !== 'number_input' || !Array.isArray(screen.fields)) continue
+      for (const fieldConfig of screen.fields) {
+        const fieldId = fieldConfig?.id
+        if (!fieldId) continue
+        if (!map.has(fieldId)) map.set(fieldId, new Set())
+        map.get(fieldId).add(screen.id)
+      }
+    }
+    return map
+  }, [config?.screens])
+
   const screenPosById = useMemo(() => {
     const map = new Map()
     for (let index = 0; index < (config?.screens || []).length; index += 1) {
@@ -89,6 +104,23 @@ export default function QuizEngine({ config }) {
       visibleIndex: currentIndex
     }
   }, [config?.id, ctx?.lifeStage, currentIndex, currentScreen?.id, screenPosById, sessionId])
+
+  const buildTelemetryAnswers = useCallback(() => {
+    const telemetryAnswers = { ...answers }
+    const viewedScreenIds = viewedScreenIdsRef.current
+
+    for (const [fieldId, screenIds] of numberFieldScreenIds.entries()) {
+      const hasViewedFieldScreen =
+        screenIds.has(currentScreen?.id) ||
+        Array.from(screenIds).some((screenId) => viewedScreenIds.has(screenId))
+
+      if (!hasViewedFieldScreen) {
+        telemetryAnswers[fieldId] = null
+      }
+    }
+
+    return telemetryAnswers
+  }, [answers, currentScreen?.id, numberFieldScreenIds])
 
   useEffect(() => {
     trackEventOnce(`quiz_start:${sessionId}`, 'quiz_start', {
@@ -113,6 +145,7 @@ export default function QuizEngine({ config }) {
 
   useEffect(() => {
     if (!currentScreen?.id) return
+    viewedScreenIdsRef.current.add(currentScreen.id)
     const base = buildBasePayload()
     trackEventOnce(`screen_view:${sessionId}:${currentScreen.id}`, 'screen_view', base)
     if (currentScreen.type === 'capture' && currentScreen.variant === 'paywall') {
@@ -147,7 +180,7 @@ export default function QuizEngine({ config }) {
     const base = buildBasePayload()
     trackEvent('answer_snapshot', {
       ...base,
-      answers
+      answers: buildTelemetryAnswers()
     })
 
     if (currentScreen.type === 'capture' && currentScreen.variant === 'email') {
@@ -169,7 +202,7 @@ export default function QuizEngine({ config }) {
     }
 
     next()
-  }, [answers, buildBasePayload, currentScreen, next])
+  }, [answers, buildBasePayload, buildTelemetryAnswers, currentScreen, next])
 
   if (!Template) {
     return (
