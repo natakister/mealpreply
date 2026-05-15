@@ -1,13 +1,35 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+app/dist/
+app/.expo/
+app/web-build/
+app/ios/
+app/android/
+dist/
+.vite/
+
+# Environment
+.env
+.env.local
+.env*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / Editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
 # Private / local only
 meetings/
 docs/
 CLAUDE.md
-
-# Build artifacts
-node_modules/
-dist/
-.vite/
-
-# IDE / OS
-.DS_Store
 .claude/
