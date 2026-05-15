@@ -1,0 +1,6 @@
+{
+  "smokeTest": {
+    "title": "MealPreply v1 — Foundation OK",
+    "subtitle": "i18n + Tailwind + Expo working"
+  }
+}
