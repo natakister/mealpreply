@@ -13,20 +13,25 @@ const resources = {
   en: { translation: en },
 } as const;
 
-export async function initI18n(): Promise<void> {
-  const deviceLocale = Localization.getLocales()[0]?.languageCode ?? FALLBACK_LOCALE;
-  const initial = isSupportedLocale(deviceLocale) ? deviceLocale : FALLBACK_LOCALE;
+let initPromise: Promise<void> | null = null;
 
-  if (i18next.isInitialized) return;
+export function initI18n(): Promise<void> {
+  if (initPromise) return initPromise;
+  initPromise = (async () => {
+    const deviceLocale =
+      Localization.getLocales()[0]?.languageCode ?? FALLBACK_LOCALE;
+    const initial = isSupportedLocale(deviceLocale) ? deviceLocale : FALLBACK_LOCALE;
 
-  await i18next.use(initReactI18next).init({
-    resources,
-    lng: initial,
-    fallbackLng: FALLBACK_LOCALE,
-    supportedLngs: SUPPORTED_LOCALES as unknown as string[],
-    interpolation: { escapeValue: false },
-    returnNull: false,
-  });
+    await i18next.use(initReactI18next).init({
+      resources,
+      lng: initial,
+      fallbackLng: FALLBACK_LOCALE,
+      supportedLngs: SUPPORTED_LOCALES as unknown as string[],
+      interpolation: { escapeValue: false },
+      returnNull: false, // missing keys return key string, never null — surfaces gaps visibly
+    });
+  })();
+  return initPromise;
 }
 
 export function t(key: string, options?: Record<string, unknown>): string {
