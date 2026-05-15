@@ -3,9 +3,6 @@ node_modules/
 .pnpm-store/
 
 # Build outputs
-app/dist/
-app/.expo/
-app/web-build/
 app/ios/
 app/android/
 dist/
@@ -13,8 +10,8 @@ dist/
 
 # Environment
 .env
-.env.local
-.env*.local
+.env.*
+!.env.example
 
 # Logs
 *.log
