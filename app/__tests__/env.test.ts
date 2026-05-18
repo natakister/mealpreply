@@ -36,4 +36,13 @@ describe("env loader", () => {
     };
     expect(() => loadEnv()).toThrow(/EXPO_PUBLIC_SUPABASE_ANON_KEY/);
   });
+
+  it("throws when URL is the string \"undefined\" (Expo static substitution gap)", () => {
+    process.env = {
+      ...origEnv,
+      EXPO_PUBLIC_SUPABASE_URL: "undefined",
+      EXPO_PUBLIC_SUPABASE_ANON_KEY: "anon-test-key",
+    };
+    expect(() => loadEnv()).toThrow(/EXPO_PUBLIC_SUPABASE_URL/);
+  });
 });

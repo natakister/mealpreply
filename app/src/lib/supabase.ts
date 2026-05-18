@@ -12,7 +12,7 @@ export function getSupabase(): SupabaseClient {
       storage: AsyncStorage,
       autoRefreshToken: true,
       persistSession: true,
-      detectSessionInUrl: false,
+      detectSessionInUrl: true,
     },
   });
   return client;

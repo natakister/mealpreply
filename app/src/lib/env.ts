@@ -3,20 +3,24 @@ export type Env = {
   supabaseAnonKey: string;
 };
 
+function isMissing(value: string | undefined): boolean {
+  return !value || value === "undefined" || value.trim() === "";
+}
+
 export function loadEnv(): Env {
   const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 
-  if (!supabaseUrl) {
+  if (isMissing(supabaseUrl)) {
     throw new Error(
       "Missing EXPO_PUBLIC_SUPABASE_URL. Copy app/.env.example to app/.env and fill in values."
     );
   }
-  if (!supabaseAnonKey) {
+  if (isMissing(supabaseAnonKey)) {
     throw new Error(
       "Missing EXPO_PUBLIC_SUPABASE_ANON_KEY. Copy app/.env.example to app/.env and fill in values."
     );
   }
 
-  return { supabaseUrl, supabaseAnonKey };
+  return { supabaseUrl: supabaseUrl!, supabaseAnonKey: supabaseAnonKey! };
 }
