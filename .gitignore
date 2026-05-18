@@ -7,6 +7,7 @@ app/ios/
 app/android/
 dist/
 .vite/
+.vercel/
 
 # Environment
 .env
