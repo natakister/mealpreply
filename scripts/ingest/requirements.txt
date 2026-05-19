@@ -1,0 +1,4 @@
+pypdf==5.0.*
+anthropic==0.40.*
+python-dotenv
+pydantic
