@@ -2,7 +2,7 @@
 """
 Multi-PDF structural discovery for MealPreply recipe books.
 
-Scans all PDFs in Original Materials/, extracts candidate category headers,
+Scans all PDFs in materials/, extracts candidate category headers,
 samples rich-text pages, and writes per-book + aggregate JSON reports.
 """
 
@@ -19,7 +19,7 @@ from pypdf import PdfReader
 # Configuration
 # ---------------------------------------------------------------------------
 
-PDF_DIR = Path(__file__).resolve().parents[2] / "Original Materials"
+PDF_DIR = Path(__file__).resolve().parents[2] / "materials"
 SAMPLES_DIR = Path(__file__).resolve().parent / "samples"
 MAX_PAGES = 250          # safety cap per book
 SAMPLE_COUNT = 5         # rich-text pages to sample per book

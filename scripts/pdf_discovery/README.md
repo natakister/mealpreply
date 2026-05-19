@@ -4,7 +4,7 @@ Structural analysis of all recipe book PDFs before schema design.
 
 ## What it does
 
-For each PDF in `Original Materials/`:
+For each PDF in `materials/`:
 - Reads page count and extracts text (up to 250 pages).
 - Detects **candidate category headers** using a heuristic: all-uppercase lines, 2–10 words, under 60 characters. These are typical cookbook section headers like `GRAIN BASES` or `CHICKEN BOWLS`.
 - Samples 5 random pages with more than 400 characters of text (seeded per book for reproducibility).
