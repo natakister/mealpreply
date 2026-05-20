@@ -12,7 +12,7 @@ export default function Index() {
   useEffect(() => {
     const supabase = getSupabase();
     supabase
-      .from("app_health")
+      .from("meal_types")
       .select("*", { count: "exact", head: true })
       .then(({ error, count }) => {
         if (error) {
@@ -34,7 +34,7 @@ export default function Index() {
       </Text>
       <Text className="mt-6 text-sm text-slate-700">
         Supabase: {pingState}
-        {rowCount !== null ? ` (${rowCount} health rows)` : ""}
+        {rowCount !== null ? ` (${rowCount} meal types)` : ""}
       </Text>
     </View>
   );
